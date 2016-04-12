@@ -1,0 +1,18 @@
+default: &default
+  adapter: postgresql
+  encoding: utf8
+  min_messages: warning
+  pool: 5
+  timeout: 5000
+
+development:
+  <<: *default
+  database: specialeyes_dev
+
+test:
+  <<: *default
+  database: specialeyes_test
+
+production:
+  <<: *default
+  database: specialeyes_prod

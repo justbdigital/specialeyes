@@ -1,0 +1,20 @@
+<div class="col-lg-4 col-lg-offset-4">
+  <h3>Register as a Professional</h3>
+
+  <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+    <%= f.error_notification %>
+    <div class="form-inputs ">
+      <%= f.input :username, required: true, autofocus: true, label: false, placeholder: 'your name' %>
+      <%= f.input :business_name, required: false, autofocus: false, label: false, placeholder: 'business name' %>
+      <%= f.input :email, required: true, autofocus: false, label: false, placeholder: 'email' %>
+      <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length), label: false, placeholder: 'password' %>
+      <%= f.input :password_confirmation, required: true, label: false, placeholder: 're-enter your password' %>
+    </div>
+
+    <div class="form-actions">
+      <%= f.button :submit, "Sign up" %>
+    </div>
+  <% end %>
+
+  <%= render "devise/shared/links" %>
+</div>

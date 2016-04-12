@@ -1,0 +1,22 @@
+// Custom bootstrap variables must be set or import before bootstrap itself.
+
+
+@import "bootstrap-sprockets";
+@import 'bootstrap';
+@import 'font-awesome.css';
+
+.alert {
+  position: absolute;
+  right: 0;
+  top: 50px;
+  z-index: 10000;
+  width: 300px;
+}
+
+.layout_base {
+  margin-top: 70px;
+}
+
+.login_logout_link {
+  min-width: 160px;
+}
