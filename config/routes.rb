@@ -13,6 +13,10 @@ Rails.application.routes.draw do
 
     resources :pros
     resources :treatments
+    resources :teams, only: [:create, :show] do
+      post :add_member, on: :member
+      get :check_for_team, on: :collection
+    end
   end
 
   # Example of regular route:

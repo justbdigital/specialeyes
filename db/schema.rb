@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160411190032) do
+ActiveRecord::Schema.define(version: 20160413120143) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,10 +31,17 @@ ActiveRecord::Schema.define(version: 20160411190032) do
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
+    t.integer  "member_of_id"
   end
 
   add_index "pros", ["email"], name: "index_pros_on_email", unique: true, using: :btree
   add_index "pros", ["reset_password_token"], name: "index_pros_on_reset_password_token", unique: true, using: :btree
+
+  create_table "teams", force: :cascade do |t|
+    t.integer  "owner_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "treatments", force: :cascade do |t|
     t.string   "title"

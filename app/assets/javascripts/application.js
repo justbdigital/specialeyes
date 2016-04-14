@@ -13,6 +13,9 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
+//= require chosen-jquery
+//= require teams
+//= require imageselect
 //= require tether
 //= require bootstrap-sprockets
 //= require_tree .

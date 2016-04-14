@@ -7,20 +7,20 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  <%= render "layouts/header" %>
+    <%= render "layouts/header" %>
 
-  <div class="container layout_base">
-    <div class="row">
-    <% flash.each do |type, message| %>
-      <div class="alert alert-warning fade-in">
-        <button class="close" data-dismiss="alert">x</button>
-        <%= message %>
+    <div class="container wrapper">
+      <div class="row">
+      <% flash.each do |type, message| %>
+        <div class="alert alert-warning fade-in">
+          <button class="close" data-dismiss="alert">x</button>
+          <%= message %>
+        </div>
+      <% end %>
+
+    <%= yield %>
+
       </div>
-    <% end %>
-
-  <%= yield %>
-
     </div>
-  </div>
 </body>
 </html>

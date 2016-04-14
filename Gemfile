@@ -30,6 +30,8 @@ gem 'devise'
 gem 'pry'
 gem 'annotate'
 gem 'font-awesome-rails'
+gem 'gravatar_image_tag'
+gem 'chosen-rails'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
