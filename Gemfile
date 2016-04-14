@@ -32,6 +32,11 @@ gem 'annotate'
 gem 'font-awesome-rails'
 gem 'gravatar_image_tag'
 gem 'chosen-rails'
+gem 'geocoder'
+gem 'annotate'
+gem 'gmaps4rails'
+gem 'carrierwave'
+gem 'rmagick'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

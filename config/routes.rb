@@ -17,6 +17,7 @@ Rails.application.routes.draw do
       post :add_member, on: :member
       get :check_for_team, on: :collection
     end
+    resources :venues, only: [:update, :edit, :new, :create]
   end
 
   # Example of regular route:

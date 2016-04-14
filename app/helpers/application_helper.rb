@@ -22,4 +22,8 @@ module ApplicationHelper
     end
     s.html_safe
   end
+
+  def check_venue_path
+    current_user.venue ? edit_venue_path(current_user.venue) : new_venue_path(Venue.new)
+  end
 end
