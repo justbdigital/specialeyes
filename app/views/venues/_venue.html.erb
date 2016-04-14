@@ -1,0 +1,47 @@
+    <div class='container'>
+      <div class='row'>
+        <div class='text-center'>
+          <h3><%= image_tag @venue.image_url(:thumb) unless @venue.image.blank? %> Venue details</h3> 
+        </div>
+        <div class='col-lg-6 col-lg-offset-3'>
+          <%= simple_form_for(@venue, html: {class: 'form-horizontal', id: 'contact-form'}) do |f| %>
+          <%= f.error_notification %>
+            <div class='form-group form-horizontal'>
+              <%= f.input :name, required: false, autofocus: true, label: 'Name', input_html: { class: 'form-control'} %>
+            </div>
+            <div class='form-group'>
+              <%= f.input :email, required: false, autofocus: false, label: 'Email', input_html: { class: 'form-control'} %>
+            </div> 
+            <div class='form-group'>
+              <%= f.input :phone, required: false, autofocus: false, label: 'Phone', input_html: { class: 'form-control'} %>
+            </div>
+            <% unless @venue.address.blank? %>
+              <h6><%= "Location on the map - #{@venue.address}" %></h6>
+              <div style='width: 600px;'>
+                <div id="map" style='width: 580px; height: 200px;'></div>
+              </div>
+            <% end %>
+            <div class='form-group'>
+              <%= f.input :address, required: false, autofocus: false, label: 'Address', input_html: { class: 'form-control'} %>
+            </div>
+            <div class='form-group'>
+              <%= f.input :image, as: :file %>
+              <%= f.input :remove_image,  as: :boolean, required: false, label: 'Remove image' %>
+            </div>
+            <div class='form-group'>
+              <%= f.input :remote_image_url, required: false, autofocus: false, label: 'Or enter image url', input_html: { class: 'form-control'} %>
+            </div>
+            <div class='form-group'>
+              <%= f.input :primary_type, collection: Venue::TYPES, required: false, autofocus: false, label: 'Primary type', input_html: { class: 'form-control'} %>
+            </div>
+            <div class='form-group'>
+              <%= f.input :description, required: false, autofocus: false, label: 'Description', input_html: { class: 'form-control'} %>
+            </div>  
+
+            <div class='form-group'>
+              <%= f.button :submit, 'Save', class: 'btn btn-warning col-sm-12 last_div' %>
+            </div>              
+          <% end %>
+        </div>
+      </div>
+    </div>

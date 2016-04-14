@@ -1,9 +1,44 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require imageselect
+ */
+
 // Custom bootstrap variables must be set or import before bootstrap itself.
 
 
 @import "bootstrap-sprockets";
 @import 'bootstrap';
 @import 'font-awesome.css';
+@import 'chosen';
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.wrapper {
+  padding-top: 70px;
+  position: relative;
+  min-height: 100%;
+}
+
+.footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
 
 .alert {
   position: absolute;
@@ -13,10 +48,19 @@
   width: 300px;
 }
 
-.layout_base {
+.login_logout_link {
+  min-width: 160px;
+}
+
+.members {
+  border-bottom: 1px solid #c3c4bd;
+  margin: 17px;
+}
+
+.button_down {
   margin-top: 70px;
 }
 
-.login_logout_link {
-  min-width: 160px;
+.last_div {
+  margin-bottom: 70px;
 }

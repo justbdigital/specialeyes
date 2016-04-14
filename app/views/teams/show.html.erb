@@ -1,0 +1,36 @@
+<% if @team %>
+  <div class="col-lg-12 members">
+    <%= gravatar_for(@team.owner) %>
+    <%= "#{@team.owner.username} (owner)" %>
+  </div>
+  <h3>Members:</h3>
+
+  <% @team.members.each do |member| %>
+  <div class="col-lg-4 members">
+    <%= gravatar_for(member) %>
+    <%= member.username %>
+  </div>
+  <% end %>
+
+  <div class="col-lg-4 col-lg-offset-4 button_down">
+    <%= form_for(:team, url: add_member_team_path(@team)) do |f| %>
+      <div class="form-group">
+        <%= label_tag "recipients", "Add members" %>
+        <%= select_tag "recipients", recipients_options(@chosen_recipient), multiple: true, class: "form-control chosen-it" %>
+      </div>
+      <button type="submit" class="btn btn-warning col-lg-12">
+        <i class="fa fa-plus"></i> Add team member
+      </button>
+    <% end %>
+  </div>
+
+<% else %>
+  <div class="col-lg-4">
+    <h4>You don't have a team yet</h4>
+      <div class="form-group button_down">
+        <%= form_for(:team, url: teams_path) do |f| %>
+          <%= f.submit "Create your team", class: "btn btn-warning" %>
+        <% end %>
+      </div>
+  </div>
+<% end %>

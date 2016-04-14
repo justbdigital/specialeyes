@@ -11,10 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160411190032) do
+ActiveRecord::Schema.define(version: 20160414152845) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bank_accounts", force: :cascade do |t|
+    t.integer  "pro_id"
+    t.string   "holder_name"
+    t.string   "account_number"
+    t.string   "bank_name"
+    t.string   "bank_sort_code"
+    t.string   "bank_address"
+    t.string   "postcode"
+    t.string   "country"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
 
   create_table "pros", force: :cascade do |t|
     t.string   "username"
@@ -31,10 +44,17 @@ ActiveRecord::Schema.define(version: 20160411190032) do
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
     t.inet     "last_sign_in_ip"
+    t.integer  "member_of_id"
   end
 
   add_index "pros", ["email"], name: "index_pros_on_email", unique: true, using: :btree
   add_index "pros", ["reset_password_token"], name: "index_pros_on_reset_password_token", unique: true, using: :btree
+
+  create_table "teams", force: :cascade do |t|
+    t.integer  "owner_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
 
   create_table "treatments", force: :cascade do |t|
     t.string   "title"
@@ -42,6 +62,22 @@ ActiveRecord::Schema.define(version: 20160411190032) do
     t.text     "description"
     t.datetime "created_at",  null: false
     t.datetime "updated_at",  null: false
+  end
+
+  create_table "venues", force: :cascade do |t|
+    t.integer  "pro_id"
+    t.string   "image"
+    t.string   "name"
+    t.string   "address"
+    t.string   "phone"
+    t.string   "email"
+    t.string   "website"
+    t.string   "primary_type"
+    t.text     "description"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
 end

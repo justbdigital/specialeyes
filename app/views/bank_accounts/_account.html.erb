@@ -1,0 +1,36 @@
+    <div class='container'>
+      <div class='row'>
+        <div class='text-center'>
+          <h3>Bank details</h3> 
+        </div>
+        <div class='col-lg-6 col-lg-offset-3'>
+          <%= simple_form_for(@account, html: {class: 'form-horizontal', id: 'contact-form'}) do |f| %>
+          <%= f.error_notification %>
+            <div class='form-group form-horizontal'>
+              <%= f.input :holder_name, required: false, autofocus: true, label: 'Holder name', input_html: { class: 'form-control'} %>
+            </div>
+            <div class='form-group'>
+              <%= f.input :account_number, required: false, autofocus: false, label: 'Bank account number', input_html: { class: 'form-control'} %>
+            </div> 
+            <div class='form-group'>
+              <%= f.input :bank_name, required: false, autofocus: false, label: 'Bank name', input_html: { class: 'form-control'} %>
+            </div>
+            <div class='form-group'>
+              <%= f.input :bank_sort_code, required: false, autofocus: false, label: 'Bank sort code', input_html: { class: 'form-control'} %>
+            </div>
+            <div class='form-group'>
+              <%= f.input :bank_address, required: false, autofocus: false, label: 'Bank address', input_html: { class: 'form-control'} %>
+            </div>
+            <div class='form-group'>
+              <%= f.input :country, collection: BankAccount::COUNTRIES, required: false, autofocus: false, label: 'Country', input_html: { class: 'form-control'} %>
+            </div>
+            <div class='form-group'>
+              <%= f.input :postcode, required: false, autofocus: false, label: 'Postcode', input_html: { class: 'form-control'} %>
+            </div>  
+            <div class='form-group'>
+              <%= f.button :submit, 'Save', class: 'btn btn-warning col-sm-12 last_div' %>
+            </div>              
+          <% end %>
+        </div>
+      </div>
+    </div>
