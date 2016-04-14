@@ -26,4 +26,8 @@ module ApplicationHelper
   def check_venue_path
     current_user.venue ? edit_venue_path(current_user.venue) : new_venue_path(Venue.new)
   end
+
+  def check_account_path
+    current_user.bank_account ? edit_bank_account_path(current_user.bank_account) : new_bank_account_path(BankAccount.new)
+  end
 end

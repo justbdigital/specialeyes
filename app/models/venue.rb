@@ -17,7 +17,6 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #
-
 class Venue < ActiveRecord::Base
   TYPES = ['Mobile Beauty', 'Medical Spa'].freeze
 
@@ -25,6 +24,8 @@ class Venue < ActiveRecord::Base
   after_validation :geocode, if: ->(obj) { obj.address.present? and obj.address_changed? }
 
   belongs_to :pro
+  validates_presence_of :pro_id
+  validates_uniqueness_of :pro_id
 
   mount_uploader :image, ImageUploader
 end

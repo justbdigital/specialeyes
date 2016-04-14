@@ -7,7 +7,6 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
-
 class Team < ActiveRecord::Base
   belongs_to :owner, class_name: Pro
 

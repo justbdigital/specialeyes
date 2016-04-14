@@ -19,7 +19,6 @@
 #  last_sign_in_ip        :inet
 #  member_of_id           :integer
 #
-
 class Pro < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -30,5 +29,6 @@ class Pro < ActiveRecord::Base
 
   has_one :team, foreign_key: :owner_id
   has_one :venue
+  has_one :bank_account
   belongs_to :member_of, class_name: Team
 end

@@ -18,6 +18,7 @@ Rails.application.routes.draw do
       get :check_for_team, on: :collection
     end
     resources :venues, only: [:update, :edit, :new, :create]
+    resources :bank_accounts, only: [:update, :edit, :new, :create]
   end
 
   # Example of regular route:
