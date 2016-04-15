@@ -1,0 +1,34 @@
+<div class='container'>
+  <div class='row'>
+    <div class='text-center'>
+      <h3> Treatment details</h3> 
+    </div>
+    <div class='col-lg-6 col-lg-offset-3'>
+      <%= simple_form_for(@treatment, html: {class: 'form-horizontal', id: 'contact-form'}) do |f| %>
+      <%= f.error_notification %>
+        <div class='form-group form-horizontal'>
+          <%= f.input :title, required: false, autofocus: true, label: 'Title', input_html: { class: 'form-control'} %>
+        </div>
+        <div class='form-group'>
+          <%= f.input :price, required: false, autofocus: false, label: fa_icon('gbp', text: 'Price,', right: true), input_html: { class: 'form-control'} %>
+        </div>
+        <div class='form-group'>
+          <%= f.input :sale_price, required: false, autofocus: false, label: fa_icon('gbp', text: 'Sale Price,', right: true), input_html: { class: 'form-control'} %>
+        </div>
+        <div class='form-group'>
+          <%= f.input :duration, collection: Treatment::DURATIONS, required: false, autofocus: false, label: 'Duration', input_html: { class: 'form-control'} %>
+        </div>
+        <div class='form-group'>
+          <%= f.input :treatment_type, collection: Treatment::TREATTYPE, required: false, autofocus: false, label: 'Treatment type', input_html: { class: 'form-control'} %>
+        </div>            
+        <div class='form-group'>
+          <%= f.input :description, required: false, autofocus: false, label: 'Description', input_html: { class: 'form-control'} %>
+        </div>  
+        <div class='form-group'>
+          <%= f.hidden_field :treatment_group_id, value: @group_id %>
+          <%= f.button :submit, 'Save', class: 'btn btn-warning col-sm-12 last_div' %>
+        </div>              
+      <% end %>
+    </div>
+  </div>
+</div>
