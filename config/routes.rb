@@ -1,5 +1,8 @@
 Rails.application.routes.draw do
 
+  root 'treatments#index'
+
+  devise_for :consumers, controllers: { registrations: 'registrations', omniauth_callbacks: 'omniauth_callbacks' }
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -7,8 +10,6 @@ Rails.application.routes.draw do
 
   scope '/pro' do
     devise_for :pros
-
-    root 'treatments#index'
 
     resources :pros
     resources :treatments

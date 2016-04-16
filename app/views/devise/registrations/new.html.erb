@@ -1,19 +1,44 @@
 <div class="col-lg-4 col-lg-offset-4">
-  <h3>Register as a Professional</h3>
 
-  <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-    <%= f.error_notification %>
-    <div class="form-inputs ">
-      <%= f.input :username, required: true, autofocus: true, label: false, placeholder: 'your name' %>
-      <%= f.input :business_name, required: false, autofocus: false, label: false, placeholder: 'business name' %>
-      <%= f.input :email, required: true, autofocus: false, label: false, placeholder: 'email' %>
-      <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length), label: false, placeholder: 'password' %>
-      <%= f.input :password_confirmation, required: true, label: false, placeholder: 're-enter your password' %>
-    </div>
+  <% if resource.is_a? Consumer %>
+    <h3>Create an account</h3>
 
-    <div class="form-actions">
-      <%= f.button :submit, "Sign up" %>
-    </div>
+    <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= f.error_notification %>
+      <div class="form-inputs ">
+        <%= f.input :first_name, required: false, autofocus: true, label: false, placeholder: 'first name' %>
+        <%= f.input :last_name, required: false, autofocus: false, label: false, placeholder: 'last name' %>
+        <%= f.input :profile_name, required: true, autofocus: false, label: false, placeholder: 'profile name' %>
+        <%= f.input :phone, required: false, autofocus: false, label: false, placeholder: 'phone' %>
+        <%= f.input :postcode, required: false, autofocus: false, label: false, placeholder: 'postcode' %>
+        <%= f.input :sex, label: false, collection: [["female", 1],["male", 2]], checked: 1, as: :radio_buttons, item_wrapper_class: 'radio-inline', item_wrapper_tag: :div %>
+        <%= f.input :email, required: true, autofocus: false, label: false, placeholder: 'email' %>
+        <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length), label: false, placeholder: 'password' %>
+        <%= f.input :password_confirmation, required: true, label: false, placeholder: 're-enter your password' %>
+      </div>
+
+      <div class="form-actions">
+        <%= f.button :submit, "Sign up" %>
+      </div>
+    <% end %>
+
+  <% else %>
+    <h3>Register as a Professional</h3>
+
+    <%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= f.error_notification %>
+      <div class="form-inputs ">
+        <%= f.input :username, required: true, autofocus: true, label: false, placeholder: 'your name' %>
+        <%= f.input :business_name, required: false, autofocus: false, label: false, placeholder: 'business name' %>
+        <%= f.input :email, required: true, autofocus: false, label: false, placeholder: 'email' %>
+        <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length), label: false, placeholder: 'password' %>
+        <%= f.input :password_confirmation, required: true, label: false, placeholder: 're-enter your password' %>
+      </div>
+
+      <div class="form-actions">
+        <%= f.button :submit, "Sign up" %>
+      </div>
+    <% end %>
   <% end %>
 
   <%= render "devise/shared/links" %>
