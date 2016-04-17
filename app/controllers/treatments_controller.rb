@@ -18,6 +18,7 @@ class TreatmentsController < ApplicationController
 
   def create
     @treatment = Treatment.new(treatment_params.merge(pro: current_user))
+    authorize @treatment
     if @treatment.save
       redirect_to treatments_path, notice: 'Treatment Created'
     else
@@ -26,7 +27,8 @@ class TreatmentsController < ApplicationController
   end
 
   def update
-    if @treatment.pro == current_user && @treatment.update(update_params)
+    authorize @treatment
+    if @treatment.update(update_params)
       redirect_to treatments_path, notice: 'Treatment Updated'
     else
       redirect_to :back, notice: @treatment.errors.full_messages.join(', ')
@@ -34,6 +36,7 @@ class TreatmentsController < ApplicationController
   end
 
   def destroy
+    authorize @treatment
     @treatment.destroy
     redirect_to treatments_path, notice: 'Treatment was deleted'
   end

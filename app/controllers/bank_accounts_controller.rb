@@ -11,6 +11,7 @@ class BankAccountsController < ApplicationController
 
   def create
     @account = BankAccount.new(account_params.merge(pro: current_user))
+    authorize @account
     if @account.save
       redirect_to edit_bank_account_url(@account), notice: 'Bank Account Created'
     else
@@ -20,7 +21,8 @@ class BankAccountsController < ApplicationController
 
   def update
     @account = BankAccount.find(params[:id])
-    if @account.pro == current_user && @account.update(account_params)
+    authorize @account
+    if @account.update(account_params)
       redirect_to edit_bank_account_url(@account), notice: 'Bank Account Updated'
     else
       redirect_to :back, notice: @account.errors.full_messages.join(', ')

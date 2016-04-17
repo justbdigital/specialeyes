@@ -4,6 +4,7 @@ class TreatmentGroupsController < ApplicationController
 
   def create
     @group = TreatmentGroup.new(treatment_group_params.merge(pro: current_user))
+    authorize @group
     if @group.save
       redirect_to treatments_url, notice: 'Treatment Group Created'
     else
@@ -15,7 +16,8 @@ class TreatmentGroupsController < ApplicationController
   end
 
   def update
-    if @group.pro == current_user && @group.update(treatment_group_params)
+    authorize @group
+    if @group.update(treatment_group_params)
       redirect_to treatments_path, notice: 'group updated'
     else
       redirect_to :back, notice: @group.errors.full_messages.join(', ')
@@ -23,6 +25,7 @@ class TreatmentGroupsController < ApplicationController
   end
 
   def destroy
+    authorize @group
     @group.destroy
     redirect_to treatments_path, notice: 'group was deleted'
   end

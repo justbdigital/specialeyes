@@ -12,6 +12,7 @@ class VenuesController < ApplicationController
 
   def create
     @venue = Venue.new(venue_params.merge(pro: current_user))
+    authorize @venue
     if @venue.save
       redirect_to edit_venue_url(@venue), notice: 'Venue Created'
     else
@@ -21,7 +22,8 @@ class VenuesController < ApplicationController
 
   def update
     @venue = Venue.find(params[:id])
-    if @venue.pro == current_user && @venue.update(venue_params)
+    authorize @venue
+    if @venue.update(venue_params)
       redirect_to edit_venue_url(@venue), notice: 'Venue Updated'
     else
       redirect_to :back, notice: @venue.errors.full_messages.join(', ')
