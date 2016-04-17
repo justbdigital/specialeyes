@@ -11,7 +11,7 @@
         <%= f.input :profile_name, required: true, autofocus: false, label: false, placeholder: 'profile name' %>
         <%= f.input :phone, required: false, autofocus: false, label: false, placeholder: 'phone' %>
         <%= f.input :postcode, required: false, autofocus: false, label: false, placeholder: 'postcode' %>
-        <%= f.input :sex, label: false, collection: [["female", 1],["male", 2]], checked: 1, as: :radio_buttons, item_wrapper_class: 'radio-inline', item_wrapper_tag: :div %>
+        <%= f.input :female, label: false, collection: [["female", true],["male", false]], checked: true, as: :radio_buttons, item_wrapper_class: 'radio-inline', item_wrapper_tag: :div %>
         <%= f.input :email, required: true, autofocus: false, label: false, placeholder: 'email' %>
         <%= f.input :password, required: true, hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length), label: false, placeholder: 'password' %>
         <%= f.input :password_confirmation, required: true, label: false, placeholder: 're-enter your password' %>

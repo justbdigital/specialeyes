@@ -1,4 +1,6 @@
 class VenuesController < ApplicationController
+  before_action :authenticate_user!
+
   def new
     @venue = Venue.new
   end

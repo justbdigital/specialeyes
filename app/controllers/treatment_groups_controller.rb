@@ -1,4 +1,5 @@
 class TreatmentGroupsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_group, only: [:destroy, :update, :edit]
 
   def create

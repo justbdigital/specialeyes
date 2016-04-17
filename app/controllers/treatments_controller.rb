@@ -1,4 +1,5 @@
 class TreatmentsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_treatment, only: [:destroy, :update]
 
   def index

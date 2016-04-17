@@ -8,7 +8,7 @@
 #  phone                  :string
 #  profile_name           :string
 #  postcode               :string
-#  sex                    :boolean
+#  female                 :boolean
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  email                  :string           default(""), not null

@@ -1,6 +1,6 @@
 module ApplicationHelper
   def menu_settings
-    content_tag :li, link_to(fa_icon('heart', text: 'Treatments'), root_path)
+    content_tag :li, link_to(fa_icon('heart', text: 'Treatments'), treatments_path)
   end
 
   def default_gravatar

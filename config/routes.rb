@@ -1,8 +1,8 @@
 Rails.application.routes.draw do
 
-  root 'treatments#index'
+  root 'homepage#index'
 
-  devise_for :consumers, controllers: { registrations: 'registrations', omniauth_callbacks: 'omniauth_callbacks' }
+  devise_for :consumers, controllers: { registrations: 'consumers/registrations', omniauth_callbacks: 'omniauth_callbacks' }
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
