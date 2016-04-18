@@ -1,2 +1,46 @@
-<h1>Treatments#index</h1>
-<p>Find me in app/views/treatments/index.html.erb</p>
+<div class='container'>
+  <div class='row col-lg-10 col-lg-offset-1'>
+    <div class='button_down'>
+      <% if @groups %>
+        <% @groups.each do |group| %>
+        <div class='form-group button-right col-md-12'><%= button_to "add treatment to new group #{group.name}", new_treatment_path, method: 'get', class: 'btn btn-success btn-sm', params: {group_id: group.id} %></div>
+        <%end%>
+      <%end%>      
+    </div>
+      <% unless @treatments_with_groups.blank? %>
+        <% @treatments_with_groups.each_pair do |treatment_group, treatments| %>
+          <div class='col-md-12 button_down'>
+            <h4 class='col-md-10'>
+              <%= link_to "#{treatment_group.name}", edit_treatment_group_path(treatment_group) %>
+              <%= link_to(fa_icon('trash-o'), treatment_group_path(treatment_group), method: :delete) %>
+            </h4>
+            <div class='button-right'><%= button_to 'add treatment', new_treatment_path, method: 'get', class: 'btn btn-xs btn-xs-default', params: {group_id: treatment_group.id} %></div>
+          </div>
+          <table class='table table-striped treatments'>
+            <tbody>
+              <% treatments.each do |treatment| %>
+                <tr>
+                  <td><%= link_to "#{treatment.title}", edit_treatment_path(treatment) %></td>
+                  <td><%= treatment.duration %></td>
+                  <td>
+                    <span class='line-through'><%= "#{treatment.price}" %><%= fa_icon('gbp') %></span>
+                    <span class='red'><%= "#{treatment.sale_price}" %><%= fa_icon('gbp') %></span>
+                  </td>
+                  <td class='last'><%= link_to(fa_icon('trash-o'), treatment_path(treatment), method: :delete) %></td>
+                </tr>
+              <%end%>
+            </tbody>
+          </table>
+        <%end%>
+      <%end%>
+    <%= simple_form_for(TreatmentGroup.new, html: {class: ''}) do |f| %>
+    <%= f.error_notification %>
+      <div class='input-group last_div button_down'>
+        <%= f.input :name, required: false, autofocus: false, label: false, placeholder: 'enter group name', input_html: { class: 'form-control'} %>
+      <span class='input-group-btn'>
+        <%= f.button :submit, 'add new group', class: 'btn btn-warning last_div' %>
+      </span> 
+      </div>
+    <% end %>
+  </div>
+</div>

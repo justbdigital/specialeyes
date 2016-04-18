@@ -10,7 +10,13 @@
   <script src='//google-maps-utility-library-v3.googlecode.com/svn/tags/infobox/1.1.9/src/infobox_packed.js' type='text/javascript'></script> <!-- only if you need custom infoboxes -->
 </head>
 <body>
-  <%= render 'layouts/header' %>
+  <% if !current_user %>
+    <%= render 'layouts/header' %>
+  <% elsif pro_header? %>
+    <%= render 'layouts/header_pro' %>
+  <% else %>
+    <%= render 'layouts/header_consumer' %>
+  <% end %>
 
   <div class='container wrapper'>
     <div class='row'>
@@ -26,8 +32,7 @@
     </div>
   </div>
 
-  <% if user_signed_in? %>
-    <%= javascript_tag do %>
+  <%= javascript_tag do %>
     $(document).ready(function() {
       handler = Gmaps.build('Google');
         handler.buildMap({ provider: {zoomControl: true, mapTypeControl: false, streetViewControl: false}, internal: {id: 'map'}}, function(){
@@ -37,7 +42,6 @@
         handler.getMap().setZoom(14);
       });
     });
-    <% end %>
   <% end %>
 </body>
 </html>

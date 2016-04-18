@@ -1,4 +1,5 @@
 class TeamsController < ApplicationController
+  before_action :authenticate_user!
   before_action :set_team, only: [:add_member, :show, :check_for_team]
 
   def show
@@ -10,6 +11,7 @@ class TeamsController < ApplicationController
 
   def create
     @team = Team.new(owner: current_user)
+    authorize @team
     if @team.save
       redirect_to team_path(@team), notice: 'Team Created'
     else
@@ -19,9 +21,8 @@ class TeamsController < ApplicationController
 
   def add_member
     updated_team = Team.find(params[:id])
-    if updated_team != @team
-      redirect_to :back, notice: 'Only owner can add new members'
-    elsif !params['recipients']
+    authorize updated_team
+    if !params['recipients']
       redirect_to :back, notice: 'Select members'
     else
       new_members

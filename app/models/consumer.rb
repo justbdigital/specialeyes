@@ -1,10 +1,14 @@
 # == Schema Information
 #
-# Table name: pros
+# Table name: consumers
 #
 #  id                     :integer          not null, primary key
-#  username               :string
-#  business_name          :string
+#  first_name             :string
+#  last_name              :string
+#  phone                  :string
+#  profile_name           :string
+#  postcode               :string
+#  female                 :boolean
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  email                  :string           default(""), not null
@@ -17,19 +21,14 @@
 #  last_sign_in_at        :datetime
 #  current_sign_in_ip     :inet
 #  last_sign_in_ip        :inet
-#  member_of_id           :integer
 #
-class Pro < ActiveRecord::Base
+
+class Consumer < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, :omniauthable,
+         omniauth_providers: [:facebook]
 
-  validates_presence_of :username
-
-  has_one :team, foreign_key: :owner_id
-  has_one :venue
-  has_one :treatment
-  has_one :bank_account
-  belongs_to :member_of, class_name: Team
+  has_many :authorizations, dependent: :destroy
 end

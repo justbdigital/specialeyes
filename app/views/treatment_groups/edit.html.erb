@@ -1,0 +1,15 @@
+<div class='container'>
+  <div class='row col-lg-10 col-lg-offset-1'>
+    <h4 class="button_down">Edit Treatment Group</h4>
+    <%= link_to(fa_icon('trash-o'), treatment_group_path(@group), method: :delete) %>
+    <%= simple_form_for(@group, html: {class: ''}) do |f| %>
+    <%= f.error_notification %>
+      <div class='input-group last_div'>
+        <%= f.input :name, required: false, autofocus: false, label: false, input_html: { class: 'form-control'} %>
+      <span class='input-group-btn'>
+        <%= f.button :submit, 'Save', class: 'btn btn-warning last_div' %>
+      </span> 
+      </div>
+    <% end %>
+  </div>
+</div>

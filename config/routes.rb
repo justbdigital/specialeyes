@@ -1,23 +1,26 @@
 Rails.application.routes.draw do
 
+  root 'homepage#index'
 
+  devise_for :consumers, controllers: { registrations: 'consumers/registrations', omniauth_callbacks: 'omniauth_callbacks' }
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
 
+  resources :venues, only: [:show, :update]
+
   scope '/pro' do
     devise_for :pros
 
-    root 'treatments#index'
-
     resources :pros
     resources :treatments
+    resources :treatment_groups
     resources :teams, only: [:create, :show] do
       post :add_member, on: :member
       get :check_for_team, on: :collection
     end
-    resources :venues, only: [:update, :edit, :new, :create]
+    resources :venues, only: [:edit, :new, :create]
     resources :bank_accounts, only: [:update, :edit, :new, :create]
   end
 

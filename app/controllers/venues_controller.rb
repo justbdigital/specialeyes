@@ -1,15 +1,25 @@
 class VenuesController < ApplicationController
+  before_action :authenticate_user!, except: [:show]
+  before_action :set_venue, only: [:show, :update, :edit]
+  before_action :set_hash, only: [:show, :edit]
+
   def new
+    authorize Venue
     @venue = Venue.new
   end
 
   def edit
+    authorize @venue
     @venue = current_user.venue
-    @hash = set_address unless @venue.address.blank?
+  end
+
+  def show
+    @treatments_with_groups = Treatment.where(pro: @venue.pro).group_by(&:treatment_group)
   end
 
   def create
     @venue = Venue.new(venue_params.merge(pro: current_user))
+    authorize @venue
     if @venue.save
       redirect_to edit_venue_url(@venue), notice: 'Venue Created'
     else
@@ -18,15 +28,24 @@ class VenuesController < ApplicationController
   end
 
   def update
-    @venue = Venue.find(params[:id])
-    if @venue.pro == current_user && @venue.update(venue_params)
+    authorize @venue
+    if @venue.update(venue_params)
+
       redirect_to edit_venue_url(@venue), notice: 'Venue Updated'
     else
-      redirect_to :back, notice: @venue.errors.full_messages.join(', ')
+      redirect_to edit_venue_url(@venue), notice: @venue.errors.full_messages.join(', ')
     end
   end
 
   private
+
+  def set_hash
+    @hash ||= set_address unless @venue.address.blank?
+  end
+
+  def set_venue
+    @venue = Venue.find_by_name(params[:id])
+  end
 
   def set_address
     Gmaps4rails.build_markers([@venue]) do |venue, marker|

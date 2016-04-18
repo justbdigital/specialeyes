@@ -27,6 +27,11 @@ html, body {
   padding: 0;
 }
 
+.navbar-consumer
+{
+  background-color: #7E6873;
+}
+
 .wrapper {
   padding-top: 70px;
   position: relative;
@@ -63,4 +68,48 @@ html, body {
 
 .last_div {
   margin-bottom: 70px;
+}
+
+.red {
+  color: red;
+  font-size: 150%;
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+.treatments td {
+  width: 30%;
+}
+
+.treatments td .last {
+  width: 10%;
+}
+
+a {
+  color: green;
+}
+
+.radio {
+  margin-top: 0;
+}
+
+.homepage {
+  background-color: rgb(220, 200, 210);
+  color: white;
+  font-style: italic;
+  min-height: 700px;
+}
+
+.margin_down {
+  margin-bottom: 30px;
+}
+
+.margin_up {
+  margin-top: 30px;
+}
+
+.venue_show_img img {
+  max-width: 90%;
 }

@@ -27,5 +27,12 @@ class Venue < ActiveRecord::Base
   validates_presence_of :pro_id
   validates_uniqueness_of :pro_id
 
+  validates_presence_of :name
+  validates_uniqueness_of :name
+
   mount_uploader :image, ImageUploader
+
+  def to_param
+    name
+  end
 end
