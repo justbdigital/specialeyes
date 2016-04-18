@@ -1,0 +1,64 @@
+<div class = "container">
+  <div class = "row" >
+
+    <div class = "col-md-8 margin_up" >
+      <% if !@venue %>
+        <p>Venue not found</p>
+      <% else %>
+        <h2><%= @venue.name %></h2>
+        <h4><%= @venue.address %></h4>
+        <div class='venue_show_img'><%= image_tag @venue.image_url unless @venue.image.blank? %></div>
+        <h3 class='margin_up margin_down'>Overview</h3>
+        <p><%= @venue.description %></p>
+        <h3 class='margin_up margin_down'>Services</h3>
+        <div>
+          <% unless @treatments_with_groups.blank? %>
+            <% @treatments_with_groups.each_pair do |treatment_group, treatments| %>
+              <div class=''>
+                <h4 class=''>
+                  <%= treatment_group.name %>
+                </h4>
+              <table class='table table-striped treatments'>
+                <tbody>
+                  <% treatments.each do |treatment| %>
+                    <tr>
+                      <td><%= treatment.title %></td>
+                      <td><%= treatment.duration %></td>
+                      <td>
+                        <span><%= "save #{treatment.price/treatment.sale_price - 1}%" %></span>
+                        <span class='red'><%= "#{treatment.sale_price}" %><%= fa_icon('gbp') %></span>
+                      </td>
+                    </tr>
+                  <%end%>
+                </tbody>
+              </table>
+              </div>
+            <%end%>
+          <%end%>
+        </div>
+        <h3 class='margin_up margin_down'>Review</h3>
+       <% end %>
+    </div>
+
+    <div class = 'col-md-4 margin_up' >
+      <% if @venue %>
+        <h3 class='margin_up margin_down'>Venue rating</h3>
+        <% unless @venue.address.blank? %>
+          <h6><%= "#{@venue.address}" %></h6>
+          <div style='width: 100%;'>
+            <div id='map' style='width: 100%; height: 200px;'></div>
+          </div>
+        <% end %>
+        <h4 class='margin_up'><%= @venue.name %></h4>
+        <h5><%= fa_icon('phone', text: "#{@venue.phone}") %></h5>
+        <% unless @venue.email.blank? %>
+          <%= mail_to "#{@venue.email}" do %>
+            <h5><%= fa_icon('envelope-o', text: "send message") %></h5>
+          <% end %>
+        <% end %>
+        <h5><%= link_to(fa_icon('chevron-left', text: 'Visit venue website'), @venue.website) %></h5>
+      <% end %>
+    </div>
+
+  </div>
+</div>

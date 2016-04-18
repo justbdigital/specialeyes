@@ -1,11 +1,19 @@
 class TreatmentPolicy < ApplicationPolicy
 
+  def new?
+    user.present? && user.is_a?(Pro)
+  end
+
+  def edit?
+    record.pro == user
+  end
+
   def create?
-    user.present?
+    new?
   end
 
   def update?
-    record.pro == user
+    edit?
   end
 
   def destroy?

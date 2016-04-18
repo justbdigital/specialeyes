@@ -3,6 +3,18 @@ module ApplicationHelper
     content_tag :li, link_to(fa_icon('heart', text: 'Treatments'), treatments_path)
   end
 
+  def pro_header?
+    request.env['PATH_INFO'].match('pro')
+  end
+
+  def login_name
+    if current_user.is_a? Pro
+      "#{current_user.email} (signed in as pro)"
+    else
+      current_user.try(:profile_name) || current_user.email
+    end
+  end
+
   def default_gravatar
     gravatar_image_tag(
       'junk',

@@ -1,7 +1,7 @@
 class TeamPolicy < ApplicationPolicy
 
   def create?
-    user.present?
+    user.present? && user.is_a?(Pro)
   end
 
   def add_member?

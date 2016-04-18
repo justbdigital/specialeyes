@@ -8,12 +8,14 @@ class TreatmentsController < ApplicationController
   end
 
   def new
+    authorize Treatment
     @group_id = params[:group_id]
     @treatment = Treatment.new
   end
 
   def edit
     @treatment = current_user.treatment
+    authorize @treatment
   end
 
   def create

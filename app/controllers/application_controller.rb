@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
   include Pundit
-  after_action :verify_authorized, :except => :index, unless: :without_pundit?
+  after_action :verify_authorized, except: :index, unless: :without_pundit?
 
   protect_from_forgery with: :exception
 
