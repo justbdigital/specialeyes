@@ -1,10 +1,10 @@
 class TreatmentsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_treatment, only: [:destroy, :update]
+  before_action :set_treatment, only: [:edit, :destroy, :update]
 
   def index
-    @treatments_with_groups = Treatment.where(pro: current_user).group_by(&:treatment_group)
-    @groups = TreatmentGroup.where(pro: current_user) - @treatments_with_groups.keys
+    @groups = TreatmentGroup.where(pro: current_user) - treatments_with_groups.keys
+    @treatments_with_groups
   end
 
   def new
@@ -14,7 +14,6 @@ class TreatmentsController < ApplicationController
   end
 
   def edit
-    @treatment = current_user.treatment
     authorize @treatment
   end
 
@@ -44,6 +43,10 @@ class TreatmentsController < ApplicationController
   end
 
   private
+
+  def treatments_with_groups
+    @treatments_with_groups ||= Treatment.where(pro: current_user).group_by(&:treatment_group)
+  end
 
   def set_treatment
     @treatment = Treatment.find(params[:id])

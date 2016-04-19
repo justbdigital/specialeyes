@@ -19,19 +19,12 @@
 #  last_sign_in_ip        :inet
 #  member_of_id           :integer
 #
-class Pro < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
 
-  validates_presence_of :username
-
-  has_many :treatments, dependent: :destroy
-
-  has_one :team, foreign_key: :owner_id, dependent: :destroy
-  has_one :venue, dependent: :destroy
-  has_one :bank_account, dependent: :destroy
-
-  belongs_to :member_of, class_name: Team
+FactoryGirl.define do
+  factory :pro do
+    sequence(:username) { |n| "uniq_code#{n}" }
+    sequence(:email) { |n| "emaqqq#{n}@factory.com" }
+    password "12345678"
+    password_confirmation { |u| u.password }
+  end
 end

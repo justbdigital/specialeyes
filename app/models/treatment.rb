@@ -26,4 +26,5 @@ class Treatment < ActiveRecord::Base
   belongs_to :treatment_group
 
   validates_presence_of :pro_id
+  validates_presence_of :treatment_group_id
 end

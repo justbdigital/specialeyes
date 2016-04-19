@@ -19,19 +19,15 @@
 #  last_sign_in_ip        :inet
 #  member_of_id           :integer
 #
-class Pro < ActiveRecord::Base
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
 
-  validates_presence_of :username
+require 'rails_helper'
 
-  has_many :treatments, dependent: :destroy
+RSpec.describe Pro, type: :model do
+  it { is_expected.to have_one(:venue).dependent(:destroy) }
+  it { is_expected.to have_one(:team).dependent(:destroy) }
+  it { is_expected.to have_many(:treatments).dependent(:destroy) }
+  it { is_expected.to have_one(:bank_account).dependent(:destroy) }
+  it { is_expected.to belong_to(:member_of) }
 
-  has_one :team, foreign_key: :owner_id, dependent: :destroy
-  has_one :venue, dependent: :destroy
-  has_one :bank_account, dependent: :destroy
-
-  belongs_to :member_of, class_name: Team
+  it { is_expected.to validate_presence_of(:username) }
 end
