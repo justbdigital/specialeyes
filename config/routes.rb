@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
 
-  root 'homepage#index'
+  root 'venues#index'
 
   devise_for :consumers, controllers: { registrations: 'consumers/registrations', omniauth_callbacks: 'omniauth_callbacks' }
   # The priority is based upon order of creation: first created -> highest priority.
@@ -8,7 +8,7 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
 
-  resources :venues, only: [:show, :update]
+  resources :venues, only: [:show, :update, :index]
   resources :transactions, only: [:new, :create]
 
   scope '/pro' do

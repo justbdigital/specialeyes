@@ -25,6 +25,8 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'twitter-bootstrap-rails', :git => 'git://github.com/seyhunak/twitter-bootstrap-rails.git'
 gem 'bootstrap-sass'
+gem 'bootstrap-will_paginate'
+gem 'will_paginate', '~> 3.0.5'
 gem 'simple_form'
 gem 'devise'
 gem 'pry'
