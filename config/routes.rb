@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
 
   resources :venues, only: [:show, :update]
+  resources :transactions, only: [:new, :create]
 
   scope '/pro' do
     devise_for :pros

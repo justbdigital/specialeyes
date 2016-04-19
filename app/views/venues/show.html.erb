@@ -1,6 +1,5 @@
 <div class = "container">
   <div class = "row" >
-
     <div class = "col-md-8 margin_up" >
       <% if !@venue %>
         <p>Venue not found</p>
@@ -26,7 +25,7 @@
                       <td><%= treatment.duration %></td>
                       <td>
                         <span><%= "save #{(treatment.price.to_f/treatment.sale_price.to_f*100 - 100).to_i}%" %></span>
-                        <span class='red'><%= "#{treatment.sale_price}" %><%= fa_icon('gbp') %></span>
+                        <span class='red'><%= link_to(fa_icon('gbp', text: "#{treatment.sale_price}", right: true), new_transaction_path(total: "#{treatment.sale_price}"), class: "button red") %></span>
                       </td>
                     </tr>
                   <%end%>

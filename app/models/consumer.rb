@@ -31,4 +31,8 @@ class Consumer < ActiveRecord::Base
          omniauth_providers: [:facebook]
 
   has_many :authorizations, dependent: :destroy
+
+  def cart_total_price
+    $total_priceeee
+  end
 end

@@ -34,4 +34,8 @@ class Pro < ActiveRecord::Base
   has_one :bank_account, dependent: :destroy
 
   belongs_to :member_of, class_name: Team
+
+  def cart_total_price
+    $total_priceeee
+  end
 end

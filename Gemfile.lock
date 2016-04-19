@@ -64,6 +64,8 @@ GEM
     bootstrap-sass (3.3.6)
       autoprefixer-rails (>= 5.2.1)
       sass (>= 3.3.4)
+    braintree (2.33.1)
+      builder (>= 2.0.0)
     builder (3.2.2)
     byebug (8.2.4)
     carrierwave (0.10.0)
@@ -123,6 +125,9 @@ GEM
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
     ffi (1.9.10)
+    figaro (0.7.0)
+      bundler (~> 1.0)
+      rails (>= 3, < 5)
     font-awesome-rails (4.0.3.2)
       railties (>= 3.2, < 5.0)
     forgery (0.6.0)
@@ -130,6 +135,11 @@ GEM
     globalid (0.3.6)
       activesupport (>= 4.1.0)
     gmaps4rails (2.1.2)
+    gon (6.0.1)
+      actionpack (>= 3.0)
+      json
+      multi_json
+      request_store (>= 1.0)
     gravatar_image_tag (1.2.0)
     hashie (3.4.3)
     i18n (0.7.0)
@@ -229,6 +239,7 @@ GEM
       ffi (>= 0.5.0)
     rdoc (4.2.2)
       json (~> 1.4)
+    request_store (1.3.1)
     responders (2.1.2)
       railties (>= 4.2.0, < 5.1)
     rmagick (2.15.4)
@@ -305,6 +316,7 @@ DEPENDENCIES
   annotate
   better_errors
   bootstrap-sass
+  braintree (~> 2.33.1)
   byebug
   carrierwave
   chosen-rails
@@ -312,10 +324,12 @@ DEPENDENCIES
   database_cleaner
   devise
   factory_girl_rails
+  figaro
   font-awesome-rails
   forgery
   geocoder
   gmaps4rails
+  gon
   gravatar_image_tag
   jbuilder (~> 2.0)
   jquery-rails
