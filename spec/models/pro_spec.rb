@@ -23,10 +23,10 @@
 require 'rails_helper'
 
 RSpec.describe Pro, type: :model do
-  it { is_expected.to have_one(:venue) }
-  it { is_expected.to have_one(:team) }
-  it { is_expected.to have_one(:treatment) }
-  it { is_expected.to have_one(:bank_account) }
+  it { is_expected.to have_one(:venue).dependent(:destroy) }
+  it { is_expected.to have_one(:team).dependent(:destroy) }
+  it { is_expected.to have_many(:treatments).dependent(:destroy) }
+  it { is_expected.to have_one(:bank_account).dependent(:destroy) }
   it { is_expected.to belong_to(:member_of) }
 
   it { is_expected.to validate_presence_of(:username) }

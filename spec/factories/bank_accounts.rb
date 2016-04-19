@@ -17,6 +17,6 @@
 
 FactoryGirl.define do
   factory :bank_account do
-    
+    holder_name { Forgery::Name.first_name }
   end
 end

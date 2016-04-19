@@ -23,7 +23,7 @@ class VenuesController < ApplicationController
     if @venue.save
       redirect_to edit_venue_url(@venue), notice: 'Venue Created'
     else
-      redirect_to :back, notice: @venue.errors.full_messages.join(', ')
+      redirect_to new_venue_url, notice: @venue.errors.full_messages.join(', ')
     end
   end
 

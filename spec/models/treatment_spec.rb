@@ -22,4 +22,5 @@ RSpec.describe Treatment, type: :model do
   it { is_expected.to belong_to(:treatment_group) }
 
   it { is_expected.to validate_presence_of(:pro_id) }
+  it { is_expected.to validate_presence_of(:treatment_group_id) }
 end

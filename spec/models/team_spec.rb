@@ -13,4 +13,7 @@ require 'rails_helper'
 RSpec.describe Team, type: :model do
   it { is_expected.to have_many(:members).class_name('Pro').with_foreign_key('member_of_id') }
   it { is_expected.to belong_to(:owner) }
+
+  it { is_expected.to validate_presence_of(:owner_id) }
+  it { is_expected.to validate_uniqueness_of(:owner_id) }
 end

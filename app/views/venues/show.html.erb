@@ -25,7 +25,7 @@
                       <td><%= treatment.title %></td>
                       <td><%= treatment.duration %></td>
                       <td>
-                        <span><%= "save #{treatment.price/treatment.sale_price - 1}%" %></span>
+                        <span><%= "save #{(treatment.price.to_f/treatment.sale_price.to_f*100 - 100).to_i}%" %></span>
                         <span class='red'><%= "#{treatment.sale_price}" %><%= fa_icon('gbp') %></span>
                       </td>
                     </tr>

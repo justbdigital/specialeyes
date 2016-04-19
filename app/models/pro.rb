@@ -27,9 +27,11 @@ class Pro < ActiveRecord::Base
 
   validates_presence_of :username
 
-  has_one :team, foreign_key: :owner_id
-  has_one :venue
-  has_one :treatment
-  has_one :bank_account
+  has_many :treatments, dependent: :destroy
+
+  has_one :team, foreign_key: :owner_id, dependent: :destroy
+  has_one :venue, dependent: :destroy
+  has_one :bank_account, dependent: :destroy
+
   belongs_to :member_of, class_name: Team
 end
