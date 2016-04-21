@@ -35,6 +35,31 @@
   </div>
 
   <%= javascript_tag do %>
+
+    $(document).ready(function() {
+        $('#calendar').fullCalendar({
+                googleCalendarApiKey: '<secret>',
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaDay',
+                    timezone: 'Europe/London',
+                },
+                timeFormat: '',
+        events: '<secret>@import.calendar.google.com',      
+                timezone: 'Europe/London',
+                loading: function(bool) {
+                    $('#loading').toggle(bool);
+                },
+                eventClick: function(event) {
+            if (event.url) {
+                return false;
+            }
+            },
+        });
+    });
+
+
     $(document).ready(function() {
       handler = Gmaps.build('Google');
         handler.buildMap({ provider: {zoomControl: true, mapTypeControl: false, streetViewControl: false}, internal: {id: 'map'}}, function(){

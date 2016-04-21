@@ -19,5 +19,8 @@
 //= require underscore
 //= require gmaps/google
 //= require tether
+//= require moment
+//= require fullcalendar
+//= require fullcalendar/gcal
 //= require bootstrap-sprockets
 //= require_tree .
