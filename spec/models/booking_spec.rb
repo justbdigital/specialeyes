@@ -19,4 +19,10 @@ RSpec.describe Booking, type: :model do
   it { is_expected.to belong_to(:pro) }
   it { is_expected.to belong_to(:consumer) }
   it { is_expected.to belong_to(:treatment) }
+
+  it { is_expected.to validate_presence_of(:start_at) }
+  it { is_expected.to validate_presence_of(:sum) }
+  it { is_expected.to validate_presence_of(:pro_id) }
+  it { is_expected.to validate_presence_of(:consumer_id) }
+  it { is_expected.to validate_presence_of(:treatment_id) }
 end

@@ -15,7 +15,7 @@
 
 FactoryGirl.define do
   factory :booking do
-    start_at "2016-04-21 18:23:52"
+    start_at Time.zone.now + 1.day
     sum 1
     paid false
     association :pro, factory: :pro, strategy: :build

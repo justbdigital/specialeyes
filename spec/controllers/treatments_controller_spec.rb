@@ -47,7 +47,7 @@ RSpec.describe TreatmentsController, type: :controller do
     it 'saves the new treatment to db and redirect to treatment' do
       sign_in pro
 
-      expect { post :create, treatment: { title: 'treatmenttitle', treatment_group_id: treatment_group.id } }.to change(Treatment, :count).by(1)
+      expect { post :create, treatment: { title: 'treatmenttitle', sale_price: 33, treatment_group_id: treatment_group.id } }.to change(Treatment, :count).by(1)
       expect(response).to redirect_to treatments_path
     end
   end

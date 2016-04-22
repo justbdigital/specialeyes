@@ -52,14 +52,11 @@
         eventSources: [{  
           url: '/bookings',  
          }],
-
         eventClick: function(event) {
-            if (event.url) {
-                window.open(event.url);
-                return false;
-            }
+          if (event.url) {
+          document.location.href = "event.url?date=event.start";
+          }
         },
-
       });
     });
 

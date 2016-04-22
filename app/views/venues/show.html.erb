@@ -1,5 +1,6 @@
 <div class='container'>
   <div class='row' >
+  
     <div class='col-md-8 margin_up' >
       <% if !@venue %>
         <p>Venue not found</p>
@@ -11,36 +12,7 @@
         <div class='venue_description'><%= @venue.description %></div>
         <h3 class='margin_up margin_down'>Services</h3>
         <div>
-          <% unless @treatments_with_groups.blank? %>
-            <% @treatments_with_groups.each_pair do |treatment_group, treatments| %>
-              <div class=''>
-                <h4 class=''>
-                  <%= treatment_group.name %>
-                </h4>
-              <table class='table table-striped treatments'>
-                <tbody>
-                  <% treatments.each do |treatment| %>
-                    <tr>
-                      <td><%= treatment.title %></td>
-                      <td><%= treatment.duration %></td>
-                      <td>                      
-                        <span class='col-md-4'><%= "save #{(treatment.price.to_f/treatment.sale_price.to_f*100 - 100).to_i}%" %></span>
-                        <span class='col-md-8'>
-                          <%= form_tag new_booking_path, method: :get do%>
-                            <%= hidden_field_tag :treat, "#{treatment.id}" %>
-                            <button class='btn btn-default btn-xs red'>
-                              <span class=>Book now </span><span><%= fa_icon('gbp', text:"#{treatment.sale_price}") %></span>
-                            </button>
-                          <%end%>
-                        </span>
-                      </td>
-                    </tr>
-                  <%end%>
-                </tbody>
-              </table>
-              </div>
-            <%end%>
-          <%end%>
+          <%= render 'treatment' %>
         </div>
         <h3 class='margin_up margin_down'>Review</h3>
        <% end %>

@@ -1,11 +1,53 @@
 <div class='container'>
   <div class='row' >
+
     <div class='col-md-7 margin_up' >
+      <div id='articles'>
+        <h2 class="month text-center">
+          <%= link_to "<", date: @date.prev_month, treat: params[:treat] %>
+          <%= @date.strftime("%B %Y") %>
+          <%= link_to ">", date: @date.next_month, treat: params[:treat] %>
+        </h2>
 
-    <div id='calendar'></div>
+        <%= calendar @date do |date| %>
+          <%= link_to new_booking_path(date: "#{date}", treat: "#{params[:treat]}") do %>
+            <div class='col-md-12' ><%= date.day %></div>
+            <div class='col-md-12' >
+              <span ><%= morning_square(date) %></span>
+              <span ><%= afternoon_square(date) %></span>
+            </div>
+          <%end%>
+        <% end %>
+      </div>
     </div>
 
-    <div class='col-md-5 margin_up' >
+    <div class='col-md-5 margin_up'>
+      <h4 class='col-md-12 text-center'>time available on <%= @date.strftime("%^A, %B %d") %></h4>
+      <div class='col-md-6 margin_up text-center'>
+        morning
+        <% unless @am_available.blank? %>
+          <% @am_available.each do |time| %>
+            <%= link_to bookings_path(treat: "#{params[:treat]}", date: @date, time: time.start_at), method: :post do %>
+              <div class='col-md-12 text-center available-time-cell'>
+                <%= ::Treatment::DURATIONS[time.start_at] %>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+      <div class='col-md-6 margin_up text-center'>
+        afternoon
+        <% unless @pm_available.blank? %>
+          <% @pm_available.each do |time| %>
+            <%= link_to bookings_path(treat: "#{params[:treat]}", date: @date, time: time.start_at), method: :post do %>
+              <div class='col-md-12 text-center available-time-cell'>
+                <%= ::Treatment::DURATIONS[time.start_at] %>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
     </div>
+
   </div>
 </div>

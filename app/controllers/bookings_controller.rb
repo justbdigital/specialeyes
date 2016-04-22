@@ -1,36 +1,41 @@
 class BookingsController < ApplicationController
-  before_action :authenticate_user!, only: [:create]
+  before_action :authenticate_user!, only: [:new]
   before_action :set_treatment, only: [:create]
 
   def index
-    @events = [{ id: 1, title: "mememe", url: 'http://google.com/', start: Treatment.first.created_at.to_s, :end => "#{Treatment.first.created_at + 1.hour}" }]
-    respond_to do |format|
-      format.json { render :json => @events }
-    end
   end
 
   def new
-    @booking = Booking.new
-    # @bookings = Booking.where(pro: Treatment.find(params[:treat]).pro)
+    @date = params[:date] ? Date.parse(params[:date]) : Time.zone.now.to_date
+    @am_available = BookingService.new(@date, params[:treat]).am_slots
+    @pm_available = BookingService.new(@date, params[:treat]).pm_slots
   end
 
   def create
-    @booking = Booking.new(booking_params.merge(consumer: current_user, pro: @treatment.pro))
-    authorize @booking
-    if @booking.save
-      redirect_to new_transaction_url, notice: 'Booking Created'
+    if DateTime.parse(params[:date]) <= Time.zone.now
+      redirect_to :back, notice: 'Date is in the past'
+    elsif current_user.is_a? Pro
+      redirect_to :back, notice: 'You should be signed in as consumer'
+    elsif current_user.is_a? Consumer
+      @booking = Booking.new(consumer: current_user,
+                             pro: @treatment.pro,
+                             treatment: @treatment,
+                             sum: @treatment.sale_price,
+                             start_at: booking_start_at)
+      authorize @booking
+      (redirect_to new_transaction_url(treat: params[:treat]), notice: 'Booking Created') if @booking.save
     else
-      redirect_to :back, notice: @booking.errors.full_messages.join(', ')
+      redirect_to :back, notice: 'Something was wrong'
     end
   end
 
   private
 
-  def set_treatment
-    @treatment ||= Treatment.find(params[:treatment_id])
+  def booking_start_at
+    @datetime ||= DateTime.parse(params[:date]) + (params[:time].to_i * 30).minutes
   end
 
-  def booking_params
-    params.require(:booking).permit(:start_at)
+  def set_treatment
+    @treatment ||= Treatment.find(params[:treat])
   end
 end

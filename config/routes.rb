@@ -8,11 +8,9 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
 
-  resources :venues, only: [:show, :update, :index]
+  resources :venues, only: [:show, :update, :index, :create]
   resources :transactions, only: [:new, :create]
-  resources :bookings, only: [:new, :create, :index] do
-    get :get_events, on: :collection
-  end
+  resources :bookings, only: [:new, :create, :index]
 
   scope '/pro' do
     devise_for :pros
@@ -24,7 +22,7 @@ Rails.application.routes.draw do
       post :add_member, on: :member
       get :check_for_team, on: :collection
     end
-    resources :venues, only: [:edit, :new, :create]
+    resources :venues, only: [:edit, :new]
     resources :bank_accounts, only: [:update, :edit, :new, :create]
   end
 
