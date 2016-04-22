@@ -12,6 +12,7 @@
  *
  *= require imageselect
  *= require fullcalendar
+ *= require jquery-ui
  */
 
 // Custom bootstrap variables must be set or import before bootstrap itself.
@@ -168,4 +169,8 @@ a {
 
 .treatments span {
   padding: 0;
+}
+
+.fc-content .fc-view div.fc-event-inner {
+  background: red;
 }

@@ -10,7 +10,9 @@ Rails.application.routes.draw do
 
   resources :venues, only: [:show, :update, :index]
   resources :transactions, only: [:new, :create]
-  resources :bookings, only: [:new, :create]
+  resources :bookings, only: [:new, :create, :index] do
+    get :get_events, on: :collection
+  end
 
   scope '/pro' do
     devise_for :pros

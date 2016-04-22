@@ -346,6 +346,7 @@ DEPENDENCIES
   gravatar_image_tag
   jbuilder (~> 2.0)
   jquery-rails
+  jquery-ui-rails
   momentjs-rails
   omniauth
   omniauth-facebook

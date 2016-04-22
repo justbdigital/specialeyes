@@ -26,8 +26,8 @@
                       <td>                      
                         <span class='col-md-4'><%= "save #{(treatment.price.to_f/treatment.sale_price.to_f*100 - 100).to_i}%" %></span>
                         <span class='col-md-8'>
-                          <%= form_tag new_booking_path(total: "#{treatment.sale_price}"), method: :get do%>
-                            <%= hidden_field_tag :total, "#{treatment.sale_price}" %>
+                          <%= form_tag new_booking_path, method: :get do%>
+                            <%= hidden_field_tag :treat, "#{treatment.id}" %>
                             <button class='btn btn-default btn-xs red'>
                               <span class=>Book now </span><span><%= fa_icon('gbp', text:"#{treatment.sale_price}") %></span>
                             </button>

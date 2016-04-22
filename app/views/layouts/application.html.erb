@@ -37,26 +37,30 @@
   <%= javascript_tag do %>
 
     $(document).ready(function() {
-        $('#calendar').fullCalendar({
-                googleCalendarApiKey: '<secret>',
-                header: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'month,agendaDay',
-                    timezone: 'Europe/London',
-                },
-                timeFormat: '',
-        events: '<secret>@import.calendar.google.com',      
-                timezone: 'Europe/London',
-                loading: function(bool) {
-                    $('#loading').toggle(bool);
-                },
-                eventClick: function(event) {
+        myevents = {
+          id: '1', title: 'All Day Event', start: new Date(2016, 04, 21)
+        }; 
+
+      $('#calendar').fullCalendar({
+        header: {
+            left: 'prev,next today',
+            center: 'title',
+            right: 'month,agendaDay',
+            timezone: 'Europe/London',
+        },
+
+        eventSources: [{  
+          url: '/bookings',  
+         }],
+
+        eventClick: function(event) {
             if (event.url) {
+                window.open(event.url);
                 return false;
             }
-            },
-        });
+        },
+
+      });
     });
 
 
