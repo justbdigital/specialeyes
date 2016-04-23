@@ -1,7 +1,6 @@
-<div class = "container">
-  <div class = "row" >
-
-    <div class = "col-md-8 margin_up" >
+<div class='container'>
+  <div class='row' >
+    <div class='col-md-8 margin_up' >
       <% if !@venue %>
         <p>Venue not found</p>
       <% else %>
@@ -9,7 +8,7 @@
         <h4><%= @venue.address %></h4>
         <div class='venue_show_img'><%= image_tag @venue.image_url unless @venue.image.blank? %></div>
         <h3 class='margin_up margin_down'>Overview</h3>
-        <p><%= @venue.description %></p>
+        <div class='venue_description'><%= @venue.description %></div>
         <h3 class='margin_up margin_down'>Services</h3>
         <div>
           <% unless @treatments_with_groups.blank? %>
@@ -24,9 +23,16 @@
                     <tr>
                       <td><%= treatment.title %></td>
                       <td><%= treatment.duration %></td>
-                      <td>
-                        <span><%= "save #{(treatment.price.to_f/treatment.sale_price.to_f*100 - 100).to_i}%" %></span>
-                        <span class='red'><%= "#{treatment.sale_price}" %><%= fa_icon('gbp') %></span>
+                      <td>                      
+                        <span class='col-md-4'><%= "save #{(treatment.price.to_f/treatment.sale_price.to_f*100 - 100).to_i}%" %></span>
+                        <span class='col-md-8'>
+                          <%= form_tag new_transaction_path(total: "#{treatment.sale_price}"), method: :get do%>
+                            <%= hidden_field_tag :total, "#{treatment.sale_price}" %>
+                            <button class='btn btn-default btn-xs red'>
+                              <span class=>Book now </span><span><%= fa_icon('gbp', text:"#{treatment.sale_price}") %></span>
+                            </button>
+                          <%end%>
+                        </span>
                       </td>
                     </tr>
                   <%end%>
@@ -40,7 +46,7 @@
        <% end %>
     </div>
 
-    <div class = 'col-md-4 margin_up' >
+    <div class='col-md-4 margin_up' >
       <% if @venue %>
         <h3 class='margin_up margin_down'>Venue rating</h3>
         <% unless @venue.address.blank? %>

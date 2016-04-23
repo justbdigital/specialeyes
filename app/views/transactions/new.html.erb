@@ -1,0 +1,10 @@
+<div class='form-group'>
+  <h2 class='mbs'>New Transaction</h2>
+  <%= form_tag transactions_path do%>
+    <p>Please enter your payment details:</p>
+    <div id='dropin'></div>
+    <button class='btn btn-primary' style='width:400px;'>
+      <span class='pay-button'>Pay  </span><span><%= fa_icon('gbp', text:"#{params[:total]}") %></span>
+    </button>
+  <%end%>
+</div>

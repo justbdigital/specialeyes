@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require chosen-jquery
 //= require teams
+//= require transactions
 //= require imageselect
 //= require underscore
 //= require gmaps/google

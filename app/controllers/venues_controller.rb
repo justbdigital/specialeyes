@@ -1,7 +1,13 @@
 class VenuesController < ApplicationController
-  before_action :authenticate_user!, except: [:show]
+  before_action :authenticate_user!, except: [:show, :index]
   before_action :set_venue, only: [:show, :update, :edit]
   before_action :set_hash, only: [:show, :edit]
+
+  def index
+    @venues = Venue.all
+                   .order(created_at: :desc)
+                   .paginate(page: params[:page], per_page: 3)
+  end
 
   def new
     authorize Venue
