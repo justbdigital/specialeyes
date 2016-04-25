@@ -1,0 +1,112 @@
+.members {
+  border-bottom: 1px solid #c3c4bd;
+  margin: 17px;
+}
+
+.button_down {
+  margin-top: 70px;
+}
+
+.last_div {
+  margin-bottom: 70px;
+}
+
+.red {
+  color: red;
+  font-size: 120%;
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+.treatments td {
+  width: 30%;
+}
+
+.treatments td .last {
+  width: 10%;
+}
+
+a {
+  color: #660066;
+}
+
+.radio {
+  margin-top: 0;
+}
+
+.homepage {
+  background-color: rgb(220, 200, 210);
+  color: white;
+  font-style: italic;
+  min-height: 700px;
+}
+
+.margin_down {
+  margin-bottom: 30px;
+}
+
+.margin_up {
+  margin-top: 30px;
+}
+
+.venue_show_img img {
+  max-width: 90%;
+}
+
+.event_preview {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  height: 200px;
+  padding: 10px;
+  padding-left: 40px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border-radius: 2px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
+  background-color: white;
+  opacity: 0.7;
+  color: black;
+}
+
+.event_preview img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  max-width: 30%;
+  height: auto;
+}
+
+.event_right {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 65%;
+  height: auto;
+}
+
+.event_date_right {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+}
+
+.fa-star {
+  font-size:20px;
+  color:#e9b31b;
+  text-shadow: 1px -4px 6px #fff, 0 0 0 #000, 1px 4px 6px #fff;
+}
+
+.venue_description {
+  word-wrap: break-word;
+}
+
+.pagination .active a {
+  background-color: #660066;
+}
+
+.treatments span {
+  padding: 0;
+}

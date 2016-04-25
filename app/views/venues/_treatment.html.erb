@@ -1,0 +1,30 @@
+<% unless @treatments_with_groups.blank? %>
+  <% @treatments_with_groups.each_pair do |treatment_group, treatments| %>
+    <div class=''>
+      <h4 class=''>
+        <%= treatment_group.name %>
+      </h4>
+    <table class='table table-striped treatments'>
+      <tbody>
+        <% treatments.each do |treatment| %>
+          <tr>
+            <td><%= treatment.title %></td>
+            <td><%= ::Treatment::DURATIONS[treatment.duration.to_i] %></td>
+            <td>                      
+              <span class='col-md-4'><%= "save #{(100 - treatment.sale_price.to_f/treatment.price.to_f*100).to_i}%" %></span>
+              <span class='col-md-8'>
+                <%= form_tag new_booking_path, method: :get do%>
+                  <%= hidden_field_tag :treat, "#{treatment.id}" %>
+                  <button class='btn btn-default btn-xs red'>
+                    <span class=>Book now </span><span><%= fa_icon('gbp', text:"#{treatment.sale_price}") %></span>
+                  </button>
+                <%end%>
+              </span>
+            </td>
+          </tr>
+        <%end%>
+      </tbody>
+    </table>
+    </div>
+  <%end%>
+<%end%>

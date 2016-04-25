@@ -18,6 +18,7 @@
 FactoryGirl.define do
   factory :treatment do
     title { Forgery::Name.first_name }
+    sale_price 33
     association :pro, factory: :pro, strategy: :build
     association :treatment_group, factory: :treatment_group, strategy: :build
   end

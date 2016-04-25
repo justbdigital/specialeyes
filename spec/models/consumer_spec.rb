@@ -27,4 +27,5 @@ require 'rails_helper'
 
 RSpec.describe Consumer, type: :model do
   it { is_expected.to have_many(:authorizations).dependent(:destroy) }
+  it { is_expected.to have_many(:bookings).dependent(:destroy) }
 end

@@ -1,0 +1,73 @@
+#articles .calendar {
+  border-collapse: collapse;
+  width: 100%;
+
+  td, th {
+  font-family: "Lucida Grande", arial, helvetica, sans-serif;
+  font-size: 10px;
+  padding: 6px;
+  border: 1px solid #999;
+  }
+
+  th {
+    background: #DDD;
+    color: #666;
+    text-align: center;
+    width: 14.2857142857143%;
+  }
+
+  td {
+    background: #FFF;
+    color: #777;
+    height: 80px;
+    vertical-align: top;
+    font-size: 16px;
+  }
+
+  .notmonth a { color: #CCC; }
+  .today { background-color: #E1D3E2; }
+}
+
+#articles #month {
+  margin: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+  a {
+     text-decoration: none;
+     padding: 0 10px;
+     color: #999;
+  }
+}
+
+#articles ul {
+  font-size: 11px;
+  padding-left: 20px;
+}
+
+.available-time-cell {
+  border: 1px solid #DDD;
+  width: 100%;
+  height: 55 px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.square_passive {
+  border: 4px solid #DDD;
+  margin-top: 2px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  width: 15px;
+  height: 15px;
+}
+
+.square_active {
+  border: 4px solid green;
+  margin-top: 2px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  width: 15px;
+  height: 15px;
+}
+

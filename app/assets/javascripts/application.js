@@ -12,6 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require jquery-ui
 //= require chosen-jquery
 //= require teams
 //= require transactions
@@ -19,5 +20,8 @@
 //= require underscore
 //= require gmaps/google
 //= require tether
+//= require moment
+//= require fullcalendar
+//= require fullcalendar/gcal
 //= require bootstrap-sprockets
 //= require_tree .

@@ -1,8 +1,14 @@
 class TransactionsController < ApplicationController
 
   def new
-    $total_priceeee = (params[:total].to_i * 1.26707).round(2)
-    gon.client_token = generate_client_token
+    @sum = Treatment.find_by(id: params[:treat]).sale_price
+    if @sum
+      $total_priceeee = (@sum.to_i * 1.26707).round(2)
+      gon.client_token = generate_client_token
+    else
+      flash[:alert] = 'Something went wrong while processing your transaction. Please try again!'
+      redirect_to :back
+    end
   end
 
   def create

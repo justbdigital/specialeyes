@@ -28,6 +28,7 @@ class Pro < ActiveRecord::Base
   validates_presence_of :username
 
   has_many :treatments, dependent: :destroy
+  has_many :bookings, dependent: :destroy
 
   has_one :team, foreign_key: :owner_id, dependent: :destroy
   has_one :venue, dependent: :destroy

@@ -21,7 +21,7 @@
               <% treatments.each do |treatment| %>
                 <tr>
                   <td><%= link_to "#{treatment.title}", edit_treatment_path(treatment) %></td>
-                  <td><%= treatment.duration %></td>
+                  <td><%= ::Treatment::DURATIONS[treatment.duration.to_i] %></td>
                   <td>
                     <span class='line-through'><%= "#{treatment.price}" %><%= fa_icon('gbp') %></span>
                     <span class='red'><%= "#{treatment.sale_price}" %><%= fa_icon('gbp') %></span>

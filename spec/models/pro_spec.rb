@@ -26,6 +26,7 @@ RSpec.describe Pro, type: :model do
   it { is_expected.to have_one(:venue).dependent(:destroy) }
   it { is_expected.to have_one(:team).dependent(:destroy) }
   it { is_expected.to have_many(:treatments).dependent(:destroy) }
+  it { is_expected.to have_many(:bookings).dependent(:destroy) }
   it { is_expected.to have_one(:bank_account).dependent(:destroy) }
   it { is_expected.to belong_to(:member_of) }
 

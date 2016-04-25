@@ -8,6 +8,7 @@ class ApplicationController < ActionController::Base
 
   devise_group :user, contains: [:consumer, :pro]
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_filter :store_location
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -44,6 +45,16 @@ class ApplicationController < ActionController::Base
       }
       format.js {render text: "alert('You are not authorized to perform this action.');" }
     end
+  end
+
+  def store_location
+    if params[:controller] == 'bookings'
+      session[:user_return_to] = request.fullpath
+    end
+  end
+
+  def stored_location_for(resource_or_scope)
+    session[:user_return_to]
   end
 
   def after_sign_in_path_for(resource)

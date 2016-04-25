@@ -44,7 +44,9 @@ gem 'pundit'
 gem 'braintree', '~> 2.33.1'
 gem 'figaro'
 gem 'gon'
-
+gem 'fullcalendar-rails'
+gem 'momentjs-rails'
+gem 'jquery-ui-rails'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

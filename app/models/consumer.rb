@@ -31,4 +31,5 @@ class Consumer < ActiveRecord::Base
          omniauth_providers: [:facebook]
 
   has_many :authorizations, dependent: :destroy
+  has_many :bookings, dependent: :destroy
 end
