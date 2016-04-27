@@ -1,19 +1,21 @@
 require 'rails_helper'
 
-RSpec.describe BookingService do
+RSpec.describe Bookings::AvailableSlotsFinder do
   let!(:consumer) { create(:consumer) }
   let!(:pro) { create(:pro) }
   let!(:treatment_group) { create(:treatment_group, pro: pro) }
-  let!(:treatment) { create(:treatment, treatment_group: treatment_group, pro: pro, duration: '18') } # 18*30min/per slot = 9 hours duration
+
+  # 18 slots * 30min/per slot = 9 hours duration should fit into working hours from 9am till 8:30pm
+  let!(:treatment) { create(:treatment, treatment_group: treatment_group, pro: pro, duration: '18') }
   let!(:date_in_the_past) { Time.zone.now - 1.day }
   let!(:date) { Time.zone.now + 1.day }
   let!(:id) { treatment.id }
   let!(:am_slots) do
-    [OpenStruct.new(start_at: 18), # 18*30min/per slot = 9am
-     OpenStruct.new(start_at: 19), # 19*30min/per slot = 9:30am
-     OpenStruct.new(start_at: 20), # 20*30min/per slot = 10am
-     OpenStruct.new(start_at: 21), # 21*30min/per slot = 10:30am
-     OpenStruct.new(start_at: 22)] # 22*30min/per slot = 11am
+    [OpenStruct.new(start_at: 18), # 18 slots * 30min/per slot = 9am
+     OpenStruct.new(start_at: 19), # 19 slots * 30min/per slot = 9:30am
+     OpenStruct.new(start_at: 20), # 20 slots * 30min/per slot = 10am
+     OpenStruct.new(start_at: 21), # 21 slots * 30min/per slot = 10:30am
+     OpenStruct.new(start_at: 22)] # 22 slots * 30min/per slot = 11am
   end
 
   describe '#am_slots' do

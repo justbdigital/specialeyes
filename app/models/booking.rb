@@ -19,8 +19,5 @@ class Booking < ActiveRecord::Base
   belongs_to :treatment
 
   validates_presence_of :pro_id
-  validates_presence_of :consumer_id
-  validates_presence_of :treatment_id
   validates_presence_of :start_at
-  validates_presence_of :sum
 end
