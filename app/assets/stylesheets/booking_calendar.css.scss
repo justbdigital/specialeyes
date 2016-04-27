@@ -25,7 +25,8 @@
   }
 
   .notmonth a { color: #CCC; }
-  .today { background-color: #E1D3E2; }
+  .today { background-color: #F6E5F7; }
+  .current_day { background-color: #F7F1F1; }
 }
 
 #articles #month {
@@ -89,9 +90,7 @@
   right: 15px;
 }
 
-
 .booking_text {
   padding-left: 10px;
   padding-right: 10px;
 }
-

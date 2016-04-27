@@ -57,6 +57,7 @@ module CalendarHelper
       classes = []
       classes << 'today' if day == Time.zone.now.to_date
       classes << 'notmonth' if day.month != date.month
+      classes << 'current_day' if day == date && day != Time.zone.now.to_date
       classes.empty? ? nil : classes.join('')
     end
 

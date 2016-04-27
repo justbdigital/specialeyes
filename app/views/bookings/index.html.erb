@@ -25,24 +25,35 @@
       <div class='col-md-6 margin_up text-center'>
         morning
         <% unless @pro_am_available.blank? %>
-          <% @pro_am_available.each do |time| %>
-            <%= link_to mark_as_unavailable_bookings_path(date: @date, time: time.start_at), method: :post do %>
-              <div class='col-md-12 text-center available-time-cell'>
+          <%= form_tag mark_as_unavailable_bookings_path, method: :post do%>
+            <%= hidden_field_tag :date, "#{@date}" %>
+            <% @pro_am_available.each do |time| %>
+              <label class="col-md-12 text-center available-time-cell">
+                <%= check_box_tag "time[]", "#{time.start_at.to_i}" %>
                 <%= ::Treatment::DURATIONS[time.start_at] %>
-              </div>
-            <% end %>
+              </label>
+            <%end%>
+            <button class='btn btn-warning col-sm-12'>
+              <span>mark am hours</span>
+            </button>
           <% end %>
         <% end %>
       </div>
+
       <div class='col-md-6 margin_up text-center'>
         afternoon
         <% unless @pro_pm_available.blank? %>
-          <% @pro_pm_available.each do |time| %>
-            <%= link_to mark_as_unavailable_bookings_path(date: @date, time: time.start_at), method: :post do %>
-              <div class='col-md-12 text-center available-time-cell'>
+          <%= form_tag mark_as_unavailable_bookings_path, method: :post do%>
+            <%= hidden_field_tag :date, "#{@date}" %>
+            <% @pro_pm_available.each do |time| %>
+              <label class="col-md-12 text-center available-time-cell">
+                <%= check_box_tag "time[]", "#{time.start_at.to_i}" %>
                 <%= ::Treatment::DURATIONS[time.start_at] %>
-              </div>
-            <% end %>
+              </label>
+            <%end%>
+            <button class='btn btn-warning col-sm-12'>
+              <span>mark pm hours</span>
+            </button>
           <% end %>
         <% end %>
       </div>
