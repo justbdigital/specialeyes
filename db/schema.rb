@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160425125217) do
+ActiveRecord::Schema.define(version: 20160429213653) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -45,9 +45,10 @@ ActiveRecord::Schema.define(version: 20160425125217) do
     t.integer  "pro_id"
     t.integer  "consumer_id"
     t.integer  "treatment_id"
-    t.boolean  "paid"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.boolean  "paid",         default: false
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.boolean  "confirmed",    default: false
   end
 
   add_index "bookings", ["consumer_id"], name: "index_bookings_on_consumer_id", using: :btree

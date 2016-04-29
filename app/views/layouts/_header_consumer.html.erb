@@ -20,6 +20,14 @@
         <% if current_user.is_a? Pro %>
           <li><%= menu_settings %></li>
         <% end %>
+        <% if current_user.is_a? Consumer %> 
+          <li>            
+            <%= link_to cart_path do%>
+              <i class="fa fa-shopping-cart"></i>
+              My Cart (<span class="cart-count"><%=current_user.cart_count%></span>)
+            <%end%>
+          </li>
+        <%end%>
       </ul>
       <ul class='nav navbar-nav navbar-right'>
         <% if current_user %>

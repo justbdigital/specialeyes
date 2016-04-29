@@ -28,7 +28,8 @@ class BookingsController < ApplicationController
       authorize @booking
 
       if @booking.save
-        redirect_to new_transaction_url(treat: params[:treat]), notice: 'Booking Created'
+        $redis.sadd current_user.cart, @booking.id
+        redirect_to cart_path, notice: 'booking created and treatment added to your cart'
       else
         redirect_to :back, notice: @booking.errors.full_messages.join(', ')
       end
@@ -54,11 +55,29 @@ class BookingsController < ApplicationController
     end
   end
 
+  def confirm
+    if params[:payment] == 'yes'
+      redirect_to new_transaction_path
+    else
+      cart_ids = $redis.smembers current_user.cart
+      Booking.where(id: cart_ids).update_all(confirmed: true)
+      $redis.del current_user.cart
+      redirect_to :root, notice: 'Your order now confirmed. Payment will be needed at venue'
+    end
+  end
+
   def destroy
     @booking = Booking.find(params[:id])
     authorize @booking
+    id = @booking.id
     @booking.destroy
-    redirect_to bookings_path(date: params[:date]), notice: 'slot is now available'
+
+    if current_user.is_a? Consumer
+      $redis.srem current_user.cart, id
+      redirect_to cart_path, notice: 'treatment was deleted from your shopping cart'
+    else
+      redirect_to bookings_path(date: params[:date]), notice: 'slot is now available'
+    end
   end
 
   private

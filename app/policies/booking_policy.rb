@@ -13,7 +13,7 @@ class BookingPolicy < ApplicationPolicy
   end
 
   def destroy?
-    record.pro == user
+    record.pro == user || record.consumer == user
   end
 
   class Scope < Scope
