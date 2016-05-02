@@ -25,7 +25,8 @@
   }
 
   .notmonth a { color: #CCC; }
-  .today { background-color: #E1D3E2; }
+  .today { background-color: #F6E5F7; }
+  .current_day { background-color: #F7F1F1; }
 }
 
 #articles #month {
@@ -71,3 +72,25 @@
   height: 15px;
 }
 
+.booking_raw {
+  position: relative;
+  border: 1px solid #DDD;
+  padding: 4px;
+  padding-left: 15px;
+  margin-top: 2px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  max-width: 600px;
+  height: 30px;
+}
+
+.booking_undo_right {
+  position: absolute;
+  top: 3px;
+  right: 15px;
+}
+
+.booking_text {
+  padding-left: 10px;
+  padding-right: 10px;
+}

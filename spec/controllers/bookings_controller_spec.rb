@@ -19,7 +19,7 @@ RSpec.describe BookingsController, type: :controller do
       expect do
         post :create, treat: treatment.id, time: 2, date: start_at
       end.to change(Booking, :count).by(1)
-      expect(response).to redirect_to new_transaction_path(treat: treatment.id)
+      expect(response).to redirect_to cart_path
     end
 
     it 'it does not save new booking if signed in as pro' do

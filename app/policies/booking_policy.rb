@@ -1,7 +1,19 @@
 class BookingPolicy < ApplicationPolicy
 
+  def index?
+    user.present? && user.is_a?(Pro)
+  end
+
   def create?
     user.present?
+  end
+
+  def mark_as_unavailable?
+    user.present? && user.is_a?(Pro)
+  end
+
+  def destroy?
+    record.pro == user || record.consumer == user
   end
 
   class Scope < Scope

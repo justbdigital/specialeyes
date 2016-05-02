@@ -1,6 +1,10 @@
 module CalendarHelper
+  def pro
+    current_user.is_a?(Pro) ? current_user : nil
+  end
+
   def morning_square(day)
-    if BookingService.new(day, params[:treat]).am_slots.blank?
+    if Bookings::AvailableSlotsFinder.new(day, params[:treat], pro).am_slots.blank?
       content_tag :div, '', class: 'square_passive'
     else
       content_tag :div, '', class: 'square_active'
@@ -8,7 +12,7 @@ module CalendarHelper
   end
 
   def afternoon_square(day)
-    if BookingService.new(day, params[:treat]).pm_slots.blank?
+    if Bookings::AvailableSlotsFinder.new(day, params[:treat], pro).pm_slots.blank?
       content_tag :div, '', class: 'square_passive'
     else
       content_tag :div, '', class: 'square_active'
@@ -53,6 +57,7 @@ module CalendarHelper
       classes = []
       classes << 'today' if day == Time.zone.now.to_date
       classes << 'notmonth' if day.month != date.month
+      classes << 'current_day' if day == date && day != Time.zone.now.to_date
       classes.empty? ? nil : classes.join('')
     end
 

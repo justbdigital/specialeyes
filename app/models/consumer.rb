@@ -32,4 +32,12 @@ class Consumer < ActiveRecord::Base
 
   has_many :authorizations, dependent: :destroy
   has_many :bookings, dependent: :destroy
+
+  def cart_count
+    $redis.scard "cart#{id}"
+  end
+
+  def cart
+    "cart#{id}"
+  end
 end

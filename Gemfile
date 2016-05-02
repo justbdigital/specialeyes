@@ -47,6 +47,9 @@ gem 'gon'
 gem 'fullcalendar-rails'
 gem 'momentjs-rails'
 gem 'jquery-ui-rails'
+gem 'hiredis', '~> 0.6.0'
+gem 'redis', '>= 3.2.0'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

@@ -10,7 +10,10 @@ Rails.application.routes.draw do
 
   resources :venues, only: [:show, :update, :index, :create]
   resources :transactions, only: [:new, :create]
-  resources :bookings, only: [:new, :create, :index]
+  resources :bookings, only: [:new] do
+    post :confirm, on: :collection
+  end
+  resource :cart, only: [:show]
 
   scope '/pro' do
     devise_for :pros
@@ -21,6 +24,9 @@ Rails.application.routes.draw do
     resources :teams, only: [:create, :show] do
       post :add_member, on: :member
       get :check_for_team, on: :collection
+    end
+    resources :bookings, only: [:create, :index, :destroy] do
+      post :mark_as_unavailable, on: :collection
     end
     resources :venues, only: [:edit, :new]
     resources :bank_accounts, only: [:update, :edit, :new, :create]
