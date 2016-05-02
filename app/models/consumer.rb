@@ -43,4 +43,8 @@ class Consumer < ActiveRecord::Base
   def cart
     "cart#{id}"
   end
+
+  def has_payment_info?
+    braintree_customer_id
+  end
 end

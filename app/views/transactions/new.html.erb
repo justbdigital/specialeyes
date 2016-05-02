@@ -1,10 +1,13 @@
 <div class='form-group'>
-  <h2 class='mbs'>New Transaction</h2>
-  <%= form_tag transactions_path do%>
-    <p>Please enter your payment details:</p>
-    <div id='dropin'></div>
-    <button class='btn btn-primary' style='width:400px;'>
-      <span class='pay-button'>Pay  </span><span><%= fa_icon('gbp', text:"#{@cart_total}") %></span>
-    </button>
-  <%end%>
+  <h2 class='text-center last_div'>New Transaction</h2>
+  <div class='col-lg-6 col-lg-offset-3'>
+    <%= form_tag transactions_path do%>
+      <%= render 'customer_form' unless current_user.has_payment_info? %>
+      <h4>Please enter your payment details:</h4>
+      <div id='dropin'></div>
+      <button class='btn btn-primary' style='width:400px;'>
+        <span class='pay-button'>Pay  </span><span><%= fa_icon('gbp', text:"#{@cart_total}") %></span>
+      </button>
+    <%end%>
+  </div>
 </div>
