@@ -1,5 +1,10 @@
 class TransactionsController < ApplicationController
-  before_action :check_cart!
+  before_action :authenticate_user!, only: [:index]
+  before_action :check_cart!, only: [:new, :create]
+
+  def index
+    @bookings = Booking.where(consumer: current_user, confirmed: true).order(:paid)
+  end
 
   def new
     gon.client_token = generate_client_token

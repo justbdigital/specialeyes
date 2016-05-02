@@ -8,9 +8,10 @@
 #  pro_id       :integer
 #  consumer_id  :integer
 #  treatment_id :integer
-#  paid         :boolean
+#  paid         :boolean          default("false")
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  confirmed    :boolean          default("false")
 #
 
 FactoryGirl.define do

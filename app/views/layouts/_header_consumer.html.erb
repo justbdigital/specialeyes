@@ -27,6 +27,12 @@
               My Cart (<span class="cart-count"><%=current_user.cart_count%></span>)
             <%end%>
           </li>
+          <li>            
+            <%= link_to transactions_path do%>
+              <i class="fa fa-list"></i>
+              Bookings History
+            <%end%>
+          </li>
         <%end%>
       </ul>
       <ul class='nav navbar-nav navbar-right'>

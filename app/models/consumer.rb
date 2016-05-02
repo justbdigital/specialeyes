@@ -21,6 +21,7 @@
 #  last_sign_in_at        :datetime
 #  current_sign_in_ip     :inet
 #  last_sign_in_ip        :inet
+#  image                  :string
 #
 
 class Consumer < ActiveRecord::Base
@@ -32,6 +33,8 @@ class Consumer < ActiveRecord::Base
 
   has_many :authorizations, dependent: :destroy
   has_many :bookings, dependent: :destroy
+
+  mount_uploader :image, ImageUploader
 
   def cart_count
     $redis.scard "cart#{id}"
