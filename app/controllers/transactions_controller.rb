@@ -1,5 +1,10 @@
 class TransactionsController < ApplicationController
-  before_action :check_cart!
+  before_action :authenticate_user!, only: [:index]
+  before_action :check_cart!, only: [:new, :create]
+
+  def index
+    @bookings = Booking.where(consumer: current_user, confirmed: true).order(:paid)
+  end
 
   def new
     gon.client_token = generate_client_token
@@ -9,10 +14,27 @@ class TransactionsController < ApplicationController
   def create
     sum = (cart_total * 1.26707).round(2) # need to change braintree default currency to pound
 
-    @result = Braintree::Transaction.sale(
-      amount: sum,
-      payment_method_nonce: params[:payment_method_nonce])
+    unless current_user.has_payment_info?
+      @result = Braintree::Transaction.sale(
+                  amount: sum,
+                  payment_method_nonce: params[:payment_method_nonce],
+                  customer: {
+                    first_name: params[:first_name],
+                    last_name: params[:last_name],
+                    email: current_user.email,
+                    phone: params[:phone]
+                  },
+                  options: {
+                    store_in_vault: true
+                  })
+    else
+      @result = Braintree::Transaction.sale(
+                  amount: sum,
+                  payment_method_nonce: params[:payment_method_nonce])
+    end
+
     if @result.success?
+      current_user.update(braintree_customer_id: @result.transaction.customer_details.id) unless current_user.has_payment_info?
       Booking.where(id: cart_ids).update_all(paid: true, confirmed: true)
       $redis.del current_user.cart
       redirect_to root_url, notice: 'Congraulations! Your transaction has been successfully!'
@@ -40,6 +62,10 @@ class TransactionsController < ApplicationController
   end
 
   def generate_client_token
-    Braintree::ClientToken.generate
+    if current_user.has_payment_info?
+      Braintree::ClientToken.generate(customer_id: current_user.braintree_customer_id)
+    else
+      Braintree::ClientToken.generate
+    end
   end
 end

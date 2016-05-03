@@ -9,6 +9,9 @@
         <%= f.input :first_name, required: false, autofocus: true, label: false, placeholder: 'first name' %>
         <%= f.input :last_name, required: false, autofocus: false, label: false, placeholder: 'last name' %>
         <%= f.input :profile_name, required: true, autofocus: false, label: false, placeholder: 'profile name' %>
+        <%= f.input :image, as: :file %>
+        <%= f.input :remove_image,  as: :boolean, required: false, label: 'Remove image' %>
+        <%= f.input :remote_image_url, required: false, autofocus: false, placeholder: 'or enter remote image url' %>
         <%= f.input :phone, required: false, autofocus: false, label: false, placeholder: 'phone' %>
         <%= f.input :postcode, required: false, autofocus: false, label: false, placeholder: 'postcode' %>
         <%= f.input :female, label: false, collection: [["female", true],["male", false]], checked: true, as: :radio_buttons, item_wrapper_class: 'radio-inline', item_wrapper_tag: :div %>

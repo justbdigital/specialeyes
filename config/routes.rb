@@ -9,7 +9,7 @@ Rails.application.routes.draw do
   # You can have the root of your site routed with "root"
 
   resources :venues, only: [:show, :update, :index, :create]
-  resources :transactions, only: [:new, :create]
+  resources :transactions, only: [:new, :create, :index]
   resources :bookings, only: [:new] do
     post :confirm, on: :collection
   end

@@ -1,0 +1,34 @@
+<div class='container'>
+
+  <div class='row' >
+    <div class='col-md-10 margin_up' >
+
+    <h3>Bookings history</h3>
+
+    <table class='table table-striped bookings_history margin_up'>
+      <thead>
+        <tr>
+          <th>Venue</th>
+          <th>Treatment</th>
+          <th>Start at</th>
+          <th>Payment made</th>
+          <th>Sum</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @bookings.each do |booking| %>
+          <tr>
+            <td><%= booking.pro.try(:venue).try(:name) %></td>
+            <td><%= booking.treatment.title %></td>
+            <td><%= booking.start_at.strftime("%B %d at %H:%M") %></td>
+            <td><%= "paid at #{booking.updated_at}" if booking.paid %></td>
+            <td><span><%= fa_icon('gbp', text:"#{booking.sum}") %></span></td>
+          </tr>
+        <%end%>
+      </tbody>
+    </table>
+
+    </div>
+  </div>
+
+</div>

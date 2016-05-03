@@ -26,6 +26,9 @@ class ApplicationController < ActionController::Base
                                                  :profile_name,
                                                  :phone,
                                                  :postcode,
+                                                 :image,
+                                                 :remote_image_url,
+                                                 :remove_image,
                                                  :female]
     devise_parameter_sanitizer.for(:account_update) << [:username,
                                                         :business_name,
@@ -34,6 +37,9 @@ class ApplicationController < ActionController::Base
                                                         :profile_name,
                                                         :phone,
                                                         :postcode,
+                                                        :image,
+                                                        :remote_image_url,
+                                                        :remove_image,
                                                         :female]
   end
 

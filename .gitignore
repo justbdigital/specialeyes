@@ -16,6 +16,7 @@
 !/log/.keep
 /tmp
 /public/uploads/venue/image/
+/public/uploads/consumer/image/
 
 # Ignore application configuration
 /config/application.yml
