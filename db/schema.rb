@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160502172134) do
+ActiveRecord::Schema.define(version: 20160503203819) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -102,6 +102,23 @@ ActiveRecord::Schema.define(version: 20160502172134) do
   add_index "pros", ["email"], name: "index_pros_on_email", unique: true, using: :btree
   add_index "pros", ["reset_password_token"], name: "index_pros_on_reset_password_token", unique: true, using: :btree
 
+  create_table "reviews", force: :cascade do |t|
+    t.integer  "booking_id"
+    t.integer  "consumer_id"
+    t.integer  "venue_id"
+    t.integer  "ambiance"
+    t.integer  "cleanliness"
+    t.integer  "staff"
+    t.integer  "value"
+    t.text     "comment"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+  end
+
+  add_index "reviews", ["booking_id"], name: "index_reviews_on_booking_id", using: :btree
+  add_index "reviews", ["consumer_id"], name: "index_reviews_on_consumer_id", using: :btree
+  add_index "reviews", ["venue_id"], name: "index_reviews_on_venue_id", using: :btree
+
   create_table "teams", force: :cascade do |t|
     t.integer  "owner_id"
     t.datetime "created_at", null: false
@@ -148,4 +165,7 @@ ActiveRecord::Schema.define(version: 20160502172134) do
   add_foreign_key "bookings", "consumers"
   add_foreign_key "bookings", "pros"
   add_foreign_key "bookings", "treatments"
+  add_foreign_key "reviews", "bookings"
+  add_foreign_key "reviews", "consumers"
+  add_foreign_key "reviews", "venues"
 end

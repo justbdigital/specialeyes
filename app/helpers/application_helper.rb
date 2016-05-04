@@ -3,6 +3,20 @@ module ApplicationHelper
     content_tag :li, link_to(fa_icon('heart', text: 'Treatments'), treatments_path)
   end
 
+  def rating_stars(venue)
+    stars = venue.rating
+    (1..5).to_a.inject([]) do |memo, index|
+      if index <= stars.to_i
+        memo << fa_icon('star')
+      elsif stars.to_f > stars.to_i && index == stars.to_i + 1
+        memo << fa_icon('star-half-o')
+      else
+        memo << fa_icon('star-o')
+      end
+      memo
+    end.join('').html_safe
+  end
+
   def pro_header?
     request.env['PATH_INFO'].match('pro')
   end

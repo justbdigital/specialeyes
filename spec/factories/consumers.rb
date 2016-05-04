@@ -22,6 +22,7 @@
 #  current_sign_in_ip     :inet
 #  last_sign_in_ip        :inet
 #  image                  :string
+#  braintree_customer_id  :integer
 #
 
 FactoryGirl.define do

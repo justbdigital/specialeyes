@@ -97,14 +97,18 @@ a {
   right: 15px;
 }
 
-.fa-star {
-  font-size:20px;
+.fa-star,
+.fa-star-o,
+.fa-star-half-o {
+  font-size: 15px;
   color:#e9b31b;
   text-shadow: 1px -4px 6px #fff, 0 0 0 #000, 1px 4px 6px #fff;
 }
 
 .venue_description {
   word-wrap: break-word;
+  width: 85%;
+  margin-top: 20px;
 }
 
 .pagination .active a {

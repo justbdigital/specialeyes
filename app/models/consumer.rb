@@ -22,6 +22,7 @@
 #  current_sign_in_ip     :inet
 #  last_sign_in_ip        :inet
 #  image                  :string
+#  braintree_customer_id  :integer
 #
 
 class Consumer < ActiveRecord::Base
@@ -33,6 +34,7 @@ class Consumer < ActiveRecord::Base
 
   has_many :authorizations, dependent: :destroy
   has_many :bookings, dependent: :destroy
+  has_many :reviews, dependent: :destroy
 
   mount_uploader :image, ImageUploader
 

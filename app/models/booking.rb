@@ -18,6 +18,7 @@ class Booking < ActiveRecord::Base
   belongs_to :pro
   belongs_to :consumer
   belongs_to :treatment
+  has_many :reviews, dependent: :destroy
 
   validates_presence_of :pro_id
   validates_presence_of :start_at

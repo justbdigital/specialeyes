@@ -22,6 +22,7 @@
 #  current_sign_in_ip     :inet
 #  last_sign_in_ip        :inet
 #  image                  :string
+#  braintree_customer_id  :integer
 #
 
 require 'rails_helper'
@@ -29,4 +30,5 @@ require 'rails_helper'
 RSpec.describe Consumer, type: :model do
   it { is_expected.to have_many(:authorizations).dependent(:destroy) }
   it { is_expected.to have_many(:bookings).dependent(:destroy) }
+  it { is_expected.to have_many(:reviews).dependent(:destroy) }
 end

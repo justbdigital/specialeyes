@@ -14,6 +14,7 @@ Rails.application.routes.draw do
     post :confirm, on: :collection
   end
   resource :cart, only: [:show]
+  resources :reviews, only: [:new, :create, :index]
 
   scope '/pro' do
     devise_for :pros

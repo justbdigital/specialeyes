@@ -1,16 +1,18 @@
 <div class='container homepage'>
   <div class='row'>
-    <h1 class=" text-center">Book Yourself Fabulous</h1>
-    <h3 class=" text-center">Beauty appointments at your fingertips</h3>
-    <div class="container">
+    <h1 class='text-center'>Book Yourself Fabulous</h1>
+    <h3 class='text-center'>Beauty appointments at your fingertips</h3>
+    <div class='container'>
         <% @venues.each_with_index do |venue, index| %>
-          <div class="event_preview">
+          <div class='event_preview'>
             <%= image_tag venue.image_url unless venue.image.blank? %>
-            <div class="event_right">
+            <div class='event_right'>
               <h2><%= link_to venue.name, venue_path(venue.name) %></h2>
               <h4><%= venue.address %></h4>
-              <div class="venue_description"><%= venue.description %></div>
-              <div class="event_date_right"><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i><i class="fa fa-star" aria-hidden="true"></i></div>
+              <div class='venue_description'><%= venue.description %></div>
+              <div class='event_date_right'>
+                <%= rating_stars(venue) %>
+              </div>
             </div>
           </div>
         <% end %>

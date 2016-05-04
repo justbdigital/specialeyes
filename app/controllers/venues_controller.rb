@@ -21,6 +21,7 @@ class VenuesController < ApplicationController
 
   def show
     @treatments_with_groups = Treatment.where(pro: @venue.pro).group_by(&:treatment_group)
+    @reviews = Review.where(venue: @venue).paginate(page: params[:page], per_page: 3)
   end
 
   def create
