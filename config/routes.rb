@@ -31,6 +31,7 @@ Rails.application.routes.draw do
     end
     resources :venues, only: [:edit, :new]
     resources :bank_accounts, only: [:update, :edit, :new, :create]
+  resource :dashboard, only: [:show]
   end
 
   # Example of regular route:

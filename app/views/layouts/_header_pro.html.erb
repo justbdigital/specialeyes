@@ -20,7 +20,7 @@
         <% if current_user %>
           <li><%= menu_settings %></li>
           <li><%= link_to(fa_icon('calendar', text: 'Calendar'), bookings_path) %></li>
-          <li><%= link_to(fa_icon('bar-chart-o', text: 'Dashboard'), root_path) %></li>
+          <li><%= link_to(fa_icon('bar-chart-o', text: 'Dashboard'), dashboard_path) %></li>
           <li class='dropdown login_logout_link'>
             <a href='#' class='dropdown-toggle' data-toggle='dropdown' role='button' aria-expanded='false'>
               <%= fa_icon('cogs', text: 'Settings') %>

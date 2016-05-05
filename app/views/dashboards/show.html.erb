@@ -1,0 +1,81 @@
+<div class='container-fluid'>
+  <div class='row' >
+    <div class="col-sm-4 col-md-3 button_down dashboard_sidebar">
+      <div class='venue_show_img'><%= image_tag @venue.image_url unless @venue.image.blank? %></div>
+      <div class="col-sm-12 col-md-12 margin_up"><%= rating_stars(@venue) %></div>
+      <%= link_to(fa_icon('pencil', text: 'Edit venue details'), check_venue_path, class: 'col-sm-12 col-md-12 button_down') %>
+      <%= link_to(fa_icon('eye', text: 'Preview on SpecialEyes'), venue_path(@venue), class: 'col-sm-12 col-md-12 margin_up') %>
+
+      <%= link_to 'Help', root_path, class: 'col-sm-12 col-md-12 down_section' %>
+      <div class="col-sm-12 col-md-12 margin_up"><%= mail_to 'support@specialeyes.london' %></div>
+      <%= link_to 'Live Chat', root_path, class: 'col-sm-12 col-md-12 margin_up' %>
+    </div>
+
+    <div class="col-sm-8 col-md-9 margin_up">
+      <h2>Dashboard</h2>
+
+      <div class="col-sm-12 col-md-12 margin_up">
+        <div class="col-sm-4 col-md-4 dashboard_icon">
+          <%= fa_icon('check-square-o') %>
+          <p><%= current_user.booking_this_month %></p>
+          <h5>bookings this month</h5>
+        </div>
+        <div class="col-sm-4 col-md-4 dashboard_icon">
+          <%= fa_icon('group') %>
+          <p><%= @impressionist_count %></p>
+          <h5>page visit this month</h5>
+        </div>      
+        <div class="col-sm-4 col-md-4 dashboard_icon">
+          <%= fa_icon('thumbs-o-up') %>
+          <p><%= current_user.profile_score %></p>
+          <h5>profile score</h5>
+        </div>      
+      </div>
+
+      <div class="table-responsive col-sm-12 col-md-12 margin_up">
+        <h4>Pending bookings</h4>
+        <table class='table table-striped bookings_history margin_up'>
+          <thead>
+            <tr>
+              <th>Customer Name</th>
+              <th>Treatment</th>
+              <th>Date / Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @bookings.each do |booking| %>
+              <tr>
+                <td>
+                  <%= booking.consumer.profile_name %>
+                </td>
+                <td><%= booking.treatment.title %></td>
+                <td><%= booking.start_at.strftime("%B %d at %H:%M") %></td>
+              </tr>
+            <%end%>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="col-sm-12 col-md-12 button_down">
+        <div class="col-sm-6 col-md-6">
+          <%= column_chart current_user.historical_financies %>
+        </div>
+        <div class="col-sm-6 col-md-6">
+          <h5>Popular treatments</h5>
+          <table class='table margin_up'>
+            <tbody>
+              <% current_user.popular_treatments.each do |treatment| %>
+                <tr>
+                  <td>
+                    <%= treatment.title %>
+                  </td>
+                  <td><%= fa_icon('gbp', text:"#{treatment.sale_price}") %></td>
+                </tr>
+              <%end%>
+            </tbody>
+          </table>      
+        </div>      
+      </div>
+    </div>
+  </div>
+</div>

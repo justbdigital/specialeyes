@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require jquery-ui
 //= require chosen-jquery
+//= require chartkick
 //= require teams
 //= require transactions
 //= require imageselect

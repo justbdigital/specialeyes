@@ -18,6 +18,8 @@
 #  updated_at   :datetime         not null
 #
 class Venue < ActiveRecord::Base
+  is_impressionable
+
   TYPES = ['Mobile Beauty', 'Medical Spa'].freeze
 
   geocoded_by :address
