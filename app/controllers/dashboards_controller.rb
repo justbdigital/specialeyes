@@ -4,7 +4,7 @@ class DashboardsController < ApplicationController
   before_action :set_venue
 
   def show
-    @impressionist_count = @venue.impressionist_count(start_date: Time.now.beginning_of_month)
+    @impressionist_count = @venue&.impressionist_count(start_date: Time.now.beginning_of_month) || 0
   end
 
   private

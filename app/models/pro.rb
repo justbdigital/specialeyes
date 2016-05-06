@@ -22,7 +22,7 @@
 class Pro < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
   validates_presence_of :username
@@ -37,15 +37,18 @@ class Pro < ActiveRecord::Base
   belongs_to :member_of, class_name: Team
 
   def profile_score
-    reviews_count = venue.reviews.count > 10 ? 10 : venue.reviews.count
-    rating = venue.rating * 2
+    venue_rating = venue ? venue.rating * 2 : 0
     treatments_count = treatments.count > 10 ? 10 : treatments.count
 
-    @score = (average_discount + reviews_count + rating + treatments_count).to_i
+    @score = (average_discount + reviews_count + venue_rating + treatments_count).to_i
   end
 
   def booking_this_month
     bookings.where(start_at: Time.now.beginning_of_month..Time.now.end_of_month).count
+  end
+
+  def treatment_this_month(treatment_id)
+    bookings.where(treatment_id: treatment_id, start_at: Time.now.beginning_of_month..Time.now.end_of_month).sum(:sum)
   end
 
   def historical_financies
@@ -66,9 +69,21 @@ class Pro < ActiveRecord::Base
 
   private
 
+  def reviews_count
+    if venue
+      venue.reviews.count > 10 ? 10 : venue.reviews.count
+    else
+      0
+    end
+  end
+
   def average_discount
-    discounts = treatments.map { |t| t.price - t.sale_price }
-    av_discount = discounts.inject(:+).to_f / discounts.length
-    @discount_score ||= av_discount > 50 ? 10 : av_discount / 5
+    unless treatments.blank?
+      discounts = treatments.map { |t| t.price - t.sale_price }
+      av_discount = discounts.inject(:+).to_f / discounts.length
+      @discount_score ||= av_discount > 50 ? 10 : av_discount / 5
+    else
+      0
+    end
   end
 end

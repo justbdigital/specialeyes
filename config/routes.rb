@@ -2,7 +2,8 @@ Rails.application.routes.draw do
 
   root 'venues#index'
 
-  devise_for :consumers, controllers: { registrations: 'consumers/registrations', omniauth_callbacks: 'omniauth_callbacks' }
+  devise_for :consumers, controllers: { registrations: 'consumers/registrations', omniauth_callbacks: 'omniauth_callbacks', invitations: 'users/invitations' }
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
@@ -17,7 +18,7 @@ Rails.application.routes.draw do
   resources :reviews, only: [:new, :create, :index]
 
   scope '/pro' do
-    devise_for :pros
+    devise_for :pros, controllers: { invitations: 'users/invitations' }
 
     resources :pros
     resources :treatments

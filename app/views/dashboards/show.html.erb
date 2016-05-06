@@ -1,11 +1,17 @@
 <div class='container-fluid'>
   <div class='row' >
     <div class="col-sm-4 col-md-3 button_down dashboard_sidebar">
-      <div class='venue_show_img'><%= image_tag @venue.image_url unless @venue.image.blank? %></div>
-      <div class="col-sm-12 col-md-12 margin_up"><%= rating_stars(@venue) %></div>
+      <div class='venue_show_img'><%= image_tag @venue.image_url unless @venue&.image.blank? %></div>
+      <div class="col-sm-12 col-md-12 margin_up"><%= rating_stars(@venue) if @venue %></div>
       <%= link_to(fa_icon('pencil', text: 'Edit venue details'), check_venue_path, class: 'col-sm-12 col-md-12 button_down') %>
-      <%= link_to(fa_icon('eye', text: 'Preview on SpecialEyes'), venue_path(@venue), class: 'col-sm-12 col-md-12 margin_up') %>
-
+      <% if @venue %>
+        <%= link_to(fa_icon('eye', text: 'Preview on SpecialEyes'), venue_path(@venue), class: 'col-sm-12 col-md-12 margin_up') %>
+        <%= form_tag new_pro_invitation_path, method: :get, class: 'col-md-6 button_down margin_up' do%>
+          <button class='btn btn-default'>
+            Request more ratings
+          </button>
+        <%end%>
+       <% end %> 
       <%= link_to 'Help', root_path, class: 'col-sm-12 col-md-12 down_section' %>
       <div class="col-sm-12 col-md-12 margin_up"><%= mail_to 'support@specialeyes.london' %></div>
       <%= link_to 'Live Chat', root_path, class: 'col-sm-12 col-md-12 margin_up' %>
@@ -58,7 +64,7 @@
 
       <div class="col-sm-12 col-md-12 button_down">
         <div class="col-sm-6 col-md-6">
-          <%= column_chart current_user.historical_financies %>
+          <%= column_chart current_user.historical_financies, label: 'earned pounds' %>
         </div>
         <div class="col-sm-6 col-md-6">
           <h5>Popular treatments</h5>
@@ -69,7 +75,7 @@
                   <td>
                     <%= treatment.title %>
                   </td>
-                  <td><%= fa_icon('gbp', text:"#{treatment.sale_price}") %></td>
+                  <td><%= fa_icon('gbp', text:"#{current_user.treatment_this_month(treatment.id)}") %></td>
                 </tr>
               <%end%>
             </tbody>
