@@ -23,6 +23,14 @@
 #  last_sign_in_ip        :inet
 #  image                  :string
 #  braintree_customer_id  :integer
+#  invitation_token       :string
+#  invitation_created_at  :datetime
+#  invitation_sent_at     :datetime
+#  invitation_accepted_at :datetime
+#  invitation_limit       :integer
+#  invited_by_id          :integer
+#  invited_by_type        :string
+#  invitations_count      :integer          default("0")
 #
 
 require 'rails_helper'
@@ -31,4 +39,7 @@ RSpec.describe Consumer, type: :model do
   it { is_expected.to have_many(:authorizations).dependent(:destroy) }
   it { is_expected.to have_many(:bookings).dependent(:destroy) }
   it { is_expected.to have_many(:reviews).dependent(:destroy) }
+
+  it { is_expected.to validate_presence_of(:first_name) }
+  it { is_expected.to validate_presence_of(:phone) }
 end

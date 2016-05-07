@@ -4,6 +4,10 @@ class BookingPolicy < ApplicationPolicy
     user.present? && user.is_a?(Pro)
   end
 
+  def calendar?
+    index?
+  end
+
   def create?
     user.present?
   end
@@ -14,6 +18,10 @@ class BookingPolicy < ApplicationPolicy
 
   def destroy?
     record.pro == user || record.consumer == user
+  end
+
+  def complete?
+    record.pro == user
   end
 
   class Scope < Scope

@@ -30,6 +30,7 @@ class Treatment < ActiveRecord::Base
   has_many :bookings, dependent: :destroy
 
   validates_presence_of :pro_id
+  validates_presence_of :title
   validates_presence_of :treatment_group_id
   validates_presence_of :sale_price
 end

@@ -28,11 +28,13 @@ Rails.application.routes.draw do
       get :check_for_team, on: :collection
     end
     resources :bookings, only: [:create, :index, :destroy] do
+      get :calendar, on: :collection
       post :mark_as_unavailable, on: :collection
+      post :complete, on: :member
     end
     resources :venues, only: [:edit, :new]
     resources :bank_accounts, only: [:update, :edit, :new, :create]
-  resource :dashboard, only: [:show]
+    resource :dashboard, only: [:show]
   end
 
   # Example of regular route:

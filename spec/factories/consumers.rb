@@ -23,11 +23,22 @@
 #  last_sign_in_ip        :inet
 #  image                  :string
 #  braintree_customer_id  :integer
+#  invitation_token       :string
+#  invitation_created_at  :datetime
+#  invitation_sent_at     :datetime
+#  invitation_accepted_at :datetime
+#  invitation_limit       :integer
+#  invited_by_id          :integer
+#  invited_by_type        :string
+#  invitations_count      :integer          default("0")
 #
 
 FactoryGirl.define do
   factory :consumer do
     profile_name { Forgery::Name.first_name }
+    first_name { Forgery::Name.first_name }
+    last_name { Forgery::Name.last_name }
+    phone { Forgery::Address.phone }    
     sequence(:email) { |n| "emaqqq#{n}@factory.com" }
     password "12345678"
     password_confirmation { |u| u.password }

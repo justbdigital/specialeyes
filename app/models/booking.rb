@@ -12,6 +12,7 @@
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  confirmed    :boolean          default("false")
+#  completed    :boolean          default("false")
 #
 
 class Booking < ActiveRecord::Base
