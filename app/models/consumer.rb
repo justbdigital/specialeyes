@@ -22,17 +22,20 @@
 #  current_sign_in_ip     :inet
 #  last_sign_in_ip        :inet
 #  image                  :string
+#  braintree_customer_id  :integer
 #
 
 class Consumer < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :omniauthable,
          omniauth_providers: [:facebook]
 
   has_many :authorizations, dependent: :destroy
   has_many :bookings, dependent: :destroy
+  has_many :reviews, dependent: :destroy
+  has_many :invitations, dependent: :destroy, :class_name => 'Pro', :as => :invited_by
 
   mount_uploader :image, ImageUploader
 

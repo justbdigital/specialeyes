@@ -49,6 +49,11 @@ gem 'momentjs-rails'
 gem 'jquery-ui-rails'
 gem 'hiredis', '~> 0.6.0'
 gem 'redis', '>= 3.2.0'
+gem 'chartkick'
+gem 'groupdate'
+gem 'active_median'
+gem 'impressionist'
+gem 'devise_invitable'
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

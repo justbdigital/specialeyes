@@ -3,6 +3,8 @@ class VenuesController < ApplicationController
   before_action :set_venue, only: [:show, :update, :edit]
   before_action :set_hash, only: [:show, :edit]
 
+  impressionist actions: [:show]
+
   def index
     @venues = Venue.all
                    .order(created_at: :desc)
@@ -20,7 +22,9 @@ class VenuesController < ApplicationController
   end
 
   def show
+    impressionist(@venue)
     @treatments_with_groups = Treatment.where(pro: @venue.pro).group_by(&:treatment_group)
+    @reviews = Review.where(venue: @venue).paginate(page: params[:page], per_page: 3)
   end
 
   def create

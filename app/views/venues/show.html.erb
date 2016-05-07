@@ -15,12 +15,31 @@
           <%= render 'treatment' %>
         </div>
         <h3 class='margin_up margin_down'>Review</h3>
+          <% @reviews.each do |review| %>
+            <div class='event_preview'>
+              <div class='event_right'>
+                <h4><%= review.consumer.profile_name %></h4>
+              </div>
+              <div class='venue_description'><%= review.comment %></div>
+              <div class='event_date_right'>
+                ambiance - <%= review.ambiance %><br />
+                cleanliness - <%= review.cleanliness %><br />
+                staff - <%= review.staff %><br />
+                value - <%= review.value %>
+              </div>
+            </div>
+          <% end %>
+          <div><%= will_paginate @reviews %></div>
        <% end %>
     </div>
 
     <div class='col-md-4 margin_up' >
       <% if @venue %>
-        <h3 class='margin_up margin_down'>Venue rating</h3>
+        <h3 class='margin_up'>Venue rating</h3>
+        <div class='margin_down'>
+          <%= rating_stars(@venue) %>
+          <%= link_to 'leave a review', new_review_path(venue: @venue) %>
+        </div>
         <% unless @venue.address.blank? %>
           <h6><%= "#{@venue.address}" %></h6>
           <div style='width: 100%;'>

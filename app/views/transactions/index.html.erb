@@ -18,7 +18,10 @@
       <tbody>
         <% @bookings.each do |booking| %>
           <tr>
-            <td><%= booking.pro.try(:venue).try(:name) %></td>
+            <td>
+              <%= booking.pro.try(:venue).try(:name) %><br />
+              <%= link_to 'leave a review', new_review_path(booking: booking) %>
+            </td>
             <td><%= booking.treatment.title %></td>
             <td><%= booking.start_at.strftime("%B %d at %H:%M") %></td>
             <td><%= "paid at #{booking.updated_at}" if booking.paid %></td>

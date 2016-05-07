@@ -1,0 +1,40 @@
+<div class='container'>
+  <div class='row'>
+    <div class='text-center button_down'>
+        <%= image_tag @venue.image_url(:thumb) unless @venue.image.blank? %>
+      <h4>leave a review for 
+        <%= @venue.name %> 
+      </h4> 
+    </div>
+    <div class='col-lg-6 col-lg-offset-3'>
+      <%= simple_form_for(Review.new, html: {class: 'form-horizontal'})do |f| %>
+        <%= f.error_notification %>
+        <%= hidden_field_tag :booking, "#{@booking&.id}" %>
+        <%= hidden_field_tag :venue, "#{@venue.id}" %>
+
+        <div class='form-group margin_down margin_up'>
+          <%= f.input :ambiance, label: false, required: true, as: :radio_buttons, collection: 1..5, item_wrapper_class: 'radio-inline', input_html: { class: 'form-control'} %>
+          <%=f.label  :ambiance, "On a scale of one to five, describe venue's ambiance"%>
+        </div>
+        <div class='form-group margin_down margin_up'>
+          <%= f.input :cleanliness, label: false, required: true, as: :radio_buttons, collection: 1..5, item_wrapper_class: 'radio-inline', input_html: { class: 'form-control'} %>
+          <%=f.label  :cleanliness, 'Please grade cleanliness'%>
+        </div>
+        <div class='form-group margin_down margin_up'>
+          <%= f.input :staff, label: false, required: true, as: :radio_buttons, collection: 1..5, item_wrapper_class: 'radio-inline', input_html: { class: 'form-control'} %>
+          <%=f.label  :staff, 'Staff'%>
+        </div>
+        <div class='form-group margin_down margin_up'>
+          <%= f.input :value, label: false, required: true, as: :radio_buttons, collection: 1..5, item_wrapper_class: 'radio-inline', input_html: { class: 'form-control'} %>
+          <%=f.label  :value, 'Value - please select your rating'%>
+        </div>
+        <div class='form-group'>
+          <%= f.input :comment, label: false, placeholder: 'enter your comment', input_html: { class: 'form-control'} %>
+        </div>
+        <div class='form-group last_div'>
+          <%= f.button :submit, class: 'btn btn-warning col-md-12 col-lg-12' %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>

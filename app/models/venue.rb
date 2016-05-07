@@ -18,12 +18,16 @@
 #  updated_at   :datetime         not null
 #
 class Venue < ActiveRecord::Base
+  is_impressionable
+
   TYPES = ['Mobile Beauty', 'Medical Spa'].freeze
 
   geocoded_by :address
   after_validation :geocode, if: ->(obj) { obj.address.present? and obj.address_changed? }
 
   belongs_to :pro
+  has_many :reviews, dependent: :destroy
+
   validates_presence_of :pro_id
   validates_uniqueness_of :pro_id
 
@@ -34,5 +38,10 @@ class Venue < ActiveRecord::Base
 
   def to_param
     name
+  end
+
+  def rating
+    stars = Review.where(venue: self).pluck(:staff, :value, :ambiance, :cleanliness).flatten
+    stars.blank? ? 0 : stars.inject(:+).to_f / stars.length
   end
 end
