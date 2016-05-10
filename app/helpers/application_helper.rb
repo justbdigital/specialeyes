@@ -53,6 +53,14 @@ module ApplicationHelper
     current_user.venue ? edit_venue_path(current_user.venue) : new_venue_path(Venue.new)
   end
 
+  def check_balance_path
+    if current_user.balance
+      link_to(fa_icon('gift', text: 'Gifts'), gifts_balance_path, method: :get)
+    else
+      link_to(fa_icon('gift', text: 'Gifts'), balance_path, method: :post)
+    end
+  end
+
   def check_account_path
     current_user.bank_account ? edit_bank_account_path(current_user.bank_account) : new_bank_account_path(BankAccount.new)
   end

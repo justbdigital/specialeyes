@@ -30,3 +30,25 @@
   border-top: 1px solid white;
   box-shadow: inset 0 20px 20px -20px rgba(0, 0, 0, 0.175);
 }
+
+.gift_raw {
+  position: relative;
+  border: 1px solid #DDD;
+  padding: 4px;
+  padding-left: 15px;
+  margin-top: 2px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  max-width: 600px;
+  height: 30px;
+}
+
+.gift_right {
+  float: right;
+}
+
+.gift_text {
+  min-width: 70px;
+  padding-left: 10px;
+  padding-right: 10px;
+}

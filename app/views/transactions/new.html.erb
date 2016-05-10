@@ -2,6 +2,7 @@
   <h2 class='text-center last_div'>New Transaction</h2>
   <div class='col-lg-6 col-lg-offset-3'>
     <%= form_tag transactions_path do%>
+      <%= hidden_field_tag :gift, "#{@gift}" %>
       <%= render 'customer_form' unless current_user.has_payment_info? %>
       <h4>Please enter your payment details:</h4>
       <div id='dropin'></div>

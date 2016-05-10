@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160507180934) do
+ActiveRecord::Schema.define(version: 20160509143918) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,16 @@ ActiveRecord::Schema.define(version: 20160507180934) do
   end
 
   add_index "authorizations", ["consumer_id"], name: "index_authorizations_on_consumer_id", using: :btree
+
+  create_table "balances", force: :cascade do |t|
+    t.integer  "consumer_id"
+    t.boolean  "active",                               default: true
+    t.decimal  "amount",      precision: 16, scale: 2, default: 0.0
+    t.datetime "created_at",                                          null: false
+    t.datetime "updated_at",                                          null: false
+  end
+
+  add_index "balances", ["consumer_id"], name: "index_balances_on_consumer_id", using: :btree
 
   create_table "bank_accounts", force: :cascade do |t|
     t.integer  "pro_id"
@@ -209,7 +219,21 @@ ActiveRecord::Schema.define(version: 20160507180934) do
     t.datetime "updated_at",   null: false
   end
 
+  create_table "vouchers", force: :cascade do |t|
+    t.integer  "creator_id"
+    t.string   "creator_type"
+    t.integer  "owner_id"
+    t.string   "code"
+    t.boolean  "paid",                                  default: false
+    t.boolean  "used",                                  default: false
+    t.decimal  "amount",       precision: 16, scale: 2
+    t.datetime "valid_till"
+    t.datetime "created_at",                                            null: false
+    t.datetime "updated_at",                                            null: false
+  end
+
   add_foreign_key "authorizations", "consumers"
+  add_foreign_key "balances", "consumers"
   add_foreign_key "bookings", "consumers"
   add_foreign_key "bookings", "pros"
   add_foreign_key "bookings", "treatments"

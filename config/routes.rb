@@ -15,7 +15,14 @@ Rails.application.routes.draw do
     post :confirm, on: :collection
   end
   resource :cart, only: [:show]
+  resource :balance, only: [:create] do
+    get :show, as: :gifts
+  end
   resources :reviews, only: [:new, :create, :index]
+  resources :vouchers, only: [:update] do
+    get :add_gift, on: :collection
+  end
+
 
   scope '/pro' do
     devise_for :pros, controllers: { invitations: 'users/invitations' }

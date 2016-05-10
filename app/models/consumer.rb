@@ -45,6 +45,10 @@ class Consumer < ActiveRecord::Base
   has_many :reviews, dependent: :destroy
   has_many :invitations, dependent: :destroy, class_name: 'Pro', as: :invited_by
 
+  has_many :vouchers, as: :creator
+  has_many :gifts, class_name: 'Voucher', foreign_key: :owner_id, dependent: :destroy
+  has_one :balance, dependent: :destroy
+
   validates_presence_of :first_name
   validates_presence_of :phone
 
@@ -60,5 +64,9 @@ class Consumer < ActiveRecord::Base
 
   def has_payment_info?
     braintree_customer_id
+  end
+
+  def block_from_invitation?
+    false
   end
 end
