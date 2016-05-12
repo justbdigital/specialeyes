@@ -61,19 +61,24 @@ module Transactions
     end
 
     def create_gifts
+      @vouchers = []
       quantity = @quantity.to_i
       amount = @gift.to_i / quantity
-      quantity.times { Voucher.create(creator: @current_user, amount: amount, paid: true) }
+      quantity.times { @vouchers << Voucher.create(creator: @current_user, amount: amount, paid: true) }
     end
 
     def sent_email
-      binding.pry
+      ConsumerMailer.gift_card_email(consumer, @vouchers).deliver if consumer
     end
 
     def update_balance
       balance = @current_user.balance
       balance.amount -= @balance_payment.to_i
       balance.save
+    end
+
+    def consumer
+      @consumer ||= Consumer.find_by(email: @email)
     end
 
     def empty_cart

@@ -81,9 +81,15 @@ class TransactionsController < ApplicationController
       redirect_to :back, alert: 'quantity should be a positive number'
     elsif !params[:gift][:email]
       redirect_to :back, alert: 'enter email to send a gift'
+    elsif !consumer
+      redirect_to :back, alert: 'no consumer with such email'
     else
       true
     end
+  end
+
+  def consumer
+    Consumer.find_by(email: params[:gift][:email])
   end
 
   def quantity_is_positive_integer?

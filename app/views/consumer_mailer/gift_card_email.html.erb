@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>You've got a gift, <%= @user.first_name %></h1>
+    <h4>Your voucher codes are - </h4>
+    <% @vouchers.each do |voucher| %>
+    <p>
+     <%= voucher.code %> <i class="glyphicon glyphicon-gbp"></i> <%= voucher.amount.to_i %><br>
+    </p>
+    <% end %>
+    <p>
+      To activate your gift, just follow this link: <%= @url %>.
+    </p>
+    <p>Thanks for joining and have a great day!</p>
+  </body>
+</html>
