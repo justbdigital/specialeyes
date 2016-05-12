@@ -6,15 +6,24 @@ module Transactions
       @last_name = params[:last_name]
       @phone = params[:phone]
       @gift = params[:gift] unless params[:gift].blank?
+      @email = params[:email]
+      @message = params[:message]
       @current_user = current_user
+      @balance_payment = params[:balance_payment]
+      @quantity = params[:quantity]
     end
 
     def call
       ActiveRecord::Base.transaction do
         braintree_transaction
 
-        if @result.success? && @gift
-          create_gift
+        if @result.success? && !@balance_payment.blank?
+          update_balance
+          empty_cart
+          user_update
+        elsif @result.success? && !@email.blank?
+          create_gifts
+          sent_email
           user_update
         elsif @result.success?
           empty_cart
@@ -51,9 +60,20 @@ module Transactions
       end
     end
 
-    def create_gift
-      voucher = Voucher.new(creator: @current_user, amount: @gift, paid: true)
-      voucher.save
+    def create_gifts
+      quantity = @quantity.to_i
+      amount = @gift.to_i / quantity
+      quantity.times { Voucher.create(creator: @current_user, amount: amount, paid: true) }
+    end
+
+    def sent_email
+      binding.pry
+    end
+
+    def update_balance
+      balance = @current_user.balance
+      balance.amount -= @balance_payment.to_i
+      balance.save
     end
 
     def empty_cart

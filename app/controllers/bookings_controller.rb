@@ -3,6 +3,7 @@ class BookingsController < ApplicationController
   before_action :set_treatment, only: [:create]
   before_action :set_date, only: [:calendar, :new]
   before_action :set_booking, only: [:destroy, :complete]
+  before_action :check_allowance!, only: [:confirm]
 
   def index
     authorize Booking
@@ -75,12 +76,18 @@ class BookingsController < ApplicationController
   end
 
   def confirm
-    if params[:payment] == 'yes'
+    case params[:payment]
+    when 'yes'
       redirect_to new_transaction_path
-    else
-      cart_ids = $redis.smembers current_user.cart
-      Booking.where(id: cart_ids).update_all(confirmed: true)
-      $redis.del current_user.cart
+    when 'half'
+      if transaction_needed?
+        redirect_to new_transaction_path(total: params[:total], gifts_amount: params[:gifts_amount])
+      else
+        use_gift_balance
+        redirect_to :root, notice: "Your order now paid. New balance £ #{current_user.balance.amount.to_i}"
+      end
+    when 'no'
+      update_bookings_and_empty_cart
       redirect_to :root, notice: 'Your order now confirmed. Payment will be needed at venue'
     end
   end
@@ -118,5 +125,44 @@ class BookingsController < ApplicationController
 
   def set_treatment
     @treatment ||= Treatment.find(params[:treat])
+  end
+
+  def check_allowance!
+    return true unless params[:payment] == 'half'
+    if params[:payment].blank?
+      redirect_to :back, notice: 'Please choose payment method'
+    elsif !amount_is_positive_integer?
+      redirect_to :back, alert: 'Amount should be a positive number'
+    elsif params[:gifts_amount].to_i > current_user.balance.amount
+      redirect_to :back, alert: "Please enter amount less or equal than balance (£ #{current_user.balance.amount.to_i})"
+    elsif params[:gifts_amount].to_i > params[:total].to_i
+      redirect_to :back, alert: "Please enter amount less or equal than order total (£ #{params[:total].to_i})"
+    else
+      true
+    end
+  end
+
+  def amount_is_positive_integer?
+    amount = Integer(params[:gifts_amount]) rescue nil
+    amount.to_i > 0
+  end
+
+  def use_gift_balance
+    ActiveRecord::Base.transaction do
+      balance = current_user.balance
+      balance.amount -= params[:total].to_i
+      balance.save
+      update_bookings_and_empty_cart(true)
+    end
+  end
+
+  def transaction_needed?
+    (params[:total].to_i - params[:gifts_amount].to_i) > 0
+  end
+
+  def update_bookings_and_empty_cart(paid = false)
+    cart_ids = $redis.smembers current_user.cart
+    Booking.where(id: cart_ids).update_all(confirmed: true, paid: paid)
+    $redis.del current_user.cart
   end
 end

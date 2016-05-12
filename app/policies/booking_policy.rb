@@ -16,6 +16,10 @@ class BookingPolicy < ApplicationPolicy
     user.present? && user.is_a?(Pro)
   end
 
+  def confirm?
+    user.present? && user.is_a?(Consumer)
+  end
+
   def destroy?
     record.pro == user || record.consumer == user
   end

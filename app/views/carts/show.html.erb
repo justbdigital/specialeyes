@@ -1,35 +1,46 @@
 <div class='container'>
 
   <div class='row' >
-    <div id="mycart" class="col-md-12">
+    <div id='mycart' class='col-md-12'>
       <div class='margin_down margin_up'>
         <h4>My Cart</h4>
-        <p> You've selected <span class="cart-count"><%=current_user.cart_count%></span> treatments!</p>
+        <p> You've selected <span class='cart-count'><%=current_user.cart_count%></span> treatments!</p>
       </div>
       <% @cart_bookings.each do |booking|%>
-        <div class="cart-booking col-md-8 col-sm-8">
+        <div class='cart-booking col-md-8 col-sm-8'>
             <p class='col-md-6 col-sm-6'><%= booking.treatment.title %></p>
             <p class='col-md-4 col-sm-4'><%= booking.start_at.strftime("%B %d at %H:%M") %></p>
             <p class='col-md-2 col-sm-2'><%= ::Treatment::DURATIONS[booking.treatment.duration.to_i] %> needed</p>
             <%=link_to booking_path(booking), method: :delete  do%>
-              <i class="fa fa-times" aria-hidden="true"></i>
+              <i class='fa fa-times' aria-hidden='true'></i>
             <%end%>
         </div>
       <%end%>
     </div>
   </div>
   .
-  <div class="col-md-12">
+  <div class='col-md-12'>
     <p><%= link_to(fa_icon('search', text: 'Find more treatments'), root_path) %></p>
     <%= form_tag confirm_bookings_path, class: 'col-md-6 button_down margin_up' do%>
       <%= hidden_field_tag :total, "#{@cart_total}" %>
-      <span class='cart-radio'><%= radio_button_tag(:payment, "yes") %>
-      <%= label_tag(:paid, "Pay now with card or PayPal") %></span>
-      <span class='cart-radio'><%= radio_button_tag(:payment, "no") %>
-      <%= label_tag(:not_paid, "Pay later at venue") %></span>
+      <span class='cart-radio'><%= radio_button_tag(:payment, 'yes') %>
+      <%= label_tag(:paid, 'Pay now with card or PayPal') %></span>
+      <span class='cart-radio'><%= radio_button_tag(:payment, 'no') %>
+      <%= label_tag(:not_paid, 'Pay later at venue') %></span>
 
-      <h4>Order total <span><%= fa_icon('gbp', text:"  #{@cart_total}") %></span></h4>
-      <button class='btn btn-warning btn-lg'>
+      <div class='margin_up'>
+        <span class='cart-radio'><%= radio_button_tag(:payment, 'half') %>
+        <%= label_tag(:use_gifts, 'Use gift balance') %></span>
+        <span>Available Balance   <%= fa_icon('gbp', text: "#{current_user.balance.amount.to_i}") %></span>
+        <span class='form-group'>
+          <%= text_field_tag :gifts_amount, params[:gifts_amount], placeholder: 'Enter amount', class: 'form-control' %>
+        </span>
+      </div>  
+
+      <h5 class='margin_up'>Order total <span><%= fa_icon('gbp', text:"  #{@cart_total}") %></span></h5>
+      <h5>Total to pay <span><%= fa_icon('gbp', text:"  #{@subtotal}") %></span></h5>
+
+      <button class='btn btn-warning btn-md col-md-12'>
         <span class=>Checkout Now </span>
       </button>
     <%end%>

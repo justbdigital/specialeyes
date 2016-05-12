@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   resources :vouchers, only: [:update] do
     get :add_gift, on: :collection
   end
-
+  get 'gift_card', to: 'vouchers#buy_gift_card', as: :buy_gift_card
 
   scope '/pro' do
     devise_for :pros, controllers: { invitations: 'users/invitations' }
