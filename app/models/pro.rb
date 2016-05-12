@@ -18,7 +18,16 @@
 #  current_sign_in_ip     :inet
 #  last_sign_in_ip        :inet
 #  member_of_id           :integer
+#  invitation_token       :string
+#  invitation_created_at  :datetime
+#  invitation_sent_at     :datetime
+#  invitation_accepted_at :datetime
+#  invitation_limit       :integer
+#  invited_by_id          :integer
+#  invited_by_type        :string
+#  invitations_count      :integer          default("0")
 #
+
 class Pro < ActiveRecord::Base
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -29,6 +38,8 @@ class Pro < ActiveRecord::Base
 
   has_many :treatments, dependent: :destroy
   has_many :bookings, dependent: :destroy
+
+  has_many :vouchers, as: :creator
 
   has_one :team, foreign_key: :owner_id, dependent: :destroy
   has_one :venue, dependent: :destroy
@@ -44,19 +55,26 @@ class Pro < ActiveRecord::Base
   end
 
   def booking_this_month
-    bookings.where(start_at: Time.now.beginning_of_month..Time.now.end_of_month).count
+    bookings
+      .where(confirmed: true, start_at: Time.now.beginning_of_month..Time.now.end_of_month)
+      .count
   end
 
   def treatment_this_month(treatment_id)
-    bookings.where(treatment_id: treatment_id, start_at: Time.now.beginning_of_month..Time.now.end_of_month).sum(:sum)
+    bookings
+      .where(confirmed: true, treatment_id: treatment_id, start_at: Time.now.beginning_of_month..Time.now.end_of_month)
+      .sum(:sum)
   end
 
   def historical_financies
-    bookings.where(start_at: (Time.now - 1.year)..Time.now).group_by_month(:start_at, format: "%B %Y").sum(:sum)
+    bookings
+      .where(confirmed: true, start_at: (Time.now - 1.year)..Time.now)
+      .group_by_month(:start_at, format: "%B %Y")
+      .sum(:sum)
   end
 
   def popular_treatments
-    row_bookings = bookings.where.not(treatment_id: nil).group_by(&:treatment_id)
+    row_bookings = bookings.where(confirmed: true).group_by(&:treatment_id)
 
     ids = {}.tap do |item|
       row_bookings.each_pair do |treatment_id, bookings|

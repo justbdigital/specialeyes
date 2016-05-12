@@ -26,4 +26,5 @@ RSpec.describe Treatment, type: :model do
   it { is_expected.to validate_presence_of(:pro_id) }
   it { is_expected.to validate_presence_of(:treatment_group_id) }
   it { is_expected.to validate_presence_of(:sale_price) }
+  it { is_expected.to validate_presence_of(:title) }
 end

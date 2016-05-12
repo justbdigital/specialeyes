@@ -23,6 +23,14 @@
 #  last_sign_in_ip        :inet
 #  image                  :string
 #  braintree_customer_id  :integer
+#  invitation_token       :string
+#  invitation_created_at  :datetime
+#  invitation_sent_at     :datetime
+#  invitation_accepted_at :datetime
+#  invitation_limit       :integer
+#  invited_by_id          :integer
+#  invited_by_type        :string
+#  invitations_count      :integer          default("0")
 #
 
 class Consumer < ActiveRecord::Base
@@ -35,7 +43,14 @@ class Consumer < ActiveRecord::Base
   has_many :authorizations, dependent: :destroy
   has_many :bookings, dependent: :destroy
   has_many :reviews, dependent: :destroy
-  has_many :invitations, dependent: :destroy, :class_name => 'Pro', :as => :invited_by
+  has_many :invitations, dependent: :destroy, class_name: 'Pro', as: :invited_by
+
+  has_many :vouchers, as: :creator
+  has_many :gifts, class_name: 'Voucher', foreign_key: :owner_id, dependent: :destroy
+  has_one :balance, dependent: :destroy
+
+  validates_presence_of :first_name
+  validates_presence_of :phone
 
   mount_uploader :image, ImageUploader
 
@@ -49,5 +64,9 @@ class Consumer < ActiveRecord::Base
 
   def has_payment_info?
     braintree_customer_id
+  end
+
+  def block_from_invitation?
+    false
   end
 end

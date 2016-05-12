@@ -10,6 +10,10 @@ class Users::InvitationsController < Devise::InvitationsController
   #   resource_class.invite!(invite_params, current_inviter, &block)
   # end
 
+  def after_invite_path_for(resource)
+    dashboard_path
+  end
+
   def invite_resource(&block)
     @user = Consumer.find_by(email: invite_params[:email])
     # @user is an instance or nil

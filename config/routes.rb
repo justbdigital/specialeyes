@@ -15,7 +15,14 @@ Rails.application.routes.draw do
     post :confirm, on: :collection
   end
   resource :cart, only: [:show]
+  resource :balance, only: [:create] do
+    get :show, as: :gifts
+  end
   resources :reviews, only: [:new, :create, :index]
+  resources :vouchers, only: [:update] do
+    get :add_gift, on: :collection
+  end
+
 
   scope '/pro' do
     devise_for :pros, controllers: { invitations: 'users/invitations' }
@@ -28,11 +35,13 @@ Rails.application.routes.draw do
       get :check_for_team, on: :collection
     end
     resources :bookings, only: [:create, :index, :destroy] do
+      get :calendar, on: :collection
       post :mark_as_unavailable, on: :collection
+      post :complete, on: :member
     end
     resources :venues, only: [:edit, :new]
     resources :bank_accounts, only: [:update, :edit, :new, :create]
-  resource :dashboard, only: [:show]
+    resource :dashboard, only: [:show]
   end
 
   # Example of regular route:

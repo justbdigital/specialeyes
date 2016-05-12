@@ -1,3 +1,3 @@
-<p><%= t("devise.mailer.invitation_instructions.hello", email: @resource.profile_name) %></p>
+<p><%= t("devise.mailer.invitation_instructions.hello", email: @resource.first_name) %></p>
 
 <p><%= t("devise.mailer.invitation_instructions.someone_invited_you", url: venue_url(@resource.invited_by.venue), name: @resource.invited_by.username) %></p>

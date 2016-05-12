@@ -3,6 +3,14 @@
   box-shadow: 0 1px 6px rgba(0, 0, 0, 0.175);
   border-radius: 50px;
   padding: 20px;
+
+  .fa-group,
+  .fa-thumbs-o-up,
+  .fa-check-square-o {
+    font-size: 35px;
+    margin-top: 20px;
+    margin-left: 15px;
+  }
 }
 
 .dashboard_icon p {
@@ -16,17 +24,31 @@
   margin-left: 15px;
 }
 
-.fa-group,
-.fa-thumbs-o-up,
-.fa-check-square-o {
-  font-size: 35px;
-  margin-top: 20px;
-  margin-left: 15px;
-}
-
 .down_section {
   margin-top: 50px;
   padding-top: 50px;
   border-top: 1px solid white;
   box-shadow: inset 0 20px 20px -20px rgba(0, 0, 0, 0.175);
+}
+
+.gift_raw {
+  position: relative;
+  border: 1px solid #DDD;
+  padding: 4px;
+  padding-left: 15px;
+  margin-top: 2px;
+  border-radius: 4px;
+  margin-bottom: 2px;
+  max-width: 600px;
+  height: 30px;
+}
+
+.gift_right {
+  float: right;
+}
+
+.gift_text {
+  min-width: 70px;
+  padding-left: 10px;
+  padding-right: 10px;
 }

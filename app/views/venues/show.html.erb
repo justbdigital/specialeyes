@@ -18,7 +18,7 @@
           <% @reviews.each do |review| %>
             <div class='event_preview'>
               <div class='event_right'>
-                <h4><%= review.consumer.profile_name %></h4>
+                <h4><%= "#{review.consumer.first_name} " "#{review.consumer.last_name}" %></h4>
               </div>
               <div class='venue_description'><%= review.comment %></div>
               <div class='event_date_right'>

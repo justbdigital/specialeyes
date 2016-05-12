@@ -1,89 +1,50 @@
 <div class='container'>
-
   <div class='row' >
-    <div class='col-md-7 margin_up' >
-      <div id='articles'>
-        <h2 class="month text-center">
-          <%= link_to "<", date: @date.prev_month, treat: params[:treat] %>
-          <%= @date.strftime("%B %Y") %>
-          <%= link_to ">", date: @date.next_month, treat: params[:treat] %>
-        </h2>
-        <%= calendar @date do |date| %>
-          <%= link_to bookings_path(date: "#{date}") do %>
-            <div class='col-md-12' ><%= date.day %></div>
-            <div class='col-md-12' >
-              <span ><%= morning_square(date) %></span>
-              <span ><%= afternoon_square(date) %></span>
-            </div>
-          <%end%>
-        <% end %>
-      </div>
-    </div>
-    <div class='col-md-5 margin_up'>
-      <h4 class='col-md-12'><%= @date.strftime("%^A, %B %d") %></h4>
-      <h4 class='col-md-12 red'>Choose slot to mark it as unavailable</h4>
-      <div class='col-md-6 margin_up text-center'>
-        morning
-        <% unless @pro_am_available.blank? %>
-          <%= form_tag mark_as_unavailable_bookings_path, method: :post do%>
-            <%= hidden_field_tag :date, "#{@date}" %>
-            <% @pro_am_available.each do |time| %>
-              <label class="col-md-12 text-center available-time-cell">
-                <%= check_box_tag "time[]", "#{time.start_at.to_i}" %>
-                <%= ::Treatment::DURATIONS[time.start_at] %>
-              </label>
-            <%end%>
-            <button class='btn btn-warning col-sm-12'>
-              <span>mark am hours</span>
-            </button>
-          <% end %>
-        <% end %>
-      </div>
-
-      <div class='col-md-6 margin_up text-center'>
-        afternoon
-        <% unless @pro_pm_available.blank? %>
-          <%= form_tag mark_as_unavailable_bookings_path, method: :post do%>
-            <%= hidden_field_tag :date, "#{@date}" %>
-            <% @pro_pm_available.each do |time| %>
-              <label class="col-md-12 text-center available-time-cell">
-                <%= check_box_tag "time[]", "#{time.start_at.to_i}" %>
-                <%= ::Treatment::DURATIONS[time.start_at] %>
-              </label>
-            <%end%>
-            <button class='btn btn-warning col-sm-12'>
-              <span>mark pm hours</span>
-            </button>
-          <% end %>
-        <% end %>
-      </div>
-    </div>
+    <table class='table table-striped margin_up bookings_index'>
+      <thead>
+        <tr>
+          <th>Booking Ref /<br />
+          Booked
+          </th>
+          <th>Booking Time</th>
+          <th>Customer Name</th>
+          <th>Telephone</th>
+          <th>Email</th>
+          <th>Treatment</th>
+          <th>Status</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @bookings.each do |booking| %>
+          <tr>
+            <td>
+              <%= booking.id %><br />
+              <%= booking.created_at.strftime("%d/%m/%Y %H:%M") %>
+            </td>
+            <td><%= booking.start_at.strftime("%d/%m/%Y %H:%M") %></td>
+            <td><%= "#{booking.consumer.first_name} " "#{booking.consumer.last_name}" %></td>
+            <td><%= booking.consumer.phone %></td>
+            <td><%= booking.consumer.email %></td>
+            <td><%= booking.treatment.title %></td>
+            <td>
+              <span>Confirmed</span><br />
+              <% if booking.paid %>
+                <span>(pre-paid)</span><br />
+              <% else %>
+                <span>(pay at venue)</span><br />
+              <% end %>
+              <% if booking.completed %>
+                <%= fa_icon('check-square-o', text:"complete") %><br />
+              <% else %>
+                <%= fa_icon('square-o', text:"not complete") %><br />
+                <%= link_to('mark as complete', complete_booking_path(booking), method: :post) %>
+              <% end %>
+            </td>
+            <td><span><%= fa_icon('gbp', text:"#{booking.sum}") %></span></td>
+          </tr>
+        <%end%>
+      </tbody>
+    </table>
   </div>
-
-  <div class='col-md-12 margin_up' >
-    <h4 class='col-md-12'>Your bookings on <%= @date.strftime("%^A, %B %d") %></h4>
-    <div class='col-md-12'>
-      <% @booked_by_customers.each do |booking| %>
-        <div class='booking_raw'>
-          <span class='booking_text'><%= booking.start_at.strftime("%H:%M") %></span>
-          <span class='booking_text'><%= booking.treatment.title %></span>
-          <span class='booking_text'><%= ::Treatment::DURATIONS[booking.treatment.duration.to_i] %></span>
-        </div>
-      <% end %>
-    </div>
-  </div>
-
-  <div class='col-md-12 margin_up' >
-    <h4 class='col-md-12'>You marked as unavailable on <%= @date.strftime("%^A, %B %d") %></h4>
-    <div class='col-md-12 last_div'>
-      <% @unavailable_by_pro.each do |booking| %>
-        <div class='booking_raw'>
-          <span class='booking_text'><%= booking.start_at.strftime("%H:%M") %></span>
-          <span class='booking_text'><%= ::Treatment::DURATIONS[1] %></span>
-          <span class='booking_undo_right'><%= link_to(fa_icon('undo', text: 'undo'), booking_path(booking, date: @date), method: :delete) %></span>
-        </div>
-      <% end %>
-    </div>
-  </div>
-
 </div>

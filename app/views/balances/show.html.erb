@@ -1,0 +1,44 @@
+<div class='col-md-12'>
+  <h2 class='margin_up margin_down'>Balance  - <%= fa_icon('gbp', text: "#{current_user.balance.amount.to_i}") %></h2>
+
+  <%= simple_form_for :gift, { url: add_gift_vouchers_path, method: :get} do |f| %>
+    <div class='form-group col-md-6'>
+      <%= f.input :code, required: true, autofocus: false, label: false, placeholder: 'enter gift code and increase your balance', input_html: { class: 'form-control'} %>
+    </div>
+    <div class='form-group col-md-2'>
+      <%= f.button :submit, 'Add gift', class: 'btn btn-warning last_div' %>
+    </div>
+  <% end %>
+</div>
+
+<h4>Added gifts</h4>
+<% if @gifts %>
+  <% @gifts.each do |gift| %>
+    <div class='gift_raw'>
+      <span class='gift_text'><%= gift.code %></span>
+      <span class='gift_text gift_right'><%= fa_icon('gbp', text: "#{gift.amount.to_i}") %></span>
+    </div>
+  <% end %>
+<% end %>
+
+<h4 class='margin_up'>Vouchers bought</h4>
+<% if @vouchers %>
+  <% @vouchers.each do |voucher| %>
+    <div class='gift_raw'>
+      <span class='gift_text'><%= voucher.code %></span>
+      <span class='gift_text gift_right'><%= fa_icon('gbp', text: "#{voucher.amount.to_i}") %></span>
+      <span class='gift_text gift_right'><%= "used" if voucher.used %></span>
+    </div>  
+  <% end %>
+<% end %>
+
+<div class='col-md-12 button_down'>
+  <%= simple_form_for :gift, { url: new_transaction_path, method: :get} do |f| %>
+    <div class='form-group col-md-6'>
+      <%= f.input :amount, collection: Voucher::AMOUNTS.sort.map {|k,v| [v,k]}, required: true,  include_blank: false, label: 'choose amount and select payment method to buy a gift', input_html: { class: 'form-control'} %>
+    </div>
+    <div class='form-group col-md-7'>
+      <%= f.button :submit, 'select payment method', class: 'btn btn-warning col-md-10 last_div' %>
+    </div>
+  <% end %>
+</div>

@@ -40,6 +40,7 @@
 
       <div class="table-responsive col-sm-12 col-md-12 margin_up">
         <h4>Pending bookings</h4>
+        <%= link_to(fa_icon('check-square-o', text: 'View all'), bookings_path) %>
         <table class='table table-striped bookings_history margin_up'>
           <thead>
             <tr>
@@ -52,7 +53,7 @@
             <% @bookings.each do |booking| %>
               <tr>
                 <td>
-                  <%= booking.consumer.profile_name %>
+                  <%= "#{booking.consumer.first_name} " "#{booking.consumer.last_name}" %>
                 </td>
                 <td><%= booking.treatment.title %></td>
                 <td><%= booking.start_at.strftime("%B %d at %H:%M") %></td>

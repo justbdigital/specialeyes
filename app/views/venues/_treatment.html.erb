@@ -1,9 +1,6 @@
 <% unless @treatments_with_groups.blank? %>
   <% @treatments_with_groups.each_pair do |treatment_group, treatments| %>
-    <div class=''>
-      <h4 class=''>
-        <%= treatment_group.name %>
-      </h4>
+    <h4><%= treatment_group.name %></h4>
     <table class='table table-striped treatments'>
       <tbody>
         <% treatments.each do |treatment| %>
@@ -25,6 +22,5 @@
         <%end%>
       </tbody>
     </table>
-    </div>
   <%end%>
 <%end%>

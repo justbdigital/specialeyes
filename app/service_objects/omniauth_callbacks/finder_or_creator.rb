@@ -20,11 +20,13 @@ module OmniauthCallbacks
     def create_consumer_with_auth(email)
       first_name, last_name = @auth.info.name.split("\s", 2)
       profile_name = SecureRandom.urlsafe_base64(nil, false)
+      phone = 'FB auth'
       password = Devise.friendly_token[0, 20]
       consumer = Consumer.create!(email: email,
                           password: password,
                           password_confirmation: password,
                           profile_name: profile_name,
+                          phone: phone,
                           first_name: first_name,
                           last_name: last_name)
       consumer.authorizations.create(provider: @auth.provider, uid: @auth.uid)

@@ -1,9 +1,19 @@
 class BookingsController < ApplicationController
   before_action :authenticate_user!
   before_action :set_treatment, only: [:create]
-  before_action :set_date, only: [:index, :new]
+  before_action :set_date, only: [:calendar, :new]
+  before_action :set_booking, only: [:destroy, :complete]
 
   def index
+    authorize Booking
+    @bookings = current_user
+                .bookings
+                .order(created_at: :desc)
+                .where(confirmed: true)
+                .paginate(page: params[:page], per_page: 30)
+  end
+
+  def calendar
     authorize Booking
     @unavailable_by_pro = Bookings::AvailableSlotsFinder.new(@date, nil, current_user).unavailable_by_pro
     @booked_by_customers = Bookings::AvailableSlotsFinder.new(@date, nil, current_user).booked_by_customers
@@ -38,6 +48,15 @@ class BookingsController < ApplicationController
     end
   end
 
+  def complete
+    authorize @booking
+    if @booking.update(completed: true)
+      redirect_to :back, notice: 'Booking has been completed'
+    else
+      redirect_to :back, notice: @booking.errors.full_messages.join(', ')
+    end  
+  end
+
   def mark_as_unavailable
     if params[:time].present?
       @saved = params[:time].each do |time|
@@ -46,7 +65,7 @@ class BookingsController < ApplicationController
         @booking.save
       end
       if no_errors?
-        redirect_to bookings_url(date: params[:date]), notice: 'slots were marked as unavailable'
+        redirect_to calendar_bookings_url(date: params[:date]), notice: 'slots were marked as unavailable'
       else
         redirect_to :back, notice: @booking.errors.full_messages.join(', ')
       end
@@ -67,7 +86,6 @@ class BookingsController < ApplicationController
   end
 
   def destroy
-    @booking = Booking.find(params[:id])
     authorize @booking
     id = @booking.id
     @booking.destroy
@@ -76,11 +94,15 @@ class BookingsController < ApplicationController
       $redis.srem current_user.cart, id
       redirect_to cart_path, notice: 'treatment was deleted from your shopping cart'
     else
-      redirect_to bookings_path(date: params[:date]), notice: 'slot is now available'
+      redirect_to calendar_bookings_path(date: params[:date]), notice: 'slot is now available'
     end
   end
 
   private
+
+  def set_booking
+    @booking = Booking.find(params[:id])
+  end
 
   def no_errors?
     @saved && @booking.errors.full_messages.empty?
