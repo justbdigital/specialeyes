@@ -1,7 +1,7 @@
 class VouchersController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_gift
-  before_action :check_gift!
+  before_action :set_gift, only: [:add_gift]
+  before_action :check_gift!, only: [:add_gift]
 
   def update
   end
@@ -10,6 +10,9 @@ class VouchersController < ApplicationController
     authorize @gift
     update_balance_and_gift
     redirect_to :back, notice: 'Added successfully'
+  end
+
+  def buy_gift_card
   end
 
   private

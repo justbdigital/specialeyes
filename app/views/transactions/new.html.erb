@@ -3,6 +3,13 @@
   <div class='col-lg-6 col-lg-offset-3'>
     <%= form_tag transactions_path do%>
       <%= hidden_field_tag :gift, "#{@gift}" %>
+      <% if params[:gift] %>
+        <%= hidden_field_tag :message, "#{params[:gift][:message]}" %>
+        <%= hidden_field_tag :email, "#{params[:gift][:email]}" %>
+        <%= hidden_field_tag :quantity, "#{params[:gift][:quantity]}" %>
+      <% end %>  
+      <%= hidden_field_tag :balance_payment, "#{params[:gifts_amount]}" %>
+
       <%= render 'customer_form' unless current_user.has_payment_info? %>
       <h4>Please enter your payment details:</h4>
       <div id='dropin'></div>
