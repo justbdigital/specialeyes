@@ -1,0 +1,26 @@
+<%= link_to buy_gift_card_path, :class => "btn btn-warning col-md-3 col-md-offset-9" do %>
+  <i class="glyphicon glyphicon-gift white"></i> Buy a Gift Card
+<% end %>
+
+<div class='container homepage'>
+  <div class='row'>
+    <h1 class='text-center'>Book Yourself Fabulous</h1>
+    <h3 class='text-center'>Beauty appointments at your fingertips</h3>
+    <div class='container'>
+        <% @venues.each_with_index do |venue, index| %>
+          <div class='event_preview'>
+            <%= image_tag venue.image_url unless venue.image.blank? %>
+            <div class='event_right'>
+              <h2><%= link_to venue.name, venue_path(venue.name) %></h2>
+              <h4><%= venue.address %></h4>
+              <div class='venue_description'><%= venue.description %></div>
+              <div class='event_date_right'>
+                <%= rating_stars(venue) %>
+              </div>
+            </div>
+          </div>
+        <% end %>
+        <div><%= will_paginate %></div>
+    </div>
+  </div>
+</div>
