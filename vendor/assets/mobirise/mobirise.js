@@ -1,0 +1,11 @@
+//= require jquery/jquery.min.js
+//= require jquery-mb-ytplayer/jquery.mb.YTPlayer.min.js
+//= require bootstrap/js/bootstrap.min.js
+//= require smooth-scroll/SmoothScroll.js
+//= require jarallax/jarallax.js
+//= require bootstrap-carousel-swipe/bootstrap-carousel-swipe.js
+//= require masonry/masonry.pkgd.min.js
+//= require imagesloaded/imagesloaded.pkgd.min.js
+//= require social-likes/social-likes.js
+//= require mobirise/js/script.js
+//= require mobirise-gallery/script.js

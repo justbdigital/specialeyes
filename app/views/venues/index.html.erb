@@ -1,26 +1,37 @@
-<%= link_to buy_gift_card_path, :class => "btn btn-warning col-md-3 col-md-offset-9" do %>
-  <i class="glyphicon glyphicon-gift white"></i> Buy a Gift Card
-<% end %>
+<section class="mbr-box mbr-section mbr-section--relative mbr-section--fixed-size mbr-section--full-height mbr-section--bg-adapted mbr-parallax-background mbr-after-navbar" id="header1-73" style="background-image: url(assets/images/haidressers-bournemouth.jpg);">
+    <div class="mbr-box__magnet mbr-box__magnet--sm-padding mbr-box__magnet--center-left">
+        <div class="mbr-overlay" style="opacity: 0.6; background-color: rgb(76, 105, 114);"></div>
 
-<div class='container homepage'>
-  <div class='row'>
-    <h1 class='text-center'>Book Yourself Fabulous</h1>
-    <h3 class='text-center'>Beauty appointments at your fingertips</h3>
-    <div class='container'>
-        <% @venues.each_with_index do |venue, index| %>
-          <div class='event_preview'>
-            <%= image_tag venue.image_url unless venue.image.blank? %>
-            <div class='event_right'>
-              <h2><%= link_to venue.name, venue_path(venue.name) %></h2>
-              <h4><%= venue.address %></h4>
-              <div class='venue_description'><%= venue.description %></div>
-              <div class='event_date_right'>
-                <%= rating_stars(venue) %>
-              </div>
+        <div class="mbr-box__container mbr-section__container container">
+            <div class="mbr-box mbr-box--stretched"><div class="mbr-box__magnet mbr-box__magnet--center-left">
+                <div class="row"><div class="col-sm-12 text-center">
+
+                    <div class="mbr-hero animated fadeInUp">
+                        <h1 class="mbr-hero__text">BEAUTY AT YOUR FINGERTIPS</h1>
+                        <p class="mbr-hero__subtext">Book your favorite beautician or beauty salon now<br></p>
+                    </div>
+
+                    <%= form_tag root_path, method: :get, class: 'animated fadeInUp delay' do%>
+                    <div class="mbr-buttons btn-inverse mbr-buttons--left">
+                      <%= text_field_tag :amount, params[:amount], placeholder: 'What do you want to book', class: 'form-control animated fadeInUp delay main_page_form' %>
+
+                      <%= text_field_tag :gifts_amount, params[:gifts_amount], placeholder: 'LOCATION/POSTCODE', class: 'form-control animated fadeInUp delay main_page_form' %>
+
+                      <button class='mbr-buttons__btn btn btn-md btn-default animated fadeInUp delay main_page_form--last'>
+                        <span>SEARCH</span>
+                      </button>
+                    </div>
+                    <% end %>  
+
+                </div></div>
+            </div></div>
+        </div>
+
+        <div class="mbr-arrow mbr-arrow--floating text-center">
+            <div class="mbr-section__container container">
+                <a class="mbr-arrow__link" href="#features1-75"><i class="glyphicon glyphicon-menu-down"></i></a>
             </div>
-          </div>
-        <% end %>
-        <div><%= will_paginate %></div>
+        </div>
+
     </div>
-  </div>
-</div>
+</section>

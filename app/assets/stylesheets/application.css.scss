@@ -13,18 +13,18 @@
  *= require imageselect
  *= require fullcalendar
  *= require jquery-ui
+ *= require mobirise
  */
 
 // Custom bootstrap variables must be set or import before bootstrap itself.
 
-@import "bootstrap-sprockets";
-@import 'bootstrap';
 @import 'font-awesome.css';
 @import 'chosen';
 @import 'booking_calendar';
 @import 'treatments';
 @import 'carts';
 @import 'dashboard';
+@import 'bootstrap-sprockets';
 
 html, body {
   height: 100%;
@@ -61,3 +61,17 @@ html, body {
 .login_logout_link {
   min-width: 160px;
 }
+
+.main_page_form {
+  display: inline-block;
+  vertical-align: middle;
+  width: 35%;
+  margin-right: 5%;
+}
+
+.main_page_form--last {
+  display: inline-block;
+  vertical-align: middle;
+  width: 19%;
+  margin: 0;
+  }
