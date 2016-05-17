@@ -44,4 +44,8 @@ class Venue < ActiveRecord::Base
     stars = Review.where(venue: self).pluck(:staff, :value, :ambiance, :cleanliness).flatten
     stars.blank? ? 0 : stars.inject(:+).to_f / stars.length
   end
+
+  def rating_more(rate)
+    rating >= rate
+  end
 end

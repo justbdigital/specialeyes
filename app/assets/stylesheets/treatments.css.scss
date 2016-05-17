@@ -118,3 +118,18 @@ a {
 .treatments span {
   padding: 0;
 }
+
+.main_page_index span {
+  padding: 0;
+}
+
+.main_page_index td {
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  width: 30%;
+}
+
+.small_table_row {
+  height: 22px; 
+  overflow: auto;
+}

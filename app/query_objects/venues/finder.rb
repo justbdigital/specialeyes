@@ -3,37 +3,66 @@ module Venues
     def initialize(params)
       @treatment = params[:treatment]
       @location = params[:location]
+      @date = params[:date].try(:to_datetime)
+      @rating = params[:rating]
+      @cost = params[:cost].to_i
     end
 
     def call
-      apply_filters(query)
+      query
     end
 
     private
 
     def pros
-      Pro.where(::Treatment.arel_table[:title].matches_all(treatment))
+      treatment_query = @treatment.to_s.split.map { |s| s.tr!("*", "%") || "%#{s}%" }
+      treatments = ::Treatment.arel_table
+
+      if @treatment.blank? && @cost == 0
+        Pro.all
+      elsif @cost == 0
+        @pros = Pro
+          .joins(:treatments)
+          .where(treatments[:treatment_type].matches_all(treatment_query))
+      elsif @treatment.blank?
+        @pros = Pro
+          .joins(:treatments)
+          .where(treatments[:sale_price].lteq(@cost))
+      else
+        @pros = Pro
+          .joins(:treatments)
+          .where(treatments[:treatment_type].matches_all(treatment_query)
+            .and(treatments[:sale_price].lteq(@cost)))
+      end
     end
 
-    def query
+    def date_available_for?(venue)
+      slots_base = Bookings::AvailableSlotsFinder.new(@date, nil, venue.pro)
+      !(slots_base.am_slots + slots_base.pm_slots).blank?
+    end
+
+    def sub_venue_query
       Venue.order(created_at: :desc)
     end
 
-    def apply_filters(query)
-      treatment = @treatment.to_s.split.map { |s| s.tr!("*", "%") || "%#{s}%" }
-      location = @location.to_s.split.map { |s| s.tr!("*", "%") || "%#{s}%" }
+    def query
+      @query ||= sub_venue_query.joins(:pro).where(pro: pros.uniq)
 
-      filter(query, treatment, location)
+      location = @location.to_s.split.map { |s| s.tr!("*", "%") || "%#{s}%" }
+      venues = ::Venue.arel_table
+      (@query = @query.where(venues[:address].matches_all(location))) unless location.blank?
+
+      (@query = @query.map { |venue| venue if date_available_for?(venue) }.compact) if @date
+      (@query = @query.map { |venue| venue if venue.rating_more(@rating.to_i) }.compact) unless @rating.blank?
+      @query
     end
 
-    def filter(query, treatment, location)
-      return query if treatment.blank?
+    def filter
+      location = @location.to_s.split.map { |s| s.tr!("*", "%") || "%#{s}%" }
+      return query if location.blank?
+
       venues = ::Venue.arel_table
-      treatments = ::Treatment.arel_table
-
-      pros = Pro.joins(:treatments).where(treatments[:title].matches_all(treatment))
-
-      query.joins(:pro).where(pro: pros).where(venues[:address].matches_all(location))
+      query.where(venues[:address].matches_all(location))
     end
   end
 end
