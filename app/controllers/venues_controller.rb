@@ -6,9 +6,7 @@ class VenuesController < ApplicationController
   impressionist actions: [:show]
 
   def index
-    @venues = Venue.all
-                   .order(created_at: :desc)
-                   .paginate(page: params[:page], per_page: 3)
+    @venues = ::Venues::Finder.new(params).call.paginate(page: params[:page], per_page: 3)
   end
 
   def new

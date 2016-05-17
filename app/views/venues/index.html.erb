@@ -4,9 +4,8 @@
 
 <div class='container homepage'>
   <div class='row'>
-    <h1 class='text-center'>Book Yourself Fabulous</h1>
-    <h3 class='text-center'>Beauty appointments at your fingertips</h3>
-    <div class='container'>
+
+    <div class='col-md-8 margin_up' >
         <% @venues.each_with_index do |venue, index| %>
           <div class='event_preview'>
             <%= image_tag venue.image_url unless venue.image.blank? %>
@@ -22,5 +21,39 @@
         <% end %>
         <div><%= will_paginate %></div>
     </div>
+
+    <div class='col-md-4 button_down' >
+      <%= form_tag venues_path, method: :get, id: 'seach_form' do%>
+        <span class='form-group'>
+          <%= label_tag(:treatment, 'Treatment') %>
+          <%= text_field_tag :treatment, params[:treatment], placeholder: 'Enter treatment name or part', class: 'form-control margin_down' %>
+        </span>
+        <span class='form-group'>
+          <%= label_tag(:location, 'Location') %>
+          <%= text_field_tag :location, params[:location], placeholder: 'Enter location', class: 'form-control margin_down' %>
+        </span>
+        <span class='form-group'>
+          <%= label_tag(:date, 'Date') %>
+          <%= date_field :date, params[:date], class: 'form-control margin_down' %>
+        </span>
+        <span class='form-group'>
+          <%= label_tag(:time, 'Time') %>
+          <%= search_field :time, params[:time], class: 'form-control margin_down' %>
+        </span>
+        <span class='form-group'>
+          <%= label_tag(:rating, 'rating') %>
+          <%= number_field_tag :rating, 4, :step => 0.1, :min => 0, :max => 5, class: 'form-control margin_down' %>
+        </span>
+        <span class='form-group'>
+          <span class='col-md-1'><%= "£#{0}" %></span><span class='col-md-2 col-md-offset-9'><%= "£#{1000}" %></span>
+          <%= range_field_tag :cost, 0, min: 0, max: 1000, id: 'ranger'  %>
+          <%= label_tag :cost, "Current Value £ 0", id: 'ranger_label' %>
+        </span>
+        <button class='btn btn-default btn-md col-md-12 margin_up'>
+          <span class=>Search</span>
+        </button>
+      <%end%>
+    </div>
+
   </div>
 </div>
