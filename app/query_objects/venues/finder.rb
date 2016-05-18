@@ -6,6 +6,7 @@ module Venues
       @date = params[:date].try(:to_datetime)
       @rating = params[:rating]
       @cost = params[:cost].to_i
+      @distance = params[:distance].to_i
     end
 
     def call
@@ -36,33 +37,46 @@ module Venues
       end
     end
 
-    def date_available_for?(venue)
-      slots_base = Bookings::AvailableSlotsFinder.new(@date, nil, venue.pro)
-      !(slots_base.am_slots + slots_base.pm_slots).blank?
-    end
-
-    def sub_venue_query
-      Venue.order(created_at: :desc)
-    end
-
     def query
-      @query ||= sub_venue_query.joins(:pro).where(pro: pros.uniq)
+      @query ||= Venue.order(created_at: :desc)
 
       location = @location.to_s.split.map { |s| s.tr!("*", "%") || "%#{s}%" }
       venues = ::Venue.arel_table
       (@query = @query.where(venues[:address].matches_all(location))) unless location.blank?
+      
+      near_location_search
+      @query = @query.uniq.map { |venue| multicase(venue) }.compact
 
-      (@query = @query.map { |venue| venue if date_available_for?(venue) }.compact) if @date
-      (@query = @query.map { |venue| venue if venue.rating_more(@rating.to_i) }.compact) unless @rating.blank?
       @query
     end
 
-    def filter
-      location = @location.to_s.split.map { |s| s.tr!("*", "%") || "%#{s}%" }
-      return query if location.blank?
+    def near_location_search
+      @near = []
+      @query.each do |ven|
+        @near += Venue.near(ven.address, @distance)
+      end
+      @query += @near
+    end
 
-      venues = ::Venue.arel_table
-      query.where(venues[:address].matches_all(location))
+    def multicase(venue)
+      venue if pros_case?(venue) && date_case?(venue) && rating_case?(venue)
+    end
+
+    def pros_case?(venue)
+      pros.uniq.include?(venue.pro)
+    end
+
+    def date_case?(venue)
+      !@date || date_available_for?(venue)
+    end
+
+    def rating_case?(venue)
+      @rating.blank? || venue.rating_more(@rating.to_i)
+    end
+
+    def date_available_for?(venue)
+      slots_base = Bookings::AvailableSlotsFinder.new(@date, nil, venue.pro)
+      !(slots_base.am_slots + slots_base.pm_slots).blank?
     end
   end
 end
