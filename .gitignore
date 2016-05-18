@@ -17,6 +17,7 @@
 /tmp
 /public/uploads/venue/image/
 /public/uploads/consumer/image/
+/public/uploads/tmp/
 
 # Ignore application configuration
 /config/application.yml

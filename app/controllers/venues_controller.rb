@@ -1,4 +1,6 @@
 class VenuesController < ApplicationController
+  require 'will_paginate/array'
+
   before_action :authenticate_user!, except: [:show, :index]
   before_action :set_venue, only: [:show, :update, :edit]
   before_action :set_hash, only: [:show, :edit]
@@ -6,9 +8,14 @@ class VenuesController < ApplicationController
   impressionist actions: [:show]
 
   def index
-    @venues = Venue.all
-                   .order(created_at: :desc)
-                   .paginate(page: params[:page], per_page: 3)
+    if params[:search]
+      @venues = ::Venues::Finder.new(params.delete :search).call.paginate(page: params[:page], per_page: 3)
+      @venues = [].paginate(page: params[:page], per_page: 3) unless @venues.first
+    else
+      @venues = Venue.all
+                     .order(created_at: :desc)
+                     .paginate(page: params[:page], per_page: 3)
+    end
   end
 
   def new

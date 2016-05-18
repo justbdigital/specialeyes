@@ -38,6 +38,12 @@
   <%= javascript_tag do %>
 
     $(document).ready(function() {
+        $("#ranger").change(function() { 
+          $input_value = $(this).val();
+          $label = $("#ranger_label");
+          $label.text("Current Value £ " + $input_value);
+        });
+
         myevents = {
           id: '1', title: 'All Day Event', start: new Date(2016, 04, 21)
         }; 
