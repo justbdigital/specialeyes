@@ -58,6 +58,10 @@
           <%= f.text_field :location, placeholder: 'Enter location address or part', class: 'form-control margin_down' %>
         </span>
         <span class='form-group'>
+          <%= f.label_tag(:distance, 'Distance') %>
+          <%= f.number_field :distance, placeholder: 'Enter distance from location in km', :step => 1, :min => 1, :max => 500, class: 'form-control margin_down' %>
+        </span>        
+        <span class='form-group'>
           <%= f.label_tag(:date, 'Date') %>
           <%= f.date_field :date, class: 'form-control margin_down' %>
         </span>
@@ -66,7 +70,7 @@
           <%= f.search_field :time, placeholder: 'NOT WORKING!', class: 'form-control margin_down' %>
         </span>
         <span class='form-group'>
-          <%= f.label_tag(:rating, 'rating more or equal') %>
+          <%= f.label_tag(:rating, 'Rating more or equal') %>
           <%= f.number_field :rating, :step => 0.5, :min => 0, :max => 5, class: 'form-control margin_down' %>
         </span>
         <span class='form-group'>
@@ -74,11 +78,15 @@
           <%= f.range_field :cost, min: 0, max: 1000, id: 'ranger'  %>
           <%= f.label_tag :cost, "Current Value £ 500", id: 'ranger_label' %>
         </span>
-        <button class='btn btn-default btn-md col-md-12 margin_up'>
+        <button class='btn btn-default btn-md col-md-12 margin_up margin_down'>
           <span class=>Search</span>
         </button>
         <%end%>
       <%end%>
+
+      <div class='last_div' style='width: 100%;'>
+        <div id='map' style='width: 100%; height: 200px;'></div>
+      </div>
     </div>
 
   </div>

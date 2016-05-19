@@ -9,13 +9,14 @@ class VenuesController < ApplicationController
 
   def index
     if params[:search]
-      @venues = ::Venues::Finder.new(params.delete :search).call.paginate(page: params[:page], per_page: 3)
+      @venues = ::Venues::Finder.new(params.delete :search).call.paginate(page: params[:page], per_page: 4)
       @venues = [].paginate(page: params[:page], per_page: 3) unless @venues.first
     else
       @venues = Venue.all
                      .order(created_at: :desc)
-                     .paginate(page: params[:page], per_page: 3)
+                     .paginate(page: params[:page], per_page: 4)
     end
+    set_collection unless @venues.blank?           
   end
 
   def new
@@ -68,9 +69,19 @@ class VenuesController < ApplicationController
     Gmaps4rails.build_markers([@venue]) do |venue, marker|
       marker.lat venue.latitude
       marker.lng venue.longitude
-      marker.infowindow '<b>#{venue.name}</b>'
+      marker.infowindow "#{venue.name}, #{venue.address}"
     end
   end
+
+  def set_collection
+    @hash ||= 
+      Gmaps4rails.build_markers(@venues) do |venue, marker|
+        marker.lat venue.latitude
+        marker.lng venue.longitude
+        marker.infowindow "#{venue.name}, #{venue.address}"
+      end
+  end
+
 
   def venue_params
     params.require(:venue).permit(:name, :description, :primary_type, :address, :image, :remote_image_url, :remove_image, :phone, :email)
