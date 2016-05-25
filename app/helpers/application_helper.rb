@@ -29,6 +29,10 @@ module ApplicationHelper
     end
   end
 
+  def venue_image(venue)
+    venue.image.blank? ? image_tag("#{venue.id % 3}.jpg", width: 200) : image_tag(venue.image_url)
+  end
+
   def default_gravatar
     gravatar_image_tag(
       'junk',

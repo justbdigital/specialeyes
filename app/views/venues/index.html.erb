@@ -9,7 +9,7 @@
     <div class='col-md-8 margin_up' >
         <% @venues.compact.each_with_index do |venue, index| %>
           <div class='event_preview'>
-            <%= image_tag venue.image_url unless venue.image.blank? %>
+            <%= venue_image(venue) %>
             <div class='event_right'>
               <h2><%= link_to venue.name, venue_path(venue.name) %></h2>
               <h4><%= venue.address %></h4>
@@ -17,7 +17,7 @@
                 <div class="table-responsive">
                   <table class='table main_page_index'>
                     <tbody>
-                      <% venue.pro.treatments.each do |treatment| %>
+                      <% venue.pro.treatments.where(featured: true).each do |treatment| %>
                         <tr>
                           <td><div class='small_table_row'><%= treatment.title %></div></td>
                           <td><div class='small_table_row'>

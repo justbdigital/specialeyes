@@ -28,7 +28,9 @@ Rails.application.routes.draw do
     devise_for :pros, controllers: { invitations: 'users/invitations' }
 
     resources :pros
-    resources :treatments
+    resources :treatments do
+      post :select_featured, on: :collection
+    end
     resources :treatment_groups
     resources :teams, only: [:create, :show] do
       post :add_member, on: :member

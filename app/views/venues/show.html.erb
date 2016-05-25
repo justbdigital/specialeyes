@@ -7,7 +7,7 @@
       <% else %>
         <h2><%= @venue.name %></h2>
         <h4><%= @venue.address %></h4>
-        <div class='venue_show_img'><%= image_tag @venue.image_url unless @venue.image.blank? %></div>
+        <div class='venue_show_img'><%= venue_image(@venue) %></div>
         <h3 class='margin_up margin_down'>Overview</h3>
         <div class='venue_description'><%= @venue.description %></div>
         <h3 class='margin_up margin_down'>Services</h3>
