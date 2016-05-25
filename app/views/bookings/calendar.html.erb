@@ -1,6 +1,10 @@
 <div class='container'>
-
   <div class='row' >
+
+  <%= link_to daily_schedules_path, :class => "btn btn-warning col-md-3 col-md-offset-9" do %>
+    <i class="glyphicon glyphicon-search white"></i> Check and update your working hours
+  <% end %>
+
     <div class='col-md-7 margin_up' >
       <div id='articles'>
         <h2 class="month text-center">
@@ -84,6 +88,6 @@
         </div>
       <% end %>
     </div>
+  
   </div>
-
 </div>

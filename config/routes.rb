@@ -32,6 +32,10 @@ Rails.application.routes.draw do
       post :select_featured, on: :collection
     end
     resources :treatment_groups
+    resources :daily_schedules, only: [:index, :destroy] do
+      post :set, on: :collection
+    end
+
     resources :teams, only: [:create, :show] do
       post :add_member, on: :member
       get :check_for_team, on: :collection

@@ -38,6 +38,7 @@ class Pro < ActiveRecord::Base
 
   has_many :treatments, dependent: :destroy
   has_many :bookings, dependent: :destroy
+  has_many :daily_schedules, dependent: :destroy
 
   has_many :vouchers, as: :creator
 
