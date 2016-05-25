@@ -12,7 +12,7 @@
             <%= venue_image(venue) %>
             <div class='event_right'>
               <h2><%= link_to venue.name, venue_path(venue.name) %></h2>
-              <h4><%= venue.address %></h4>
+              <h4><%= "#{venue.address} #{venue.postcode}" %></h4>
               <div class='venue_description'>
                 <div class="table-responsive">
                   <table class='table main_page_index'>

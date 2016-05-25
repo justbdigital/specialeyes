@@ -60,6 +60,8 @@ module Bookings
     end
 
     def slots
+      return [] if @date <= Time.zone.now
+
       @free_slots = []
       raw_slots.each_with_index do |slot, index|
         if @pro
@@ -72,7 +74,7 @@ module Bookings
           end
         end
       end
-      @date > Time.zone.now ? @free_slots : []
+      @free_slots
     end
 
     def update_slots!

@@ -38,7 +38,7 @@ module Transactions
     private
 
     def braintree_transaction
-      sum = @gift || (cart_total * 1.26707).round(2) # need to change braintree default currency to pound
+      sum = @gift || cart_total.round(2) # need to change braintree default currency to pound
 
       if !@current_user.has_payment_info?
         @result = Braintree::Transaction.sale(
@@ -61,8 +61,10 @@ module Transactions
     end
 
     def create_gifts
-      @vouchers = []
       quantity = @quantity.to_i
+      return false unless quantity > 0
+
+      @vouchers = []
       amount = @gift.to_i / quantity
       quantity.times { @vouchers << Voucher.create(creator: @current_user, amount: amount, paid: true) }
     end

@@ -82,7 +82,7 @@ class Pro < ActiveRecord::Base
       end
     end.sort_by { |_k, v| v }.last(3).map(&:first)
 
-    @treatments ||= Treatment.where(id: ids)
+    @treatments = Treatment.where(id: ids)
   end
 
   private

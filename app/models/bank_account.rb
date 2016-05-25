@@ -15,8 +15,6 @@
 #  updated_at     :datetime         not null
 #
 class BankAccount < ActiveRecord::Base
-  COUNTRIES = ['United Kingdom', 'Sweden'].freeze
-
   belongs_to :pro
   validates_presence_of :pro_id
   validates_uniqueness_of :pro_id

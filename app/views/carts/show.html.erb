@@ -10,7 +10,7 @@
         <div class='cart-booking col-md-8 col-sm-8'>
             <p class='col-md-6 col-sm-6'><%= booking.treatment.title %></p>
             <p class='col-md-4 col-sm-4'><%= booking.start_at.strftime("%B %d at %H:%M") %></p>
-            <p class='col-md-2 col-sm-2'><%= ::Treatment::DURATIONS[booking.treatment.duration.to_i] %> needed</p>
+            <p class='col-md-2 col-sm-2'><%= ::ApplicationHelper::DURATIONS[booking.treatment.duration.to_i] %> needed</p>
             <%=link_to booking_path(booking), method: :delete  do%>
               <i class='fa fa-times' aria-hidden='true'></i>
             <%end%>

@@ -1,7 +1,7 @@
 <div class='container-fluid'>
   <div class='row' >
     <div class="col-sm-4 col-md-3 button_down dashboard_sidebar">
-      <div class='venue_show_img'><%= venue_image(@venue) %></div>
+      <div class='venue_show_img'><%= venue_image(@venue) if @venue %></div>
       <div class="col-sm-12 col-md-12 margin_up"><%= rating_stars(@venue) if @venue %></div>
       <%= link_to(fa_icon('pencil', text: 'Edit venue details'), check_venue_path, class: 'col-sm-12 col-md-12 button_down') %>
       <% if @venue %>

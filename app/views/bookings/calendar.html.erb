@@ -30,7 +30,7 @@
             <% @pro_am_available.each do |time| %>
               <label class="col-md-12 text-center available-time-cell">
                 <%= check_box_tag "time[]", "#{time.start_at.to_i}" %>
-                <%= ::Treatment::DURATIONS[time.start_at] %>
+                <%= ::ApplicationHelper::DURATIONS[time.start_at] %>
               </label>
             <%end%>
             <button class='btn btn-warning col-sm-12'>
@@ -48,7 +48,7 @@
             <% @pro_pm_available.each do |time| %>
               <label class="col-md-12 text-center available-time-cell">
                 <%= check_box_tag "time[]", "#{time.start_at.to_i}" %>
-                <%= ::Treatment::DURATIONS[time.start_at] %>
+                <%= ::ApplicationHelper::DURATIONS[time.start_at] %>
               </label>
             <%end%>
             <button class='btn btn-warning col-sm-12'>
@@ -67,7 +67,7 @@
         <div class='booking_raw'>
           <span class='booking_text'><%= booking.start_at.strftime("%H:%M") %></span>
           <span class='booking_text'><%= booking.treatment.title %></span>
-          <span class='booking_text'><%= ::Treatment::DURATIONS[booking.treatment.duration.to_i] %></span>
+          <span class='booking_text'><%= ::ApplicationHelper::DURATIONS[booking.treatment.duration.to_i] %></span>
         </div>
       <% end %>
     </div>
@@ -79,7 +79,7 @@
       <% @unavailable_by_pro.each do |booking| %>
         <div class='booking_raw'>
           <span class='booking_text'><%= booking.start_at.strftime("%H:%M") %></span>
-          <span class='booking_text'><%= ::Treatment::DURATIONS[1] %></span>
+          <span class='booking_text'><%= ::ApplicationHelper::DURATIONS[1] %></span>
           <span class='booking_undo_right'><%= link_to(fa_icon('undo', text: 'undo'), booking_path(booking, date: @date), method: :delete) %></span>
         </div>
       <% end %>

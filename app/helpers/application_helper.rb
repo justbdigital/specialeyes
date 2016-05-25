@@ -1,4 +1,16 @@
 module ApplicationHelper
+  COUNTRIES = ['United Kingdom', 'Sweden'].freeze
+  TREATTYPE = ['Eyelash and Eyebrow Treatments', 'Eyelash Extentions', 'New Treatment', 'Old Treatment', 'First', 'Last'].freeze
+  TYPES = ['Mobile Beauty', 'Medical Spa'].freeze
+  AMOUNTS = { 10 => '£ 10.00', 20 => '£ 20.00', 30 => '£ 30.00', 40 => '£ 40.00', 50 => '£ 50.00', 60 => '£ 60.00',
+              70 => '£ 70.00', 80 => '£ 80.00', 90 => '£ 90.00', 100 => '£ 100.00' }.freeze
+  DURATIONS = { 1 => '30 min', 2 => '1 h', 3 => '1 h 30 min', 4 => '2 h', 5 => '2 h 30 min', 6 => '3 h', 7 => '3 h 30 min',
+              8 => '4 h', 9 => '4 h 30 min', 10 => '5 h', 11 => '5 h 30 min', 12 => '6 h', 13 => '6 h 30 min', 14 => '7 h',
+              15 => '7 h 30 min', 16 => '8 h', 17 => '8 h 30 min', 18 => '9:00', 19 => '9:30', 20 => '10:00', 21 => '10:30',
+              22 => '11:00', 23 => '11:30', 24 => '12:00', 25 => '12:30', 26 => '13:00', 27 => '13:30', 28 => '14:00', 29 => '14:30',
+              30 => '15:00', 31 => '15:30', 32 => '16:00', 33 => '16:30', 34 => '17:00', 35 => '17:30', 36 => '18:00', 37 => '18:30',
+              38 => '19:00', 39 => '19:30', 40 => '20:00' }.freeze
+
   def menu_settings
     content_tag :li, link_to(fa_icon('heart', text: 'Treatments'), treatments_path)
   end
