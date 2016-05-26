@@ -6,8 +6,8 @@
         <p>Venue not found</p>
       <% else %>
         <h2><%= @venue.name %></h2>
-        <h4><%= @venue.address %></h4>
-        <div class='venue_show_img'><%= image_tag @venue.image_url unless @venue.image.blank? %></div>
+        <h4><%= "#{@venue.address} #{@venue.postcode}" %></h4>
+        <div class='venue_show_img'><%= venue_image(@venue) %></div>
         <h3 class='margin_up margin_down'>Overview</h3>
         <div class='venue_description'><%= @venue.description %></div>
         <h3 class='margin_up margin_down'>Services</h3>
@@ -40,8 +40,8 @@
           <%= rating_stars(@venue) %>
           <%= link_to 'leave a review', new_review_path(venue: @venue) %>
         </div>
-        <% unless @venue.address.blank? %>
-          <h6><%= "#{@venue.address}" %></h6>
+        <% unless @venue.latitude.blank? %>
+          <h6><%= "#{@venue.address} #{@venue.postcode}" %></h6>
           <div style='width: 100%;'>
             <div id='map' style='width: 100%; height: 200px;'></div>
           </div>

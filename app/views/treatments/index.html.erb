@@ -7,32 +7,41 @@
         <%end%>
       <%end%>      
     </div>
-      <% unless @treatments_with_groups.blank? %>
-        <% @treatments_with_groups.each_pair do |treatment_group, treatments| %>
-          <div class='col-md-12 button_down'>
-            <h4 class='col-md-10'>
-              <%= link_to "#{treatment_group.name}", edit_treatment_group_path(treatment_group) %>
-              <%= link_to(fa_icon('trash-o'), treatment_group_path(treatment_group), method: :delete) %>
-            </h4>
-            <div class='button-right'><%= button_to 'add treatment', new_treatment_path, method: 'get', class: 'btn btn-xs btn-xs-default', params: {group_id: treatment_group.id} %></div>
-          </div>
-          <table class='table table-striped treatments'>
-            <tbody>
-              <% treatments.each do |treatment| %>
-                <tr>
-                  <td><%= link_to "#{treatment.title}", edit_treatment_path(treatment) %></td>
-                  <td><%= ::Treatment::DURATIONS[treatment.duration.to_i] %></td>
-                  <td>
-                    <span class='line-through'><%= "#{treatment.price}" %><%= fa_icon('gbp') %></span>
-                    <span class='red'><%= "#{treatment.sale_price}" %><%= fa_icon('gbp') %></span>
-                  </td>
-                  <td class='last'><%= link_to(fa_icon('trash-o'), treatment_path(treatment), method: :delete) %></td>
-                </tr>
-              <%end%>
-            </tbody>
-          </table>
-        <%end%>
+    <% unless @treatments_with_groups.blank? %>
+      <% @treatments_with_groups.each_pair do |treatment_group, treatments| %>
+        <div class='col-md-12 button_down'>
+          <h4 class='col-md-10'>
+            <%= link_to "#{treatment_group.name}", edit_treatment_group_path(treatment_group) %>
+            <%= link_to(fa_icon('trash-o'), treatment_group_path(treatment_group), method: :delete) %>
+          </h4>
+          <div class='button-right'><%= button_to 'add treatment', new_treatment_path, method: 'get', class: 'btn btn-xs btn-xs-default', params: {group_id: treatment_group.id} %></div>
+        </div>
+        <table class='table table-striped treatments'>
+          <tbody>
+            <% treatments.each do |treatment| %>
+              <tr>
+                <td><%= link_to "#{treatment.title}", edit_treatment_path(treatment) %></td>
+                <td><%= ::ApplicationHelper::DURATIONS[treatment.duration.to_i] %></td>
+                <td>
+                  <span class='line-through'><%= "#{treatment.price}" %><%= fa_icon('gbp') %></span>
+                  <span class='red'><%= "#{treatment.sale_price}" %><%= fa_icon('gbp') %></span>
+                </td>
+                <td>
+                  <% if treatment.featured %>
+                    <%= fa_icon('check-square-o', text:"featured") %><br />
+                    <%= link_to(fa_icon('undo', text: 'undo'), select_featured_treatments_path(id: treatment, featured: false), method: :post) %>
+                  <% else %>
+                    <%= fa_icon('square-o', text:"not featured") %><br />
+                    <%= link_to('mark as featured', select_featured_treatments_path(id: treatment, featured: true), method: :post) %>
+                  <% end %>
+                </td>
+                <td class='last'><%= link_to(fa_icon('trash-o'), treatment_path(treatment), method: :delete) %></td>
+              </tr>
+            <%end%>
+          </tbody>
+        </table>
       <%end%>
+    <%end%>
     <%= simple_form_for(TreatmentGroup.new, html: {class: ''}) do |f| %>
     <%= f.error_notification %>
       <div class='input-group last_div button_down'>

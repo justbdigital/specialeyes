@@ -6,7 +6,7 @@
         <% treatments.each do |treatment| %>
           <tr>
             <td><%= treatment.title %></td>
-            <td><%= ::Treatment::DURATIONS[treatment.duration.to_i] %></td>
+            <td><%= ::ApplicationHelper::DURATIONS[treatment.duration.to_i] %></td>
             <td>                      
               <span class='col-md-4'><%= "save #{(100 - treatment.sale_price.to_f/treatment.price.to_f*100).to_i}%" %></span>
               <span class='col-md-8'>

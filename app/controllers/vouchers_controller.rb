@@ -26,7 +26,7 @@ class VouchersController < ApplicationController
   end
 
   def update_balance_and_gift
-    ActiveRecord::Base.transaction do
+    Voucher.transaction do
       @gift.update(owner: current_user, used: true)
       balance = current_user.balance
       balance.amount += @gift.amount

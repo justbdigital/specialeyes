@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160509143918) do
+ActiveRecord::Schema.define(version: 20160525194428) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -103,6 +103,17 @@ ActiveRecord::Schema.define(version: 20160509143918) do
   add_index "consumers", ["invited_by_id"], name: "index_consumers_on_invited_by_id", using: :btree
   add_index "consumers", ["reset_password_token"], name: "index_consumers_on_reset_password_token", unique: true, using: :btree
 
+  create_table "daily_schedules", force: :cascade do |t|
+    t.integer  "day"
+    t.integer  "open_at_slot"
+    t.integer  "close_at_slot"
+    t.integer  "pro_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+  end
+
+  add_index "daily_schedules", ["pro_id"], name: "index_daily_schedules_on_pro_id", using: :btree
+
   create_table "impressions", force: :cascade do |t|
     t.string   "impressionable_type"
     t.integer  "impressionable_id"
@@ -193,14 +204,15 @@ ActiveRecord::Schema.define(version: 20160509143918) do
   create_table "treatments", force: :cascade do |t|
     t.string   "title"
     t.text     "description"
-    t.datetime "created_at",         null: false
-    t.datetime "updated_at",         null: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
     t.integer  "pro_id"
     t.integer  "sale_price"
     t.integer  "price"
     t.string   "duration"
     t.string   "treatment_type"
     t.integer  "treatment_group_id"
+    t.boolean  "featured",           default: false
   end
 
   create_table "venues", force: :cascade do |t|
@@ -217,6 +229,7 @@ ActiveRecord::Schema.define(version: 20160509143918) do
     t.float    "longitude"
     t.datetime "created_at",   null: false
     t.datetime "updated_at",   null: false
+    t.string   "postcode"
   end
 
   create_table "vouchers", force: :cascade do |t|
@@ -237,6 +250,7 @@ ActiveRecord::Schema.define(version: 20160509143918) do
   add_foreign_key "bookings", "consumers"
   add_foreign_key "bookings", "pros"
   add_foreign_key "bookings", "treatments"
+  add_foreign_key "daily_schedules", "pros"
   add_foreign_key "reviews", "bookings"
   add_foreign_key "reviews", "consumers"
   add_foreign_key "reviews", "venues"

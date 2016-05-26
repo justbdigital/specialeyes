@@ -38,6 +38,7 @@ class Pro < ActiveRecord::Base
 
   has_many :treatments, dependent: :destroy
   has_many :bookings, dependent: :destroy
+  has_many :daily_schedules, dependent: :destroy
 
   has_many :vouchers, as: :creator
 
@@ -82,7 +83,7 @@ class Pro < ActiveRecord::Base
       end
     end.sort_by { |_k, v| v }.last(3).map(&:first)
 
-    @treatments ||= Treatment.where(id: ids)
+    @treatments = Treatment.where(id: ids)
   end
 
   private

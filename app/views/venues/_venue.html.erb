@@ -15,14 +15,17 @@
         <div class='form-group'>
           <%= f.input :phone, required: false, autofocus: false, label: 'Phone', input_html: { class: 'form-control'} %>
         </div>
-        <% unless @venue.address.blank? %>
-          <h6><%= "Location on the map - #{@venue.address}" %></h6>
+        <% unless @venue.latitude.blank? %>
+          <h6><%= "Location on the map - #{@venue.address} #{@venue.postcode}" %></h6>
           <div style='width: 600px;'>
             <div id="map" style='width: 580px; height: 200px;'></div>
           </div>
         <% end %>
         <div class='form-group'>
           <%= f.input :address, required: false, autofocus: false, label: 'Address', input_html: { class: 'form-control'} %>
+        </div>
+        <div class='form-group'>
+          <%= f.input :postcode, required: false, autofocus: false, label: 'Postcode', input_html: { class: 'form-control'} %>
         </div>
         <div class='form-group'>
           <%= f.input :image, as: :file %>
@@ -32,7 +35,7 @@
           <%= f.input :remote_image_url, required: false, autofocus: false, label: 'Or enter image url', input_html: { class: 'form-control'} %>
         </div>
         <div class='form-group'>
-          <%= f.input :primary_type, collection: Venue::TYPES, required: false, autofocus: false, label: 'Primary type', input_html: { class: 'form-control'} %>
+          <%= f.input :primary_type, collection: ApplicationHelper::TYPES, required: false, autofocus: false, label: 'Primary type', input_html: { class: 'form-control'} %>
         </div>
         <div class='form-group'>
           <%= f.input :description, required: false, autofocus: false, label: 'Description', input_html: { class: 'form-control'} %>

@@ -56,23 +56,36 @@ module Bookings
     end
 
     def raw_slots
-      @raw_slots ||= Array.new((20 - 9) * 2, 1) # working hours 9am till 8pm
+      day = ::ApplicationHelper::WEEK.key(@date.strftime("%A"))
+      schedule = DailySchedule.where(pro: specialist, day: day).first
+      return [] unless schedule
+      return @raw_slots_array if @raw_slots_array
+
+      @raw_slots_array = Array.new((24) * 2, 0) # not working hours 24/7
+
+      length = schedule.close_at_slot - schedule.open_at_slot
+      start = schedule.open_at_slot
+
+      @raw_slots_array[start, length] = Array.new(length, 1) # turn 0 to 1 if slot is in opening hours
+      @raw_slots_array
     end
 
     def slots
+      return [] if @date <= Time.zone.now
+
       @free_slots = []
       raw_slots.each_with_index do |slot, index|
         if @pro
-          @free_slots << OpenStruct.new(start_at: (18 + index)) if slot == 1
+          @free_slots << OpenStruct.new(start_at: (index)) if slot == 1
         else
           duration = treatment.duration.to_i
           frame = raw_slots[index, duration]
           if frame.count == duration && !frame.any?(&:zero?)
-            @free_slots << OpenStruct.new(start_at: (18 + index)) # 18 == number of 30min intervals in 9am
+            @free_slots << OpenStruct.new(start_at: (index)) # 18 == number of 30min intervals in 9am
           end
         end
       end
-      @date > Time.zone.now ? @free_slots : []
+      @free_slots
     end
 
     def update_slots!
@@ -80,7 +93,7 @@ module Bookings
         time = (booking.start_at - booking.start_at.midnight) / 60 / 60
         fractional = (time % 1) * 60 / 30
 
-        start = time.to_i * 2 + fractional.to_i - 18
+        start = time.to_i * 2 + fractional.to_i
         length = booking.treatment.try(:duration).try(:to_i) || 1
 
         raw_slots[start, length] = Array.new(length, 0) # turn 1 to 0 if slot is already booked

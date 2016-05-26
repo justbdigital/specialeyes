@@ -13,6 +13,7 @@
 #  duration           :string
 #  treatment_type     :string
 #  treatment_group_id :integer
+#  featured           :boolean          default("false")
 #
 
 require 'rails_helper'

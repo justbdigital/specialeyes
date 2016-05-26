@@ -28,24 +28,21 @@ class BookingsController < ApplicationController
   end
 
   def create
-    if current_user.is_a? Pro
-      redirect_to :back, notice: 'You should be signed in as consumer'
-    elsif current_user.is_a? Consumer
-      @booking = Booking.new(consumer: current_user,
-                             pro: @treatment.pro,
-                             treatment: @treatment,
-                             sum: @treatment.sale_price,
-                             start_at: booking_start_at(params[:time]))
-      authorize @booking
+    redirect_to :back, notice: 'You should be signed in as consumer' and return if current_user.is_a? Pro
+    redirect_to :back, notice: 'Something was wrong' and return unless current_user.is_a? Consumer
 
-      if @booking.save
-        $redis.sadd current_user.cart, @booking.id
-        redirect_to cart_path, notice: 'booking created and treatment added to your cart'
-      else
-        redirect_to :back, notice: @booking.errors.full_messages.join(', ')
-      end
+    @booking = Booking.new(consumer: current_user,
+                           pro: @treatment.pro,
+                           treatment: @treatment,
+                           sum: @treatment.sale_price,
+                           start_at: booking_start_at(params[:time]))
+    authorize @booking
+
+    if @booking.save
+      $redis.sadd current_user.cart, @booking.id
+      redirect_to cart_path, notice: 'booking created and treatment added to your cart'
     else
-      redirect_to :back, notice: 'Something was wrong'
+      redirect_to :back, notice: @booking.errors.full_messages.join(', ')
     end
   end
 
@@ -59,23 +56,23 @@ class BookingsController < ApplicationController
   end
 
   def mark_as_unavailable
-    if params[:time].present?
-      @saved = params[:time].each do |time|
-        @booking = Booking.new(pro: current_user, start_at: booking_start_at(time))
-        authorize @booking
-        @booking.save
-      end
-      if no_errors?
-        redirect_to calendar_bookings_url(date: params[:date]), notice: 'slots were marked as unavailable'
-      else
-        redirect_to :back, notice: @booking.errors.full_messages.join(', ')
-      end
+    redirect_to :back, notice: 'Choose time slots' and return unless params[:time].present?
+
+    @saved = params[:time].each do |time|
+      @booking = Booking.new(pro: current_user, start_at: booking_start_at(time))
+      authorize @booking
+      @booking.save
+    end
+    if @saved && @booking.errors.full_messages.empty?
+      redirect_to calendar_bookings_url(date: params[:date]), notice: 'slots were marked as unavailable'
     else
-      redirect_to :back, notice: 'Choose time slots'
+      redirect_to :back, notice: @booking.errors.full_messages.join(', ')
     end
   end
 
   def confirm
+    redirect_to :back, notice: 'Nothing in the cart' and return if cart_ids.blank?
+
     case params[:payment]
     when 'yes'
       redirect_to new_transaction_path
@@ -89,6 +86,8 @@ class BookingsController < ApplicationController
     when 'no'
       update_bookings_and_empty_cart
       redirect_to :root, notice: 'Your order now confirmed. Payment will be needed at venue'
+    else
+      redirect_to :back, notice: 'Choose payment method'
     end
   end
 
@@ -109,10 +108,6 @@ class BookingsController < ApplicationController
 
   def set_booking
     @booking = Booking.find(params[:id])
-  end
-
-  def no_errors?
-    @saved && @booking.errors.full_messages.empty?
   end
 
   def set_date
@@ -148,7 +143,7 @@ class BookingsController < ApplicationController
   end
 
   def use_gift_balance
-    ActiveRecord::Base.transaction do
+    Balance.transaction do
       balance = current_user.balance
       balance.amount -= params[:total].to_i
       balance.save
@@ -161,8 +156,11 @@ class BookingsController < ApplicationController
   end
 
   def update_bookings_and_empty_cart(paid = false)
-    cart_ids = $redis.smembers current_user.cart
     Booking.where(id: cart_ids).update_all(confirmed: true, paid: paid)
     $redis.del current_user.cart
+  end
+
+  def cart_ids
+    @cart_ids = $redis.smembers current_user.cart
   end
 end

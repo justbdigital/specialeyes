@@ -16,9 +16,6 @@
 #
 
 class Voucher < ActiveRecord::Base
-  AMOUNTS = { 10 => '£ 10.00', 20 => '£ 20.00', 30 => '£ 30.00', 40 => '£ 40.00', 50 => '£ 50.00', 60 => '£ 60.00',
-              70 => '£ 70.00', 80 => '£ 80.00', 90 => '£ 90.00', 100 => '£ 100.00' }.freeze
-
   belongs_to :creator, polymorphic: true
   belongs_to :owner, class_name: Consumer
 

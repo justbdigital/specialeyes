@@ -1,0 +1,40 @@
+<div class='container'>
+  <div class='row' >
+
+    <div class='col-md-9 button_down'>
+      <h3>Opening Hours</h3>
+      <div class='last_div'>
+        <% @schedules.each do |schedule| %>
+          <%= ApplicationHelper::WEEK[schedule.day.to_i] %> :
+          open at - <%= ApplicationHelper::SLOTS[schedule.open_at_slot.to_i] %>, 
+          close at - <%= ApplicationHelper::SLOTS[schedule.close_at_slot.to_i] %>
+          <%=link_to daily_schedule_path(schedule), method: :delete  do%>
+            <i class='fa fa-times' aria-hidden='true'></i>
+          <%end%><br />
+        <% end %>
+      </div>
+
+      <%= simple_form_for :schedule, { url: set_daily_schedules_path, method: :post} do |f| %>
+        <h4 class='form-group col-md-12 margin_down'>Select working days and hours</h4>
+        <div class='check_boxes_set'>
+          <% ApplicationHelper::WEEK.each_pair do |number, day| %>
+            <span class='week_check_box'>
+              <%= label_tag(:featured, "#{day}") %>
+              <%= check_box_tag "days[]", "#{number}"  %>
+            </span>          
+          <%end%>
+        </div>
+        <div class='form-group col-md-5'>
+          <%= f.input :open_at, collection: ApplicationHelper::SLOTS.sort.map {|k,v| [v,k]}, required: true,  include_blank: false, selected: 18,input_html: { class: 'form-control'} %>
+        </div>
+        <div class='form-group col-md-5'>
+          <%= f.input :close_at, collection: ApplicationHelper::SLOTS.sort.map {|k,v| [v,k]}, required: true,  include_blank: false, selected: 40, input_html: { class: 'form-control'} %>
+        </div>
+        <div class='form-group col-md-7'>
+          <%= f.button :submit, 'change opening hours', class: 'btn btn-warning col-md-10 last_div' %>
+        </div>
+      <% end %>
+    </div>
+
+  </div>
+</div>

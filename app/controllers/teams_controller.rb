@@ -33,10 +33,8 @@ class TeamsController < ApplicationController
   private
 
   def new_members
-    ActiveRecord::Base.transaction do
-      members = Pro.where(id: params['recipients'].map { |p| p.split.last.gsub(/^\(+|\)+$/, '') })
-      @team.members << members
-    end
+    members = Pro.where(id: params['recipients'].map { |p| p.split.last.gsub(/^\(+|\)+$/, '') })
+    @team.members << members
   end
 
   def set_team

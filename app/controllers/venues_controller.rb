@@ -16,7 +16,7 @@ class VenuesController < ApplicationController
                      .order(created_at: :desc)
                      .paginate(page: params[:page], per_page: 4)
     end
-    set_collection unless @venues.blank?           
+    set_collection unless @venues.blank?
   end
 
   def new
@@ -58,7 +58,7 @@ class VenuesController < ApplicationController
   private
 
   def set_hash
-    @hash ||= set_address unless @venue.address.blank?
+    @hash ||= set_address unless @venue.latitude.blank?
   end
 
   def set_venue
@@ -69,21 +69,20 @@ class VenuesController < ApplicationController
     Gmaps4rails.build_markers([@venue]) do |venue, marker|
       marker.lat venue.latitude
       marker.lng venue.longitude
-      marker.infowindow "#{venue.name}, #{venue.address}"
+      marker.infowindow "#{venue.name}, #{venue.address} #{venue.postcode}"
     end
   end
 
   def set_collection
-    @hash ||= 
+    @hash ||=
       Gmaps4rails.build_markers(@venues) do |venue, marker|
         marker.lat venue.latitude
         marker.lng venue.longitude
-        marker.infowindow "#{venue.name}, #{venue.address}"
+        marker.infowindow "#{venue.name}, #{venue.address} #{venue.postcode}"
       end
   end
 
-
   def venue_params
-    params.require(:venue).permit(:name, :description, :primary_type, :address, :image, :remote_image_url, :remove_image, :phone, :email)
+    params.require(:venue).permit(:name, :description, :primary_type, :address, :postcode, :image, :remote_image_url, :remove_image, :phone, :email)
   end
 end
