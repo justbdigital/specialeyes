@@ -4,6 +4,14 @@ RSpec.describe Venues::Finder do
   let!(:pro1) { create(:pro) }
   let!(:pro2) { create(:pro) }
 
+  let!(:daily_schedule) do
+    create(:daily_schedule,
+           pro: pro1,
+           open_at_slot: 18,
+           close_at_slot: 28,
+           day: ::ApplicationHelper::WEEK.key(Time.zone.now.strftime("%A")) + 1)
+  end
+
   let!(:treatment_group1) { create(:treatment_group, pro: pro1) }
   let!(:treatment_group2) { create(:treatment_group, pro: pro2) }
 
@@ -13,12 +21,12 @@ RSpec.describe Venues::Finder do
   let!(:venue1) { create(:venue, pro: pro1, address: 'London, 35, East') }
   let!(:venue2) { create(:venue, pro: pro2, address: 'New York, 100, West') }
 
-  it 'finds venue by treatment cost and type' do
+  it 'finds venue by treatment cost' do
     result = described_class.new({ cost: '44' }).call
     expect(result).to match_array([venue1])
   end
 
-  it 'finds venue by treatment cost and type' do
+  it 'finds venue by treatment cost' do
     result = described_class.new({ cost: '11' }).call
     expect(result).to match_array([])
   end
@@ -28,18 +36,18 @@ RSpec.describe Venues::Finder do
     expect(result).to match_array([venue2])
   end
 
-  it 'finds venue by treatment cost and type' do
+  it 'finds venue by address' do
     result = described_class.new({ location: 'London' }).call
     expect(result).to match_array([venue1])
   end
 
-  it 'finds venue by treatment cost and type' do
+  it 'finds venue by date' do
     result = described_class.new({ date: (Time.zone.now + 1.days) }).call
-    expect(result).to match_array([venue1, venue2])
+    expect(result).to match_array([venue1])
   end
 
-  it 'finds venue by treatment cost and type' do
-    result = described_class.new({ date: (Time.zone.now - 1.days) }).call
+  it 'finds venue by date' do
+    result = described_class.new({ date: (Time.zone.now - 3.days) }).call
     expect(result).to match_array([])
   end
 

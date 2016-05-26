@@ -34,7 +34,7 @@
             <% @pro_am_available.each do |time| %>
               <label class="col-md-12 text-center available-time-cell">
                 <%= check_box_tag "time[]", "#{time.start_at.to_i}" %>
-                <%= ::ApplicationHelper::DURATIONS[time.start_at] %>
+                <%= ::ApplicationHelper::SLOTS[time.start_at] %>
               </label>
             <%end%>
             <button class='btn btn-warning col-sm-12'>
@@ -52,7 +52,7 @@
             <% @pro_pm_available.each do |time| %>
               <label class="col-md-12 text-center available-time-cell">
                 <%= check_box_tag "time[]", "#{time.start_at.to_i}" %>
-                <%= ::ApplicationHelper::DURATIONS[time.start_at] %>
+                <%= ::ApplicationHelper::SLOTS[time.start_at] %>
               </label>
             <%end%>
             <button class='btn btn-warning col-sm-12'>

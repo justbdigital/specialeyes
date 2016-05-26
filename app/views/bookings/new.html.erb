@@ -29,7 +29,7 @@
           <% @am_available.each do |time| %>
             <%= link_to bookings_path(treat: "#{params[:treat]}", date: @date, time: time.start_at), method: :post do %>
               <div class='col-md-12 text-center available-time-cell'>
-                <%= ::ApplicationHelper::DURATIONS[time.start_at] %>
+                <%= ::ApplicationHelper::SLOTS[time.start_at] %>
               </div>
             <% end %>
           <% end %>
@@ -41,7 +41,7 @@
           <% @pm_available.each do |time| %>
             <%= link_to bookings_path(treat: "#{params[:treat]}", date: @date, time: time.start_at), method: :post do %>
               <div class='col-md-12 text-center available-time-cell'>
-                <%= ::ApplicationHelper::DURATIONS[time.start_at] %>
+                <%= ::ApplicationHelper::SLOTS[time.start_at] %>
               </div>
             <% end %>
           <% end %>

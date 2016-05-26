@@ -28,24 +28,21 @@ class BookingsController < ApplicationController
   end
 
   def create
-    if current_user.is_a? Pro
-      redirect_to :back, notice: 'You should be signed in as consumer'
-    elsif current_user.is_a? Consumer
-      @booking = Booking.new(consumer: current_user,
-                             pro: @treatment.pro,
-                             treatment: @treatment,
-                             sum: @treatment.sale_price,
-                             start_at: booking_start_at(params[:time]))
-      authorize @booking
+    redirect_to :back, notice: 'You should be signed in as consumer' and return if current_user.is_a? Pro
+    redirect_to :back, notice: 'Something was wrong' and return unless current_user.is_a? Consumer
 
-      if @booking.save
-        $redis.sadd current_user.cart, @booking.id
-        redirect_to cart_path, notice: 'booking created and treatment added to your cart'
-      else
-        redirect_to :back, notice: @booking.errors.full_messages.join(', ')
-      end
+    @booking = Booking.new(consumer: current_user,
+                           pro: @treatment.pro,
+                           treatment: @treatment,
+                           sum: @treatment.sale_price,
+                           start_at: booking_start_at(params[:time]))
+    authorize @booking
+
+    if @booking.save
+      $redis.sadd current_user.cart, @booking.id
+      redirect_to cart_path, notice: 'booking created and treatment added to your cart'
     else
-      redirect_to :back, notice: 'Something was wrong'
+      redirect_to :back, notice: @booking.errors.full_messages.join(', ')
     end
   end
 

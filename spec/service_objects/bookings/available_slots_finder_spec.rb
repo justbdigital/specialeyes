@@ -3,6 +3,14 @@ require 'rails_helper'
 RSpec.describe Bookings::AvailableSlotsFinder do
   let!(:consumer) { create(:consumer) }
   let!(:pro) { create(:pro) }
+  let!(:daily_schedule) do
+    create(:daily_schedule,
+           pro: pro,
+           open_at_slot: 18,
+           close_at_slot: 40,
+           day: ::ApplicationHelper::WEEK.key(Time.zone.now.strftime("%A")) + 1)
+  end
+
   let!(:treatment_group) { create(:treatment_group, pro: pro) }
 
   # 18 slots * 30min/per slot = 9 hours duration should fit into working hours from 9am till 8:30pm
