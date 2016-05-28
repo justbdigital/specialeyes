@@ -83,7 +83,7 @@ class BookingsController < ApplicationController
       end
     when 'no'
       update_bookings_and_empty_cart
-      redirect_to :root, notice: 'Your order now confirmed. Payment will be needed at venue'
+      redirect_to :root, notice: "Your order now confirmed. Payment will be needed at venue. #{@notice}"
     else
       redirect_to :back, notice: 'Choose payment method'
     end
@@ -133,8 +133,23 @@ class BookingsController < ApplicationController
   end
 
   def update_bookings_and_empty_cart(paid = false)
-    Booking.where(id: cart_ids).update_all(confirmed: true, paid: paid)
-    ShoppingCart.new(current_user).clean!
+    Booking.transaction do
+      @bookings = Booking.where(id: cart_ids)
+      @bookings.update_all(confirmed: true, paid: paid)
+      ShoppingCart.new(current_user).clean!
+    end
+
+    client = Textmagic::REST::Client.new(ENV['TEXTMAGIC_USERNAME'], ENV['TEXTMAGIC_APIV2_KEY'])
+    @message = []
+    @bookings.each do |b|
+      text = "Your #{b.treatment.title} treatment in #{b.pro.venue.name} venue starts on #{b.start_at.strftime("%B %d at %H:%M")}"
+      time = b.start_at - 1.days
+      client.messages.create(phones: current_user.phone, text: text, sendingTime: time.to_i)
+      @message << text
+    end
+    client.messages.create(phones: current_user.phone, text: @message.join(', '))
+  rescue Textmagic::REST::RequestError => e
+    @notice = 'To receive confirmation sms please check your phone number in account details' if e
   end
 
   def cart_ids

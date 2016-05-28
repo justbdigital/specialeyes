@@ -17,14 +17,16 @@ class TransactionsController < ApplicationController
   end
 
   def create
-    transaction = Transactions::Creator.new(params, current_user).call
+    base = Transactions::Creator.new(params, current_user)
+    transaction = base.call
+    notice = base.notice
 
     if transaction.success? && !params[:balance_payment].blank?
-      redirect_to root_url, notice: "Your transaction has been successful! New balance £ #{current_user.balance.amount.to_i}"
+      redirect_to root_url, notice: "Your transaction has been successful! New balance £ #{current_user.balance.amount.to_i}. #{notice}"
     elsif transaction.success? && !params[:gift].blank?
       redirect_to gifts_balance_url, notice: 'You bought a gift!'
     elsif transaction.success?
-      redirect_to root_url, notice: 'Congraulations! Your transaction has been successfully processed!'
+      redirect_to root_url, notice: "Congratulations! Your transaction has been successfully processed! #{notice}"
     else
       flash[:alert] = 'Something went wrong while processing your transaction. Please try again!'
       render :new

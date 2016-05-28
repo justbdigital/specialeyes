@@ -19,7 +19,7 @@ module Bookings
       return true unless @params[:payment] == 'half'
       @notice = 'Please choose payment method' and return false if @params[:payment].blank?
       @notice = 'Amount should be a positive number' and return false if !amount_is_positive_integer?
-      @notice = "Please enter amount less or equal than balance (£ #{@current_user.balance.amount.to_i})" and return false if gifts_not_enough?
+      @notice = "Please enter amount less or equal than balance (£ #{@current_user.balance&.amount.to_i})" and return false if gifts_not_enough?
       @notice = "Please enter amount less or equal than order total (£ #{@params[:total].to_i})" and return false if gift_more_than_total?
 
       true
@@ -37,7 +37,7 @@ module Bookings
     end
 
     def gifts_not_enough?
-      @params[:gifts_amount].to_i > @current_user.balance.amount
+      @params[:gifts_amount].to_i > @current_user.balance&.amount.to_i
     end
 
     def gift_more_than_total?

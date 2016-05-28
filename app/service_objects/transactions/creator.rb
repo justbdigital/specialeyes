@@ -20,6 +20,7 @@ module Transactions
         if @result.success? && !@balance_payment.blank?
           update_balance
           empty_cart
+          send_sms
           user_update
         elsif @result.success? && !@email.blank?
           create_gifts
@@ -27,12 +28,17 @@ module Transactions
           user_update
         elsif @result.success?
           empty_cart
+          send_sms
           user_update
         else
           gon.client_token = generate_client_token
         end
         @result
       end
+    end
+
+    def notice
+      @notice
     end
 
     private
@@ -84,8 +90,23 @@ module Transactions
     end
 
     def empty_cart
-      Booking.where(id: cart_ids).update_all(paid: true, confirmed: true)
+      @bookings = Booking.where(id: cart_ids)
+      @bookings.update_all(paid: true, confirmed: true)
       ShoppingCart.new(@current_user).clean!
+    end
+
+    def send_sms
+      client = Textmagic::REST::Client.new(ENV['TEXTMAGIC_USERNAME'], ENV['TEXTMAGIC_APIV2_KEY'])
+      @message = []
+      @bookings.each do |b|
+        text = "Your #{b.treatment.title} treatment in #{b.pro.venue.name} venue starts on #{b.start_at.strftime("%B %d at %H:%M")}"
+        time = b.start_at - 1.days
+        client.messages.create(phones: @current_user.phone, text: text, sendingTime: time.to_i)
+        @message << text
+      end
+      client.messages.create(phones: @current_user.phone, text: @message.join(', '))
+    rescue Textmagic::REST::RequestError => e
+      @notice = 'To receive confirmation sms please check your phone number in account details' if e
     end
 
     def user_update
