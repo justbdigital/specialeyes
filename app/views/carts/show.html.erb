@@ -4,7 +4,7 @@
     <div id='mycart' class='col-md-12'>
       <div class='margin_down margin_up'>
         <h4>My Cart</h4>
-        <p> You've selected <span class='cart-count'><%=current_user.cart_count%></span> treatments!</p>
+        <p> You've selected <span class='cart-count'><%= shopping_cart_count %></span> treatments!</p>
       </div>
       <% @cart_bookings.each do |booking|%>
         <div class='cart-booking col-md-8 col-sm-8'>

@@ -85,7 +85,7 @@ module Transactions
 
     def empty_cart
       Booking.where(id: cart_ids).update_all(paid: true, confirmed: true)
-      $redis.del @current_user.cart
+      ShoppingCart.new(@current_user).clean!
     end
 
     def user_update
@@ -93,7 +93,7 @@ module Transactions
     end
 
     def cart_ids
-      $redis.smembers @current_user.cart
+      ShoppingCart.new(@current_user).cart_ids
     end
 
     def cart_total

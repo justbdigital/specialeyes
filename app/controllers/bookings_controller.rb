@@ -3,7 +3,6 @@ class BookingsController < ApplicationController
   before_action :set_treatment, only: [:create]
   before_action :set_date, only: [:calendar, :new]
   before_action :set_booking, only: [:destroy, :complete]
-  before_action :check_allowance!, only: [:confirm]
 
   def index
     authorize Booking
@@ -14,17 +13,9 @@ class BookingsController < ApplicationController
                 .paginate(page: params[:page], per_page: 30)
   end
 
-  def calendar
-    authorize Booking
-    @unavailable_by_pro = Bookings::AvailableSlotsFinder.new(@date, nil, current_user).unavailable_by_pro
-    @booked_by_customers = Bookings::AvailableSlotsFinder.new(@date, nil, current_user).booked_by_customers
-    @pro_am_available = Bookings::AvailableSlotsFinder.new(@date, nil, current_user).am_slots
-    @pro_pm_available = Bookings::AvailableSlotsFinder.new(@date, nil, current_user).pm_slots
-  end
-
   def new
-    @am_available = Bookings::AvailableSlotsFinder.new(@date, params[:treat]).am_slots
-    @pm_available = Bookings::AvailableSlotsFinder.new(@date, params[:treat]).pm_slots
+    authorize Booking
+    @new_calendar = Bookings::AvailableSlotsFinder.new(@date, params[:treat])
   end
 
   def create
@@ -39,11 +30,16 @@ class BookingsController < ApplicationController
     authorize @booking
 
     if @booking.save
-      $redis.sadd current_user.cart, @booking.id
+      ShoppingCart.new(current_user, @booking.id).add
       redirect_to cart_path, notice: 'booking created and treatment added to your cart'
     else
       redirect_to :back, notice: @booking.errors.full_messages.join(', ')
     end
+  end
+
+  def calendar
+    authorize Booking
+    @calendar = Bookings::AvailableSlotsFinder.new(@date, nil, current_user)
   end
 
   def complete
@@ -52,7 +48,7 @@ class BookingsController < ApplicationController
       redirect_to :back, notice: 'Booking has been completed'
     else
       redirect_to :back, notice: @booking.errors.full_messages.join(', ')
-    end  
+    end
   end
 
   def mark_as_unavailable
@@ -71,6 +67,8 @@ class BookingsController < ApplicationController
   end
 
   def confirm
+    allowance = Bookings::CheckAllowance.new(params, current_user)
+    redirect_to :back, notice: allowance.notice and return unless allowance.call
     redirect_to :back, notice: 'Nothing in the cart' and return if cart_ids.blank?
 
     case params[:payment]
@@ -93,11 +91,10 @@ class BookingsController < ApplicationController
 
   def destroy
     authorize @booking
-    id = @booking.id
     @booking.destroy
 
     if current_user.is_a? Consumer
-      $redis.srem current_user.cart, id
+      ShoppingCart.new(current_user, @booking.id).remove
       redirect_to cart_path, notice: 'treatment was deleted from your shopping cart'
     else
       redirect_to calendar_bookings_path(date: params[:date]), notice: 'slot is now available'
@@ -122,26 +119,6 @@ class BookingsController < ApplicationController
     @treatment ||= Treatment.find(params[:treat])
   end
 
-  def check_allowance!
-    return true unless params[:payment] == 'half'
-    if params[:payment].blank?
-      redirect_to :back, notice: 'Please choose payment method'
-    elsif !amount_is_positive_integer?
-      redirect_to :back, alert: 'Amount should be a positive number'
-    elsif params[:gifts_amount].to_i > current_user.balance.amount
-      redirect_to :back, alert: "Please enter amount less or equal than balance (£ #{current_user.balance.amount.to_i})"
-    elsif params[:gifts_amount].to_i > params[:total].to_i
-      redirect_to :back, alert: "Please enter amount less or equal than order total (£ #{params[:total].to_i})"
-    else
-      true
-    end
-  end
-
-  def amount_is_positive_integer?
-    amount = Integer(params[:gifts_amount]) rescue nil
-    amount.to_i > 0
-  end
-
   def use_gift_balance
     Balance.transaction do
       balance = current_user.balance
@@ -157,10 +134,10 @@ class BookingsController < ApplicationController
 
   def update_bookings_and_empty_cart(paid = false)
     Booking.where(id: cart_ids).update_all(confirmed: true, paid: paid)
-    $redis.del current_user.cart
+    ShoppingCart.new(current_user).clean!
   end
 
   def cart_ids
-    @cart_ids = $redis.smembers current_user.cart
+    @cart_ids = ShoppingCart.new(current_user).cart_ids
   end
 end

@@ -54,14 +54,6 @@ class Consumer < ActiveRecord::Base
 
   mount_uploader :image, ImageUploader
 
-  def cart_count
-    $redis.scard "cart#{id}"
-  end
-
-  def cart
-    "cart#{id}"
-  end
-
   def has_payment_info?
     braintree_customer_id
   end
