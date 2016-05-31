@@ -25,8 +25,8 @@
       <h4 class='col-md-12 text-center'>time available on <%= @date.strftime("%^A, %B %d") %></h4>
       <div class='col-md-6 margin_up text-center'>
         morning
-        <% unless @am_available.blank? %>
-          <% @am_available.each do |time| %>
+        <% unless @new_calendar.am_slots.blank? %>
+          <% @new_calendar.am_slots.each do |time| %>
             <%= link_to bookings_path(treat: "#{params[:treat]}", date: @date, time: time.start_at), method: :post do %>
               <div class='col-md-12 text-center available-time-cell'>
                 <%= ::ApplicationHelper::SLOTS[time.start_at] %>
@@ -37,8 +37,8 @@
       </div>
       <div class='col-md-6 margin_up text-center'>
         afternoon
-        <% unless @pm_available.blank? %>
-          <% @pm_available.each do |time| %>
+        <% unless @new_calendar.pm_slots.blank? %>
+          <% @new_calendar.pm_slots.each do |time| %>
             <%= link_to bookings_path(treat: "#{params[:treat]}", date: @date, time: time.start_at), method: :post do %>
               <div class='col-md-12 text-center available-time-cell'>
                 <%= ::ApplicationHelper::SLOTS[time.start_at] %>

@@ -11,7 +11,7 @@
         <%= f.input :image, as: :file %>
         <%= f.input :remove_image,  as: :boolean, required: false, label: 'Remove image' %>
         <%= f.input :remote_image_url, required: false, autofocus: false, label: false, placeholder: 'or enter remote image url' %>
-        <%= f.input :phone, required: false, autofocus: false, label: false, placeholder: 'phone' %>
+        <%= f.input :phone, required: false, autofocus: false, label: false, placeholder: 'phone number with country code (10 digits)' %>
         <%= f.input :postcode, required: false, autofocus: false, label: false, placeholder: 'postcode' %>
         <%= f.input :female, label: false, collection: [["female", true],["male", false]], as: :radio_buttons, item_wrapper_class: 'radio-inline', item_wrapper_tag: :div %>
         <%= f.input :email, required: true, autofocus: false, label: false, placeholder: 'email' %>

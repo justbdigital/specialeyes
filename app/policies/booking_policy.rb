@@ -4,6 +4,10 @@ class BookingPolicy < ApplicationPolicy
     user.present? && user.is_a?(Pro)
   end
 
+  def new?
+    user.present? && user.is_a?(Consumer)
+  end
+
   def calendar?
     index?
   end

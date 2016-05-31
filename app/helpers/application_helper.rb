@@ -38,6 +38,10 @@ module ApplicationHelper
     request.env['PATH_INFO'].match('pro')
   end
 
+  def shopping_cart_count
+    ShoppingCart.new(current_user).cart_count
+  end
+
   def login_name
     if current_user.is_a? Pro
       "#{current_user.email} (signed in as pro)"

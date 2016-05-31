@@ -49,18 +49,12 @@ class Consumer < ActiveRecord::Base
   has_many :gifts, class_name: 'Voucher', foreign_key: :owner_id, dependent: :destroy
   has_one :balance, dependent: :destroy
 
+  before_validation :validate_phone_number, on: [:create, :update]
+
   validates_presence_of :first_name
   validates_presence_of :phone
 
   mount_uploader :image, ImageUploader
-
-  def cart_count
-    $redis.scard "cart#{id}"
-  end
-
-  def cart
-    "cart#{id}"
-  end
 
   def has_payment_info?
     braintree_customer_id
@@ -68,5 +62,11 @@ class Consumer < ActiveRecord::Base
 
   def block_from_invitation?
     false
+  end
+
+  private
+
+  def validate_phone_number
+    errors.add(:phone, "please enter 10 digits excluding + and 0") if phone && !authorizations.any? && phone.length != 10
   end
 end
