@@ -11,10 +11,43 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160525194428) do
+ActiveRecord::Schema.define(version: 20160531182701) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "active_admin_comments", force: :cascade do |t|
+    t.string   "namespace"
+    t.text     "body"
+    t.string   "resource_id",   null: false
+    t.string   "resource_type", null: false
+    t.integer  "author_id"
+    t.string   "author_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "active_admin_comments", ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id", using: :btree
+  add_index "active_admin_comments", ["namespace"], name: "index_active_admin_comments_on_namespace", using: :btree
+  add_index "active_admin_comments", ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id", using: :btree
+
+  create_table "admin_users", force: :cascade do |t|
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet     "current_sign_in_ip"
+    t.inet     "last_sign_in_ip"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
+
+  add_index "admin_users", ["email"], name: "index_admin_users_on_email", unique: true, using: :btree
+  add_index "admin_users", ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true, using: :btree
 
   create_table "authorizations", force: :cascade do |t|
     t.integer  "consumer_id"
@@ -55,14 +88,16 @@ ActiveRecord::Schema.define(version: 20160525194428) do
     t.integer  "pro_id"
     t.integer  "consumer_id"
     t.integer  "treatment_id"
-    t.boolean  "paid",         default: false
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.boolean  "confirmed",    default: false
-    t.boolean  "completed",    default: false
+    t.boolean  "paid",                 default: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.boolean  "confirmed",            default: false
+    t.boolean  "completed",            default: false
+    t.integer  "inner_transaction_id"
   end
 
   add_index "bookings", ["consumer_id"], name: "index_bookings_on_consumer_id", using: :btree
+  add_index "bookings", ["inner_transaction_id"], name: "index_bookings_on_inner_transaction_id", using: :btree
   add_index "bookings", ["pro_id"], name: "index_bookings_on_pro_id", using: :btree
   add_index "bookings", ["treatment_id"], name: "index_bookings_on_treatment_id", using: :btree
 
@@ -138,6 +173,16 @@ ActiveRecord::Schema.define(version: 20160525194428) do
   add_index "impressions", ["impressionable_type", "impressionable_id", "session_hash"], name: "poly_session_index", using: :btree
   add_index "impressions", ["impressionable_type", "message", "impressionable_id"], name: "impressionable_type_message_index", using: :btree
   add_index "impressions", ["user_id"], name: "index_impressions_on_user_id", using: :btree
+
+  create_table "inner_transactions", force: :cascade do |t|
+    t.decimal  "amount",       precision: 16, scale: 2
+    t.integer  "creator_id"
+    t.string   "creator_type"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+  end
+
+  add_index "inner_transactions", ["creator_type", "creator_id"], name: "index_inner_transactions_on_creator_type_and_creator_id", using: :btree
 
   create_table "pros", force: :cascade do |t|
     t.string   "username"
@@ -237,21 +282,26 @@ ActiveRecord::Schema.define(version: 20160525194428) do
     t.string   "creator_type"
     t.integer  "owner_id"
     t.string   "code"
-    t.boolean  "paid",                                  default: false
-    t.boolean  "used",                                  default: false
-    t.decimal  "amount",       precision: 16, scale: 2
+    t.boolean  "paid",                                          default: false
+    t.boolean  "used",                                          default: false
+    t.decimal  "amount",               precision: 16, scale: 2
     t.datetime "valid_till"
-    t.datetime "created_at",                                            null: false
-    t.datetime "updated_at",                                            null: false
+    t.datetime "created_at",                                                    null: false
+    t.datetime "updated_at",                                                    null: false
+    t.integer  "inner_transaction_id"
   end
+
+  add_index "vouchers", ["inner_transaction_id"], name: "index_vouchers_on_inner_transaction_id", using: :btree
 
   add_foreign_key "authorizations", "consumers"
   add_foreign_key "balances", "consumers"
   add_foreign_key "bookings", "consumers"
+  add_foreign_key "bookings", "inner_transactions"
   add_foreign_key "bookings", "pros"
   add_foreign_key "bookings", "treatments"
   add_foreign_key "daily_schedules", "pros"
   add_foreign_key "reviews", "bookings"
   add_foreign_key "reviews", "consumers"
   add_foreign_key "reviews", "venues"
+  add_foreign_key "vouchers", "inner_transactions"
 end

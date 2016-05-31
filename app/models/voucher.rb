@@ -2,24 +2,27 @@
 #
 # Table name: vouchers
 #
-#  id           :integer          not null, primary key
-#  creator_id   :integer
-#  creator_type :string
-#  owner_id     :integer
-#  code         :string
-#  paid         :boolean          default("false")
-#  used         :boolean          default("false")
-#  amount       :decimal(16, 2)
-#  valid_till   :datetime
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
+#  id                   :integer          not null, primary key
+#  creator_id           :integer
+#  creator_type         :string
+#  owner_id             :integer
+#  code                 :string
+#  paid                 :boolean          default("false")
+#  used                 :boolean          default("false")
+#  amount               :decimal(16, 2)
+#  valid_till           :datetime
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  inner_transaction_id :integer
 #
 
 class Voucher < ActiveRecord::Base
   belongs_to :creator, polymorphic: true
   belongs_to :owner, class_name: Consumer
+  belongs_to :inner_transaction
 
   validates_presence_of :creator
+  validates_presence_of :inner_transaction
   validates_presence_of :code
   validates_uniqueness_of :code
 

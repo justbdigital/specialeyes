@@ -2,23 +2,26 @@
 #
 # Table name: bookings
 #
-#  id           :integer          not null, primary key
-#  start_at     :datetime
-#  sum          :integer
-#  pro_id       :integer
-#  consumer_id  :integer
-#  treatment_id :integer
-#  paid         :boolean          default("false")
-#  created_at   :datetime         not null
-#  updated_at   :datetime         not null
-#  confirmed    :boolean          default("false")
-#  completed    :boolean          default("false")
+#  id                   :integer          not null, primary key
+#  start_at             :datetime
+#  sum                  :integer
+#  pro_id               :integer
+#  consumer_id          :integer
+#  treatment_id         :integer
+#  paid                 :boolean          default("false")
+#  created_at           :datetime         not null
+#  updated_at           :datetime         not null
+#  confirmed            :boolean          default("false")
+#  completed            :boolean          default("false")
+#  inner_transaction_id :integer
 #
 
 class Booking < ActiveRecord::Base
   belongs_to :pro
   belongs_to :consumer
   belongs_to :treatment
+  belongs_to :inner_transaction
+
   has_many :reviews, dependent: :destroy
 
   validates_presence_of :pro_id

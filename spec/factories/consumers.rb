@@ -38,7 +38,7 @@ FactoryGirl.define do
     profile_name { Forgery::Name.first_name }
     first_name { Forgery::Name.first_name }
     last_name { Forgery::Name.last_name }
-    phone { Forgery::Address.phone }    
+    phone { '1234567891' }    
     sequence(:email) { |n| "emaqqq#{n}@factory.com" }
     password "12345678"
     password_confirmation { |u| u.password }

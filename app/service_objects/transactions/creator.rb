@@ -16,22 +16,17 @@ module Transactions
     def call
       ActiveRecord::Base.transaction do
         braintree_transaction
+        gon.client_token = generate_client_token and return unless @result.success?
 
-        if @result.success? && !@balance_payment.blank?
-          update_balance
-          empty_cart
-          send_sms
-          user_update
-        elsif @result.success? && !@email.blank?
+        user_update
+        create_inner_transaction
+
+        unless @email.blank?
           create_gifts
-          sent_email
-          user_update
-        elsif @result.success?
+        else
           empty_cart
           send_sms
-          user_update
-        else
-          gon.client_token = generate_client_token
+          update_balance unless @balance_payment.blank?
         end
         @result
       end
@@ -44,11 +39,11 @@ module Transactions
     private
 
     def braintree_transaction
-      sum = @gift || cart_total.round(2) # need to change braintree default currency to pound
+      @sum = @gift || cart_total.round(2) # need to change braintree default currency to pound
 
       if !@current_user.has_payment_info?
         @result = Braintree::Transaction.sale(
-          amount: sum,
+          amount: @sum,
           payment_method_nonce: @payment_method,
           customer: {
             first_name: @first_name,
@@ -61,7 +56,7 @@ module Transactions
           })
       else
         @result = Braintree::Transaction.sale(
-          amount: sum,
+          amount: @sum,
           payment_method_nonce: @payment_method)
       end
     end
@@ -72,10 +67,7 @@ module Transactions
 
       @vouchers = []
       amount = @gift.to_i / quantity
-      quantity.times { @vouchers << Voucher.create(creator: @current_user, amount: amount, paid: true) }
-    end
-
-    def sent_email
+      quantity.times { @vouchers << Voucher.create(creator: @current_user, amount: amount, paid: true, inner_transaction_id: @transaction.id) }
       ConsumerMailer.gift_card_email(consumer, @vouchers).deliver if consumer
     end
 
@@ -91,8 +83,12 @@ module Transactions
 
     def empty_cart
       @bookings = Booking.where(id: cart_ids)
-      @bookings.update_all(paid: true, confirmed: true)
+      @bookings.update_all(paid: true, confirmed: true, inner_transaction_id: @transaction.id)
       ShoppingCart.new(@current_user).clean!
+    end
+
+    def create_inner_transaction
+      @transaction ||= InnerTransaction.create(creator: @current_user, amount: @sum)
     end
 
     def send_sms

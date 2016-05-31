@@ -12,7 +12,7 @@ class BalancesController < ApplicationController
   end
 
   def show
-    @balance = current_user.balance
+    @balance = current_user.balance || Balance.create(consumer: current_user)
     authorize @balance
     @gifts = current_user.gifts.used
     @vouchers = current_user.vouchers
