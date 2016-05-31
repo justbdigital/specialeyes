@@ -13,6 +13,7 @@ class VouchersController < ApplicationController
   end
 
   def buy_gift_card
+    authorize Voucher
   end
 
   private

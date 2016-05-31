@@ -8,6 +8,10 @@ class VoucherPolicy < ApplicationPolicy
     user.present? && user.is_a?(Consumer)
   end
 
+  def buy_gift_card?
+    update?
+  end
+
   class Scope < Scope
     def resolve
       scope

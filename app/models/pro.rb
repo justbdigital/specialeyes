@@ -41,6 +41,7 @@ class Pro < ActiveRecord::Base
   has_many :daily_schedules, dependent: :destroy
 
   has_many :vouchers, as: :creator
+  has_many :transactions, as: :creator
 
   has_one :team, foreign_key: :owner_id, dependent: :destroy
   has_one :venue, dependent: :destroy

@@ -46,6 +46,8 @@ class Consumer < ActiveRecord::Base
   has_many :invitations, dependent: :destroy, class_name: 'Pro', as: :invited_by
 
   has_many :vouchers, as: :creator
+  has_many :transactions, as: :creator
+
   has_many :gifts, class_name: 'Voucher', foreign_key: :owner_id, dependent: :destroy
   has_one :balance, dependent: :destroy
 

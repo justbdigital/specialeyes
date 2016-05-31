@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160531152827) do
+ActiveRecord::Schema.define(version: 20160531182701) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,14 +88,16 @@ ActiveRecord::Schema.define(version: 20160531152827) do
     t.integer  "pro_id"
     t.integer  "consumer_id"
     t.integer  "treatment_id"
-    t.boolean  "paid",         default: false
-    t.datetime "created_at",                   null: false
-    t.datetime "updated_at",                   null: false
-    t.boolean  "confirmed",    default: false
-    t.boolean  "completed",    default: false
+    t.boolean  "paid",                 default: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.boolean  "confirmed",            default: false
+    t.boolean  "completed",            default: false
+    t.integer  "inner_transaction_id"
   end
 
   add_index "bookings", ["consumer_id"], name: "index_bookings_on_consumer_id", using: :btree
+  add_index "bookings", ["inner_transaction_id"], name: "index_bookings_on_inner_transaction_id", using: :btree
   add_index "bookings", ["pro_id"], name: "index_bookings_on_pro_id", using: :btree
   add_index "bookings", ["treatment_id"], name: "index_bookings_on_treatment_id", using: :btree
 
@@ -171,6 +173,16 @@ ActiveRecord::Schema.define(version: 20160531152827) do
   add_index "impressions", ["impressionable_type", "impressionable_id", "session_hash"], name: "poly_session_index", using: :btree
   add_index "impressions", ["impressionable_type", "message", "impressionable_id"], name: "impressionable_type_message_index", using: :btree
   add_index "impressions", ["user_id"], name: "index_impressions_on_user_id", using: :btree
+
+  create_table "inner_transactions", force: :cascade do |t|
+    t.decimal  "amount",       precision: 16, scale: 2
+    t.integer  "creator_id"
+    t.string   "creator_type"
+    t.datetime "created_at",                            null: false
+    t.datetime "updated_at",                            null: false
+  end
+
+  add_index "inner_transactions", ["creator_type", "creator_id"], name: "index_inner_transactions_on_creator_type_and_creator_id", using: :btree
 
   create_table "pros", force: :cascade do |t|
     t.string   "username"
@@ -270,21 +282,26 @@ ActiveRecord::Schema.define(version: 20160531152827) do
     t.string   "creator_type"
     t.integer  "owner_id"
     t.string   "code"
-    t.boolean  "paid",                                  default: false
-    t.boolean  "used",                                  default: false
-    t.decimal  "amount",       precision: 16, scale: 2
+    t.boolean  "paid",                                          default: false
+    t.boolean  "used",                                          default: false
+    t.decimal  "amount",               precision: 16, scale: 2
     t.datetime "valid_till"
-    t.datetime "created_at",                                            null: false
-    t.datetime "updated_at",                                            null: false
+    t.datetime "created_at",                                                    null: false
+    t.datetime "updated_at",                                                    null: false
+    t.integer  "inner_transaction_id"
   end
+
+  add_index "vouchers", ["inner_transaction_id"], name: "index_vouchers_on_inner_transaction_id", using: :btree
 
   add_foreign_key "authorizations", "consumers"
   add_foreign_key "balances", "consumers"
   add_foreign_key "bookings", "consumers"
+  add_foreign_key "bookings", "inner_transactions"
   add_foreign_key "bookings", "pros"
   add_foreign_key "bookings", "treatments"
   add_foreign_key "daily_schedules", "pros"
   add_foreign_key "reviews", "bookings"
   add_foreign_key "reviews", "consumers"
   add_foreign_key "reviews", "venues"
+  add_foreign_key "vouchers", "inner_transactions"
 end

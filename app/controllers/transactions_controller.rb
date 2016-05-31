@@ -19,17 +19,16 @@ class TransactionsController < ApplicationController
   def create
     base = Transactions::Creator.new(params, current_user)
     transaction = base.call
+    render :new, notice: 'Something went wrong. Please try again!' and return unless transaction.success?
+
     notice = base.notice
 
-    if transaction.success? && !params[:balance_payment].blank?
+    if !params[:balance_payment].blank?
       redirect_to root_url, notice: "Your transaction has been successful! New balance £ #{current_user.balance.amount.to_i}. #{notice}"
-    elsif transaction.success? && !params[:gift].blank?
+    elsif !params[:gift].blank?
       redirect_to gifts_balance_url, notice: 'You bought a gift!'
-    elsif transaction.success?
-      redirect_to root_url, notice: "Congratulations! Your transaction has been successfully processed! #{notice}"
     else
-      flash[:alert] = 'Something went wrong while processing your transaction. Please try again!'
-      render :new
+      redirect_to root_url, notice: "Congratulations! Your transaction has been successfully processed! #{notice}"
     end
   end
 
