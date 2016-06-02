@@ -64,8 +64,11 @@ class ApplicationController < ActionController::Base
   end
 
   def after_sign_in_path_for(resource)
-    stored_location_for(resource) ||
-    if resource.is_a?(Pro)
+    if resource.is_a?(AdminUser)
+      admin_dashboard_path
+    elsif stored_location_for(resource)
+      stored_location_for(resource)
+    elsif resource.is_a?(Pro)
       dashboard_path
     else
       super

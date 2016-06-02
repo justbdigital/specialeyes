@@ -32,6 +32,7 @@ class VouchersController < ApplicationController
       balance = current_user.balance
       balance.amount += @gift.amount
       balance.save
+      InnerTransaction.create(creator: current_user, amount: @gift.amount, balance: balance, sign: 'positive')
     end
   end
 end

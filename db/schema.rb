@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160531182701) do
+ActiveRecord::Schema.define(version: 20160602105811) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -108,14 +108,14 @@ ActiveRecord::Schema.define(version: 20160531182701) do
     t.string   "profile_name"
     t.string   "postcode"
     t.boolean  "female"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.string   "email",                  default: "",    null: false
+    t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
@@ -130,6 +130,7 @@ ActiveRecord::Schema.define(version: 20160531182701) do
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
     t.integer  "invitations_count",      default: 0
+    t.boolean  "suspended",              default: false
   end
 
   add_index "consumers", ["email"], name: "index_consumers_on_email", unique: true, using: :btree
@@ -180,21 +181,24 @@ ActiveRecord::Schema.define(version: 20160531182701) do
     t.string   "creator_type"
     t.datetime "created_at",                            null: false
     t.datetime "updated_at",                            null: false
+    t.integer  "balance_id"
+    t.string   "sign"
   end
 
+  add_index "inner_transactions", ["balance_id"], name: "index_inner_transactions_on_balance_id", using: :btree
   add_index "inner_transactions", ["creator_type", "creator_id"], name: "index_inner_transactions_on_creator_type_and_creator_id", using: :btree
 
   create_table "pros", force: :cascade do |t|
     t.string   "username"
     t.string   "business_name"
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.string   "email",                  default: "",    null: false
+    t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.inet     "current_sign_in_ip"
@@ -208,6 +212,7 @@ ActiveRecord::Schema.define(version: 20160531182701) do
     t.integer  "invited_by_id"
     t.string   "invited_by_type"
     t.integer  "invitations_count",      default: 0
+    t.boolean  "suspended",              default: false
   end
 
   add_index "pros", ["email"], name: "index_pros_on_email", unique: true, using: :btree
@@ -300,6 +305,7 @@ ActiveRecord::Schema.define(version: 20160531182701) do
   add_foreign_key "bookings", "pros"
   add_foreign_key "bookings", "treatments"
   add_foreign_key "daily_schedules", "pros"
+  add_foreign_key "inner_transactions", "balances"
   add_foreign_key "reviews", "bookings"
   add_foreign_key "reviews", "consumers"
   add_foreign_key "reviews", "venues"

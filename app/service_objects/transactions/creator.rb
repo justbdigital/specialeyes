@@ -75,6 +75,7 @@ module Transactions
       balance = @current_user.balance
       balance.amount -= @balance_payment.to_i
       balance.save
+      InnerTransaction.create(creator: @current_user, amount: @balance_payment.to_i, balance: balance, sign: 'negative')
     end
 
     def consumer
@@ -88,7 +89,7 @@ module Transactions
     end
 
     def create_inner_transaction
-      @transaction ||= InnerTransaction.create(creator: @current_user, amount: @sum)
+      @transaction ||= InnerTransaction.create(creator: @current_user, amount: @sum, sign: 'negative')
     end
 
     def send_sms

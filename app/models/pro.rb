@@ -26,6 +26,7 @@
 #  invited_by_id          :integer
 #  invited_by_type        :string
 #  invitations_count      :integer          default("0")
+#  suspended              :boolean          default("false")
 #
 
 class Pro < ActiveRecord::Base
@@ -85,6 +86,14 @@ class Pro < ActiveRecord::Base
     end.sort_by { |_k, v| v }.last(3).map(&:first)
 
     @treatments = Treatment.where(id: ids)
+  end
+
+  def active_for_authentication?
+    super && !suspended
+  end
+
+  def inactive_message
+    'Sorry, this account has been deactivated. Please contact support team.'
   end
 
   private
