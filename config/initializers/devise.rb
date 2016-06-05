@@ -285,7 +285,6 @@ Devise.setup do |config|
 
   # ==> OmniAuth
 
-  API_KEYS = YAML::load_file("#{Rails.root}/config/api_keys.yml")[Rails.env]
   config.omniauth :facebook,
                   ENV['FACEBOOK_API_KEY'],
                   ENV['FACEBOOK_API_SECRET'],
