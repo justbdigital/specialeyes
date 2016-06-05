@@ -287,8 +287,8 @@ Devise.setup do |config|
 
   API_KEYS = YAML::load_file("#{Rails.root}/config/api_keys.yml")[Rails.env]
   config.omniauth :facebook,
-                  API_KEYS['facebook']['api_key'],
-                  API_KEYS['facebook']['api_secret'],
+                  ENV['FACEBOOK_API_KEY'],
+                  ENV['FACEBOOK_API_SECRET'],
                   image_size: { width: 300, height: 300 },
                   scope: [:email], secure_image_url: true
 

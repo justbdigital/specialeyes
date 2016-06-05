@@ -1,7 +1,7 @@
 defaults: &defaults
   facebook:
-    api_key: "499436596911133"
-    api_secret: "60d85243b3a59191ba6bfd70ebc79743"
+    api_key: "516688585185934"
+    api_secret: "9d4f94d4a3cdc1df4197a66e17ff3a7a"
 
 development:
   <<: *defaults
@@ -11,5 +11,5 @@ test:
 
 production:
   facebook:
-    api_key: "493191380865902"
-    api_secret: "85c73643e1bd07601f19ef4a78bf167e"
+    api_key: "516688585185934"
+    api_secret: "9d4f94d4a3cdc1df4197a66e17ff3a7a"
