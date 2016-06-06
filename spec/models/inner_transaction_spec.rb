@@ -8,6 +8,8 @@
 #  creator_type :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  balance_id   :integer
+#  sign         :string
 #
 
 require 'rails_helper'

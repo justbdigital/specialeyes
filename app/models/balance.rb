@@ -12,6 +12,7 @@
 
 class Balance < ActiveRecord::Base
   belongs_to :consumer
+  has_many :inner_transactions
 
   validates_presence_of :consumer
   validates :amount, numericality: { greater_than_or_equal_to: 0 }

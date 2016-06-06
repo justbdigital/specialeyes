@@ -31,6 +31,7 @@
 #  invited_by_id          :integer
 #  invited_by_type        :string
 #  invitations_count      :integer          default("0")
+#  suspended              :boolean          default("false")
 #
 
 class Consumer < ActiveRecord::Base
@@ -64,6 +65,14 @@ class Consumer < ActiveRecord::Base
 
   def block_from_invitation?
     false
+  end
+
+  def active_for_authentication?
+    super && !suspended
+  end
+
+  def inactive_message
+    'Sorry, this account has been deactivated. Please contact support team.'
   end
 
   private
